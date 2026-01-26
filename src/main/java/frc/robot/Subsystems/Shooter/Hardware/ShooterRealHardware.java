@@ -167,8 +167,8 @@ public class ShooterRealHardware implements ShooterHardware {
     }
 
     @Override
-    public void hoodStop() {
-        hoodMotor.set(0.0);
+    public void hoodZero() {
+        setHoodAngle(Degrees.of(0));
     }
 
     @Override

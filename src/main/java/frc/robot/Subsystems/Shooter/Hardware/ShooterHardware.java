@@ -27,7 +27,7 @@ public interface ShooterHardware extends Sendable{
     public Angle getHoodPosition();
 
     public void setHoodAngle(Angle hoodAngle);
-    public void hoodStop();
+    public void hoodZero();
 
     public void setShooter(AngularVelocity velocity, Angle hoodAngle);
     public void testShooter();

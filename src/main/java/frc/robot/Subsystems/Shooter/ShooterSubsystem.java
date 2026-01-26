@@ -87,7 +87,7 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterData.hoodGoalAngle = Degrees.of(0.0);
     updateShooterData();
     shooterHardware.flywheelStop();
-    shooterHardware.hoodStop();
+    shooterHardware.hoodZero();
   }
 
   public void rest() {

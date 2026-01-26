@@ -12,11 +12,11 @@ import static edu.wpi.first.units.Units.*;
 public class FeederConstants {
     public static final int FEEDER_MOTOR_ID = 41;
 
-    public static final double FEEDER_KS = 0.0;
+    public static final double FEEDER_KS = 0.1;
     public static final double FEEDER_KV = 0.0;
-    public static final double FEEDER_KP = 0.01;
+    public static final double FEEDER_KP = 0.1;
     public static final double FEEDER_KI = 0.0;
-    public static final double FEEDER_KD = 0.005;
+    public static final double FEEDER_KD = 0.01;
 
     public static final TalonFXConfiguration FEEDER_MOTOR_CONFIG = new TalonFXConfiguration()
             .withSlot0(new Slot0Configs()

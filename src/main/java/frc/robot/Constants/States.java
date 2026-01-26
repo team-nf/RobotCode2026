@@ -61,10 +61,11 @@ public class States {
 
     public static class IntakeStates {
             public enum IntakeControlState {
-                CLOSED,
-                INTAKING,
+                CLOSE,
+                DEPLOY,
+                INTAKE,
                 REVERSE,
-                FEEDING,
+                FEED,
                 TEST
             }
 

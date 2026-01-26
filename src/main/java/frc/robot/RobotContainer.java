@@ -10,9 +10,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.HopperConstants;
 import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Constants.States.ShooterStates.ShooterControlState;
 import frc.robot.Subsystems.Feeder.FeederSubsystem;
+import frc.robot.Subsystems.Hopper.HopperSubsystem;
+import frc.robot.Subsystems.Intake.IntakeSubsystem;
 import frc.robot.Subsystems.Shooter.ShooterSubsystem;
 import frc.robot.Subsystems.Shooter.Utils.ShooterCalculator;
 
@@ -22,6 +25,8 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooterSubsystem;
 
   private final FeederSubsystem m_feederSubsystem;
+  private final HopperSubsystem m_hopperSubsystem;
+  private final IntakeSubsystem m_intakeSubsystem;
 
   private final CommandXboxController m_driverController;
 
@@ -30,6 +35,10 @@ public class RobotContainer {
     m_shooterSubsystem = new ShooterSubsystem(m_shooterCalculator);
 
     m_feederSubsystem = new FeederSubsystem();
+
+    m_hopperSubsystem = new HopperSubsystem();
+
+    m_intakeSubsystem = new IntakeSubsystem();
 
     m_driverController = new CommandXboxController(DriveConstants.DRIVER_CONTROLLER_PORT);
 
@@ -40,7 +49,8 @@ public class RobotContainer {
     m_driverController.a()
         .onTrue(m_shooterSubsystem.prepareRequest()
         .andThen(m_shooterSubsystem.waitForShooterToBeReady()
-        .andThen(m_feederSubsystem.feedRequest())));
+        .andThen(m_feederSubsystem.feedRequest()
+        .alongWith(m_hopperSubsystem.feedRequest()))));
 
     m_driverController.b()
         .onTrue(m_shooterSubsystem.restRequest());
@@ -50,9 +60,14 @@ public class RobotContainer {
         .onTrue(m_shooterSubsystem.zeroRequest());
 
     m_driverController.rightBumper()
-        .onTrue(m_feederSubsystem.reverseRequest())
-        .onFalse(m_feederSubsystem.zeroRequest());
+        .onTrue(m_feederSubsystem.reverseRequest()
+            .alongWith(m_hopperSubsystem.reverseRequest()))
+        .onFalse(m_feederSubsystem.zeroRequest()
+            .alongWith(m_hopperSubsystem.zeroRequest()));
 
+    m_driverController.leftBumper()
+        .onTrue(m_intakeSubsystem.intakeRequest())
+        .onFalse(m_intakeSubsystem.feedRequest());
   }
 
   public Command getAutonomousCommand() {
