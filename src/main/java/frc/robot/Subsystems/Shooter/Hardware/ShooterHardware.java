@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Shooter;
+package frc.robot.Subsystems.Shooter.Hardware;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -16,17 +16,17 @@ public interface ShooterHardware extends Sendable{
     public TalonFX getThirdShootMotor();
     public TalonFX getFourthShootMotor();
 
-    public AngularVelocity getShooterVelocity();
+    public AngularVelocity getFlywheelVelocity();
 
-    public void shooterSetPower(double power);
-    public void shooterSetVelocity(AngularVelocity velocity);
-    public void shooterStop();
+    public void flywheelSetPower(double power);
+    public void setFlywheelSpeed(AngularVelocity velocity);
+    public void flywheelStop();
 
     public TalonFX getHoodMotor();
 
     public Angle getHoodPosition();
 
-    public void hoodSetPosition(Angle hoodAngle);
+    public void setHoodAngle(Angle hoodAngle);
     public void hoodStop();
 
     public void setShooter(AngularVelocity velocity, Angle hoodAngle);

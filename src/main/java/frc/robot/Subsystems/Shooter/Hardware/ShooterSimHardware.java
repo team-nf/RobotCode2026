@@ -1,10 +1,11 @@
-package frc.robot.Subsystems.Shooter;
+package frc.robot.Subsystems.Shooter.Hardware;
 
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
@@ -18,7 +19,7 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.sim.ChassisReference;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
-public class SimShooterHardware extends RealShooterHardware {
+public class ShooterSimHardware extends ShooterRealHardware {
 
     // Simulations
     private final DCMotor shDcMotor;
@@ -26,11 +27,11 @@ public class SimShooterHardware extends RealShooterHardware {
     private final DCMotorSim shFlywheelSim;
 
     private final DCMotor hoodDcMotor;
-    private final SingleJointedArmSim hoodSim;
+    private final SingleJointedArmSim hoodArmSim;
 
     private boolean isSimulationInitialized = false;
 
-    public SimShooterHardware() {
+    public ShooterSimHardware() {
         super();
 
         // Flywheel systems and sims
@@ -44,15 +45,22 @@ public class SimShooterHardware extends RealShooterHardware {
 
         // Hood systems and sims
         hoodDcMotor = DCMotor.getKrakenX60(1);
-        hoodSim = new SingleJointedArmSim(
+        hoodArmSim = new SingleJointedArmSim(
             hoodDcMotor,
             ShooterConstants.HOOD_GEAR_REDUCTION,
-            ShooterConstants.HOOD_INERTIA.in(KilogramSquareMeters), 
+            SingleJointedArmSim.estimateMOI(
+                ShooterConstants.HOOD_MASS.in(Kilogram),
+                ShooterConstants.HOOD_LENGTH.in(Meters)
+            ),
             ShooterConstants.HOOD_LENGTH.in(Meters),
-            ShooterConstants.MIN_HOOD_ANGLE.in(Radian), 
-            ShooterConstants.MAX_HOOD_ANGLE.in(Radian), 
-            false, 
-            0, 0.0002, 0.0002);
+            ShooterConstants.MIN_HOOD_ANGLE.div(ShooterConstants.HOOD_GEAR_REDUCTION).in(Radians),
+            ShooterConstants.MAX_HOOD_ANGLE.div(ShooterConstants.HOOD_GEAR_REDUCTION).in(Radians),
+            true,
+            0.0,
+            0.0,
+            0.0
+        );
+                
     }
 
     @Override
@@ -76,54 +84,60 @@ public class SimShooterHardware extends RealShooterHardware {
             hoodMotor.getSimState().setMotorType(TalonFXSimState.MotorType.KrakenX60);
         }
         else {
-            final var firstShootSimState = firstShootMotor.getSimState();
-            final var secondShootSimState = secondShootMotor.getSimState();
-            final var thirdShootSimState = thirdShootMotor.getSimState();
-            final var fourthShootSimState = fourthShootMotor.getSimState();
-            final var hoodSimState = hoodMotor.getSimState();
+            final var firstShootMotorSimState = firstShootMotor.getSimState();
+            final var secondShootMotorSimState = secondShootMotor.getSimState();
+            final var thirdShootMotorSimState = thirdShootMotor.getSimState();
+            final var fourthShootMotorSimState = fourthShootMotor.getSimState();
 
             /* First set the supply voltage of all the devices */
-            firstShootSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
-            secondShootSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
-            thirdShootSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
-            fourthShootSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
-            hoodSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
+            firstShootMotorSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
+            secondShootMotorSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
+            thirdShootMotorSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
+            fourthShootMotorSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
             /* Then calculate the new velocity of the simulated flywheel */
-            shFlywheelSim.setInputVoltage(firstShootSimState.getMotorVoltage());
+            shFlywheelSim.setInputVoltage(firstShootMotorSimState.getMotorVoltage());
             shFlywheelSim.update(0.002);
 
             /* Apply the new rotor velocity to the motors (before gear ratio) */
-            firstShootSimState.setRawRotorPosition(
+            firstShootMotorSimState.setRawRotorPosition(
                 shFlywheelSim.getAngularPosition().times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION));
-            secondShootSimState.setRawRotorPosition(
+            secondShootMotorSimState.setRawRotorPosition(
                 shFlywheelSim.getAngularPosition().times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION));
-            thirdShootSimState.setRawRotorPosition(
+            thirdShootMotorSimState.setRawRotorPosition(
                 shFlywheelSim.getAngularPosition().times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION));
-            fourthShootSimState.setRawRotorPosition(
+            fourthShootMotorSimState.setRawRotorPosition(
                 shFlywheelSim.getAngularPosition().times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION));
             
 
-            firstShootSimState.setRotorVelocity(
+            firstShootMotorSimState.setRotorVelocity(
                 shFlywheelSim.getAngularVelocity().times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION));
-            secondShootSimState.setRotorVelocity(
+            secondShootMotorSimState.setRotorVelocity(
                 shFlywheelSim.getAngularVelocity().times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION));
-            thirdShootSimState.setRotorVelocity(
+            thirdShootMotorSimState.setRotorVelocity(
                 shFlywheelSim.getAngularVelocity().times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION));
-            fourthShootSimState.setRotorVelocity(
+            fourthShootMotorSimState.setRotorVelocity(
                 shFlywheelSim.getAngularVelocity().times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION));
 
             /* Now do the same for the hood */
-            hoodSim.setInput(hoodSimState.getMotorVoltage());
-            hoodSim.update(0.002);
+            final var hoodSimState = hoodMotor.getSimState();
+            hoodSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
+            hoodArmSim.setInput(hoodSimState.getMotorVoltage());
+            hoodArmSim.update(0.002);
 
             hoodSimState.setRawRotorPosition(
-                Radians.of(hoodSim.getAngleRads()).times(ShooterConstants.HOOD_GEAR_REDUCTION));
+                Radians.of(hoodArmSim.getAngleRads()).times(ShooterConstants.HOOD_GEAR_REDUCTION));
 
             hoodSimState.setRotorVelocity(
-                RotationsPerSecond.of(hoodSim.getVelocityRadPerSec()).times(ShooterConstants.HOOD_GEAR_REDUCTION));
+                RadiansPerSecond.of(hoodArmSim.getVelocityRadPerSec()).times(ShooterConstants.HOOD_GEAR_REDUCTION));
 
         }
 
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addStringProperty("HoodSim", () -> Radians.of(hoodArmSim.getAngleRads()).per(Degrees) + " " + ShooterConstants.HOOD_INERTIA.per(KilogramMetersPerSecond), null);
     }
 
 }

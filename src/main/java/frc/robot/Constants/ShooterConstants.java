@@ -5,6 +5,8 @@ import static edu.wpi.first.units.Units.Kilogram;
 import static edu.wpi.first.units.Units.KilogramMetersSquaredPerSecond;
 import static edu.wpi.first.units.Units.KilogramSquareMeters;
 import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import java.net.http.HttpResponse.PushPromiseHandler;
 
@@ -16,6 +18,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.units.AngularMomentumUnit;
@@ -32,6 +35,9 @@ public class ShooterConstants {
     // Configs
     public static final int NUMBER_OF_FLYWHEEL_MOTORS = 4;
 
+    public static final AngularVelocity FLYWHEEL_ALLOWABLE_ERROR = RotationsPerSecond.of(1); // Allowable error in radians per second
+    public static final Angle HOOD_ALLOWABLE_ERROR = Degrees.of(1); // Allowable error in radians
+
     public static final double SHOOTER_KS = 0.24;
     public static final double SHOOTER_KV = 0.12;    
     public static final double SHOOTER_KP = 0.5;
@@ -39,54 +45,55 @@ public class ShooterConstants {
     public static final double SHOOTER_KD = 0.0; 
 
 
-    public static final MotorOutputConfigs shooterOutputConfig = new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive);
+    public static final MotorOutputConfigs SHOOTER_MOTOR_OUTPUT_CONFIGS = new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive);
 
-    public static final Slot0Configs shooterPIDConfigs = new Slot0Configs()
+    public static final Slot0Configs SHOOTER_PID_CONFIGS = new Slot0Configs()
         .withKS(SHOOTER_KS)
         .withKV(SHOOTER_KV)
         .withKP(SHOOTER_KP)
         .withKI(SHOOTER_KI)
         .withKD(SHOOTER_KD);
 
-    public static final VoltageConfigs shooterVoltageConfigs = new VoltageConfigs()
+    public static final VoltageConfigs SHOOTER_VOLTAGE_CONFIGS = new VoltageConfigs()
         .withPeakForwardVoltage(8)
         .withPeakReverseVoltage(-8);
 
-    public static final CurrentLimitsConfigs shooterCurrentLimits = new CurrentLimitsConfigs()
+    public static final CurrentLimitsConfigs SHOOTER_CURRENT_LIMITS = new CurrentLimitsConfigs()
         .withSupplyCurrentLimitEnable(true)
         .withSupplyCurrentLimit(20)
         .withStatorCurrentLimit(20);
 
-    public static final TalonFXConfiguration shooterConfig = new TalonFXConfiguration()
-            .withSlot0(shooterPIDConfigs)
-            .withVoltage(shooterVoltageConfigs)
-            .withCurrentLimits(shooterCurrentLimits);
+    public static final TalonFXConfiguration SHOOTER_CONFIG = new TalonFXConfiguration()
+            .withSlot0(SHOOTER_PID_CONFIGS)
+            .withVoltage(SHOOTER_VOLTAGE_CONFIGS)
+            .withCurrentLimits(SHOOTER_CURRENT_LIMITS);
 
-    public static final VelocityVoltage shooterVelocityControl = new VelocityVoltage(0)
+    public static final VelocityVoltage SHOOTER_VELOCITY_CONTROL = new VelocityVoltage(0)
                                                                         .withSlot(0)
                                                                         .withEnableFOC(false);
 
     public static final double HOOD_KS = 0.0;
     public static final double HOOD_KV = 0.0;
-    public static final double HOOD_KP = 0.5;
-    public static final double HOOD_KI = 0.0;
-    public static final double HOOD_KD = 0.0;
-    public static final double HOOD_KG = 0.1;
+    public static final double HOOD_KP = 16.0;
+    public static final double HOOD_KI = 3.5;
+    public static final double HOOD_KD = 0.2;
+    public static final double HOOD_KG = 0.21;
 
-    public static final Slot0Configs hoodPIDConfigs = new Slot0Configs()
+    public static final Slot0Configs HOOD_PID_CONFIGS = new Slot0Configs()
         .withKS(HOOD_KS)
         .withKV(HOOD_KV)
         .withKP(HOOD_KP)
         .withKI(HOOD_KI)
         .withKD(HOOD_KD)
-        .withKG(HOOD_KG);
+        .withKG(HOOD_KG)
+        .withGravityType(GravityTypeValue.Arm_Cosine);
 
-    public static final TalonFXConfiguration hoodConfig = new TalonFXConfiguration()
-            .withSlot0(hoodPIDConfigs)
-            .withVoltage(shooterVoltageConfigs)
-            .withCurrentLimits(shooterCurrentLimits);
+    public static final TalonFXConfiguration HOOD_CONFIG = new TalonFXConfiguration()
+            .withSlot0(HOOD_PID_CONFIGS)
+            .withVoltage(SHOOTER_VOLTAGE_CONFIGS)
+            .withCurrentLimits(SHOOTER_CURRENT_LIMITS);
 
-    public static final PositionVoltage hoodPositionControl = new PositionVoltage(0)
+    public static final PositionVoltage HOOD_POSITION_CONTROL = new PositionVoltage(0)
                                                                     .withSlot(0)
                                                                     .withEnableFOC(false);
 
@@ -108,8 +115,8 @@ public class ShooterConstants {
     public static final MomentOfInertia TOTAL_MOMENT_OF_INERTIA = FLYWHEEL_MOMENT_OF_INERTIA.plus(HOOD_MOMENT_OF_INERTIA);
 
 
-    public static final Angle MIN_HOOD_ANGLE = Degrees.of(0);
-    public static final Angle MAX_HOOD_ANGLE = Degrees.of(20);
+    public static final Angle MIN_HOOD_ANGLE = Degrees.of(0).times(HOOD_GEAR_REDUCTION);
+    public static final Angle MAX_HOOD_ANGLE = Degrees.of(20).times(HOOD_GEAR_REDUCTION);
 
     public static final Mass HOOD_MASS = Kilogram.of(0.5);
     public static final Distance HOOD_LENGTH = Meters.of(0.075);
