@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Intake.Hardware;
+package frc.robot.subsystems.Intake.Hardware;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -9,7 +9,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.constants.IntakeConstants;
 
 public class IntakeRealHardware implements IntakeHardware {
 

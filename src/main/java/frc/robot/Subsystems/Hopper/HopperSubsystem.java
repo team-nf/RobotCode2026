@@ -1,19 +1,19 @@
-package frc.robot.Subsystems.Hopper;
+package frc.robot.subsystems.Hopper;
 
 import com.ctre.phoenix6.Utils;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.HopperConstants;
-import frc.robot.Constants.States.HopperStates;
-import frc.robot.Subsystems.Hopper.Hardware.HopperHardware;
-import frc.robot.Subsystems.Hopper.Hardware.HopperRealHardware;
-import frc.robot.Subsystems.Hopper.Hardware.HopperSimHardware;
-import frc.robot.Subsystems.Hopper.StateRequests.*;
-import frc.robot.Subsystems.Hopper.StateActions.*;
-import frc.robot.Subsystems.Hopper.Utils.HopperControlData;
-import frc.robot.Constants.TelemetryConstants;
+import frc.robot.subsystems.Hopper.Hardware.HopperHardware;
+import frc.robot.subsystems.Hopper.Hardware.HopperRealHardware;
+import frc.robot.subsystems.Hopper.Hardware.HopperSimHardware;
+import frc.robot.subsystems.Hopper.StateActions.*;
+import frc.robot.subsystems.Hopper.StateRequests.*;
+import frc.robot.subsystems.Hopper.Utils.HopperControlData;
+import frc.robot.constants.States.HopperStates;
+import frc.robot.constants.HopperConstants;
+import frc.robot.constants.TelemetryConstants;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

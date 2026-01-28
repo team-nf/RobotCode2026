@@ -2,12 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Subsystems.Shooter.StateRequests;
+package frc.robot.subsystems.Shooter.StateRequests;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Subsystems.Shooter.ShooterSubsystem;
-import frc.robot.Subsystems.Shooter.Utils.ShooterCalculator;
-import frc.robot.Constants.States.ShooterStates.*;
+import frc.robot.constants.States.ShooterStates.*;
+import frc.robot.subsystems.Shooter.ShooterSubsystem;
+import frc.robot.subsystems.Shooter.Utils.ShooterCalculator;
+
 import static edu.wpi.first.units.Units.*;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more

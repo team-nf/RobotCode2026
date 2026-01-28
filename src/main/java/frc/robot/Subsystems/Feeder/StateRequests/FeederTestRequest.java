@@ -2,11 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Subsystems.Feeder.StateRequests;
+package frc.robot.subsystems.Feeder.StateRequests;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.States.FeederStates.FeederControlState;
-import frc.robot.Subsystems.Feeder.FeederSubsystem;
+import frc.robot.constants.States.FeederStates.FeederControlState;
+import frc.robot.subsystems.Feeder.FeederSubsystem;
 
 import static edu.wpi.first.units.Units.*;
 

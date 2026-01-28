@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Hopper.Hardware;
+package frc.robot.subsystems.Hopper.Hardware;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -8,7 +8,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import frc.robot.Constants.HopperConstants;
+import frc.robot.constants.HopperConstants;
 
 public class HopperRealHardware implements HopperHardware {
 

@@ -1,8 +1,8 @@
-package frc.robot.Subsystems.Hopper.StateRequests;
+package frc.robot.subsystems.Hopper.StateRequests;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.States.HopperStates.HopperControlState;
-import frc.robot.Subsystems.Hopper.HopperSubsystem;
+import frc.robot.subsystems.Hopper.HopperSubsystem;
+import frc.robot.constants.States.HopperStates.HopperControlState;
 
 public class HopperReverseRequest extends InstantCommand {
 

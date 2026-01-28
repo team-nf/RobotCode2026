@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Hopper.Hardware;
+package frc.robot.subsystems.Hopper.Hardware;
 
 import com.ctre.phoenix6.sim.ChassisReference;
 import com.ctre.phoenix6.sim.TalonFXSimState;
@@ -10,7 +10,8 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import frc.robot.Constants.HopperConstants;
+import frc.robot.constants.HopperConstants;
+
 import static edu.wpi.first.units.Units.*;
 
 public class HopperSimHardware extends HopperRealHardware {

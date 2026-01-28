@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Subsystems.Feeder.Hardware;
+package frc.robot.subsystems.Feeder.Hardware;
 
 import com.ctre.phoenix6.sim.ChassisReference;
 import com.ctre.phoenix6.sim.TalonFXSimState;
@@ -14,7 +14,8 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import frc.robot.Constants.FeederConstants;
+import frc.robot.constants.FeederConstants;
+
 import static edu.wpi.first.units.Units.*;
 
 /** Add your docs here. */

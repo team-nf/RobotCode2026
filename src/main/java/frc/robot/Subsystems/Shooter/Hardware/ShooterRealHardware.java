@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Shooter.Hardware;
+package frc.robot.subsystems.Shooter.Hardware;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -16,7 +16,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilderImpl;
-import frc.robot.Constants.ShooterConstants;
+import frc.robot.constants.ShooterConstants;
 
 import static edu.wpi.first.units.Units.*;
 

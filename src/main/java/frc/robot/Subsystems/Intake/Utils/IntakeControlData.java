@@ -1,13 +1,13 @@
-package frc.robot.Subsystems.Intake.Utils;
+package frc.robot.subsystems.Intake.Utils;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import frc.robot.constants.States.IntakeStates.IntakeControlState;
+import frc.robot.constants.States.IntakeStates.IntakePositionState;
+import frc.robot.constants.States.IntakeStates.IntakeRollerState;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import static edu.wpi.first.units.Units.*;
-import frc.robot.Constants.States.IntakeStates.IntakeControlState;
-import frc.robot.Constants.States.IntakeStates.IntakeRollerState;
-import frc.robot.Constants.States.IntakeStates.IntakePositionState;
 
 public class IntakeControlData implements Sendable {
 

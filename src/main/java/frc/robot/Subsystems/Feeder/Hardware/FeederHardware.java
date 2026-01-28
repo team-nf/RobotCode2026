@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Feeder.Hardware;
+package frc.robot.subsystems.Feeder.Hardware;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;

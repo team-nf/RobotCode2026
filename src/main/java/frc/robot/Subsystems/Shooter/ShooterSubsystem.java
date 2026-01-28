@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Subsystems.Shooter;
+package frc.robot.subsystems.Shooter;
 
 import static edu.wpi.first.units.Units.Degree;
 import static edu.wpi.first.units.Units.Degrees;
@@ -23,16 +23,16 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.Constants.TelemetryConstants;
-import frc.robot.Subsystems.Shooter.Hardware.ShooterRealHardware;
-import frc.robot.Subsystems.Shooter.Hardware.ShooterHardware;
-import frc.robot.Subsystems.Shooter.Hardware.ShooterSimHardware;
-import frc.robot.Subsystems.Shooter.Utils.ShooterCalculator;
-import frc.robot.Subsystems.Shooter.Utils.ShooterControlData;
-import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants.States.ShooterStates.*;
-import frc.robot.Subsystems.Shooter.StateActions.*;
-import frc.robot.Subsystems.Shooter.StateRequests.*;
+import frc.robot.constants.ShooterConstants;
+import frc.robot.constants.TelemetryConstants;
+import frc.robot.constants.States.ShooterStates.*;
+import frc.robot.subsystems.Shooter.Hardware.ShooterHardware;
+import frc.robot.subsystems.Shooter.Hardware.ShooterRealHardware;
+import frc.robot.subsystems.Shooter.Hardware.ShooterSimHardware;
+import frc.robot.subsystems.Shooter.StateActions.*;
+import frc.robot.subsystems.Shooter.StateRequests.*;
+import frc.robot.subsystems.Shooter.Utils.ShooterCalculator;
+import frc.robot.subsystems.Shooter.Utils.ShooterControlData;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */

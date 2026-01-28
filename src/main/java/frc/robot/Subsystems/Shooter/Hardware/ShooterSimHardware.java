@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Shooter.Hardware;
+package frc.robot.subsystems.Shooter.Hardware;
 
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.ShooterConstants;
+import frc.robot.constants.ShooterConstants;
 
 import static edu.wpi.first.units.Units.*;
 

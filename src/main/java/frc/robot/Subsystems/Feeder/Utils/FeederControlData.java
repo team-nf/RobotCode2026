@@ -2,15 +2,15 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Subsystems.Feeder.Utils;
+package frc.robot.subsystems.Feeder.Utils;
 
 import static edu.wpi.first.units.Units.Rotation;
 
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import frc.robot.Constants.States.FeederStates.FeederControlState;
-import frc.robot.Constants.States.FeederStates.FeederRollerState;
+import frc.robot.constants.States.FeederStates.FeederControlState;
+import frc.robot.constants.States.FeederStates.FeederRollerState;
 import edu.wpi.first.units.measure.*;
 import static edu.wpi.first.units.Units.*;
 

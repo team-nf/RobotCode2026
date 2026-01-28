@@ -1,4 +1,4 @@
-package frc.robot.Constants;
+package frc.robot.constants;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;

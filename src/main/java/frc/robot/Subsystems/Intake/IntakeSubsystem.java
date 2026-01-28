@@ -1,19 +1,19 @@
-package frc.robot.Subsystems.Intake;
+package frc.robot.subsystems.Intake;
 
 import com.ctre.phoenix6.Utils;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.IntakeConstants;
-import frc.robot.Constants.States.IntakeStates;
-import frc.robot.Subsystems.Intake.Hardware.IntakeHardware;
-import frc.robot.Subsystems.Intake.Hardware.IntakeRealHardware;
-import frc.robot.Subsystems.Intake.Hardware.IntakeSimHardware;
-import frc.robot.Subsystems.Intake.StateRequests.*;
-import frc.robot.Subsystems.Intake.StateActions.*;
-import frc.robot.Subsystems.Intake.Utils.IntakeControlData;
-import frc.robot.Constants.TelemetryConstants;
+import frc.robot.constants.IntakeConstants;
+import frc.robot.constants.TelemetryConstants;
+import frc.robot.subsystems.Intake.Hardware.IntakeHardware;
+import frc.robot.subsystems.Intake.Hardware.IntakeRealHardware;
+import frc.robot.subsystems.Intake.Hardware.IntakeSimHardware;
+import frc.robot.subsystems.Intake.StateActions.*;
+import frc.robot.subsystems.Intake.StateRequests.*;
+import frc.robot.subsystems.Intake.Utils.IntakeControlData;
+import frc.robot.constants.States.IntakeStates;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

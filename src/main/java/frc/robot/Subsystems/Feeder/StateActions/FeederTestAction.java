@@ -2,13 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Subsystems.Feeder.StateActions;
+package frc.robot.subsystems.Feeder.StateActions;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.States.FeederStates.FeederControlState;
-import frc.robot.Constants.States.ShooterStates.ShooterControlState;
-import frc.robot.Subsystems.Feeder.FeederSubsystem;
-import frc.robot.Subsystems.Shooter.ShooterSubsystem;
+import frc.robot.constants.States.FeederStates.FeederControlState;
+import frc.robot.constants.States.ShooterStates.ShooterControlState;
+import frc.robot.subsystems.Feeder.FeederSubsystem;
+import frc.robot.subsystems.Shooter.ShooterSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class FeederTestAction extends Command {

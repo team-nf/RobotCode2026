@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Intake.Hardware;
+package frc.robot.subsystems.Intake.Hardware;
 
 import com.ctre.phoenix6.sim.ChassisReference;
 import com.ctre.phoenix6.sim.TalonFXSimState;
@@ -11,7 +11,8 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.constants.IntakeConstants;
+
 import static edu.wpi.first.units.Units.*;
 
 public class IntakeSimHardware extends IntakeRealHardware {

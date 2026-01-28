@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Shooter.Utils;
+package frc.robot.subsystems.Shooter.Utils;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
@@ -6,7 +6,7 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import frc.robot.Constants.States.ShooterStates.*;
+import frc.robot.constants.States.ShooterStates.*;
 
 public class ShooterControlData implements Sendable{
 

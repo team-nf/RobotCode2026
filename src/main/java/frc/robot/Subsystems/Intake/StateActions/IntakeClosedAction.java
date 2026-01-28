@@ -1,8 +1,8 @@
-package frc.robot.Subsystems.Intake.StateActions;
+package frc.robot.subsystems.Intake.StateActions;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.States.IntakeStates.IntakeControlState;
-import frc.robot.Subsystems.Intake.IntakeSubsystem;
+import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.constants.States.IntakeStates.IntakeControlState;
 
 public class IntakeClosedAction extends Command {
 

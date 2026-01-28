@@ -9,15 +9,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.HopperConstants;
-import frc.robot.Constants.TelemetryConstants;
-import frc.robot.Constants.States.ShooterStates.ShooterControlState;
-import frc.robot.Subsystems.Feeder.FeederSubsystem;
-import frc.robot.Subsystems.Hopper.HopperSubsystem;
-import frc.robot.Subsystems.Intake.IntakeSubsystem;
-import frc.robot.Subsystems.Shooter.ShooterSubsystem;
-import frc.robot.Subsystems.Shooter.Utils.ShooterCalculator;
+import frc.robot.constants.DriveConstants;
+import frc.robot.constants.HopperConstants;
+import frc.robot.constants.TelemetryConstants;
+import frc.robot.constants.States.ShooterStates.ShooterControlState;
+import frc.robot.subsystems.Feeder.FeederSubsystem;
+import frc.robot.subsystems.Hopper.HopperSubsystem;
+import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.subsystems.Shooter.ShooterSubsystem;
+import frc.robot.subsystems.Shooter.Utils.ShooterCalculator;
 
 public class RobotContainer {
 
