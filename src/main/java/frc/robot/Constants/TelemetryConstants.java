@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.constants;
+package frc.robot.Constants;
 
 /** Add your docs here. */
 public class TelemetryConstants {
@@ -18,7 +18,8 @@ public class TelemetryConstants {
     public static final boolean SHOULD_INTAKE_HARDWARE_COMMUNICATE = true;
     public static final boolean SHOULD_INTAKE_CONTROL_COMMUNICATE = true;
 
-    public static final boolean SHOULD_SWERVE_COMMUNICATE = true;
+    public static final boolean SHOULD_SWERVE_DATA_COMMUNICATE = true;
+    public static final boolean SHOULD_SWERVE_CTRE_COMMUNICATE = true;
 
     public static final boolean SHOULD_SCHEDULER_COMMUNICATE = true;
 }

@@ -9,15 +9,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.constants.DriveConstants;
-import frc.robot.constants.HopperConstants;
-import frc.robot.constants.TelemetryConstants;
-import frc.robot.constants.States.ShooterStates.ShooterControlState;
-import frc.robot.subsystems.Feeder.FeederSubsystem;
-import frc.robot.subsystems.Hopper.HopperSubsystem;
-import frc.robot.subsystems.Intake.IntakeSubsystem;
-import frc.robot.subsystems.Shooter.ShooterSubsystem;
-import frc.robot.subsystems.Shooter.Utils.ShooterCalculator;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.HopperConstants;
+import frc.robot.Constants.SwerveConstants;
+import frc.robot.Constants.TelemetryConstants;
+import frc.robot.Constants.States.ShooterStates.ShooterControlState;
+import frc.robot.Subsytems.Feeder.FeederSubsystem;
+import frc.robot.Subsytems.Hopper.HopperSubsystem;
+import frc.robot.Subsytems.Intake.IntakeSubsystem;
+import frc.robot.Subsytems.Shooter.ShooterSubsystem;
+import frc.robot.Subsytems.Shooter.Utils.ShooterCalculator;
+import frc.robot.Subsytems.Swerve.CommandSwerveDrivetrain;
 
 public class RobotContainer {
 
@@ -27,6 +29,8 @@ public class RobotContainer {
   private final FeederSubsystem m_feederSubsystem;
   private final HopperSubsystem m_hopperSubsystem;
   private final IntakeSubsystem m_intakeSubsystem;
+
+  private final CommandSwerveDrivetrain m_swerveDrivetrain;
 
   private final CommandXboxController m_driverController;
 
@@ -40,12 +44,17 @@ public class RobotContainer {
 
     m_intakeSubsystem = new IntakeSubsystem();
 
+    m_swerveDrivetrain = SwerveConstants.createDrivetrain();
+
     m_driverController = new CommandXboxController(DriveConstants.DRIVER_CONTROLLER_PORT);
 
     configureBindings();
   }
 
   private void configureBindings() {
+
+    m_swerveDrivetrain.setDefaultCommand(m_swerveDrivetrain.teleopCommand(m_driverController));
+
     m_driverController.a()
         .onTrue(m_shooterSubsystem.prepareRequest()
         .andThen(m_shooterSubsystem.waitForShooterToBeReady()
