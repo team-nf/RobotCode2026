@@ -1,6 +1,7 @@
 package frc.robot.Subsytems.Shooter.Hardware;
 
 import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -47,7 +48,7 @@ public class ShooterRealHardware implements ShooterHardware {
     private double hoodReference = 0.0;
     private double hoodError = 0.0;
     private AngularVelocity testFlywheelGoal= RotationsPerSecond.of(0);
-    private Angle testHoodGoal = ShooterConstants.MIN_HOOD_ANGLE;
+    private Angle testHoodGoal = ShooterConstants.MIN_HOOD_MOTOR_ANGLE;
 
     public ShooterRealHardware() {
         firstShootMotor = new TalonFX(ShooterConstants.FIRST_SHOOTER_MOTOR_ID);
@@ -68,7 +69,7 @@ public class ShooterRealHardware implements ShooterHardware {
         shootVelocityControl = ShooterConstants.SHOOTER_VELOCITY_CONTROL.clone();
         hoodPositionControl = ShooterConstants.HOOD_POSITION_CONTROL.clone();
 
-
+        if(!Utils.isSimulation()) hoodMotor.setPosition(ShooterConstants.MIN_HOOD_ANGLE);
     }
 
     @Override
@@ -168,7 +169,7 @@ public class ShooterRealHardware implements ShooterHardware {
 
     @Override
     public void hoodZero() {
-        setHoodAngle(Degrees.of(0));
+        setHoodAngle(ShooterConstants.MIN_HOOD_ANGLE);
     }
 
     @Override

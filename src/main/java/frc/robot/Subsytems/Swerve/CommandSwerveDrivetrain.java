@@ -19,11 +19,17 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -35,12 +41,16 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.TelemetryConstants;
-import frc.robot.Constants.States.SwerveStates.SwerveState;
+import frc.robot.Constants.Dimensions;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.SwerveConstants.TunerSwerveDrivetrain;
+import frc.robot.Subsytems.Swerve.Commands.SwerveAimToHub;
 import frc.robot.Subsytems.Swerve.Commands.SwerveFollowPathCommand;
 import frc.robot.Subsytems.Swerve.Commands.SwervePathFindToPoseCommand;
 import frc.robot.Subsytems.Swerve.Commands.SwerveTeleopCommand;
 import frc.robot.Subsytems.Swerve.Utils.SwerveControlData;
+import frc.robot.Utils.Container;
+import frc.robot.Utils.States.SwerveStates.SwerveState;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
@@ -62,6 +72,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private boolean m_hasAppliedOperatorPerspective = false;
 
     private SwerveControlData swerveData = new SwerveControlData();
+
 
     private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
     /* Swerve requests to apply during SysId characterization */
@@ -151,32 +162,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         configureAutoBuilder();
+
+        if(DriverStation.getAlliance().equals(Alliance.Red)){
+            resetPose(Container.START_POSE_RED);
+        }
+        else{
+            resetPose(Container.START_POSE_BLUE);
+        }
     }
 
-    /**
-     * Constructs a CTRE SwerveDrivetrain using the specified constants.
-     * <p>
-     * This constructs the underlying hardware devices, so users should not construct
-     * the devices themselves. If they need the devices, they can access them through
-     * getters in the classes.
-     *
-     * @param drivetrainConstants     Drivetrain-wide constants for the swerve drive
-     * @param odometryUpdateFrequency The frequency to run the odometry loop. If
-     *                                unspecified or set to 0 Hz, this is 250 Hz on
-     *                                CAN FD, and 100 Hz on CAN 2.0.
-     * @param modules                 Constants for each specific module
-     */
-    public CommandSwerveDrivetrain(
-        SwerveDrivetrainConstants drivetrainConstants,
-        double odometryUpdateFrequency,
-        SwerveModuleConstants<?, ?, ?>... modules
-    ) {
-        super(drivetrainConstants, odometryUpdateFrequency, modules);
-        if (Utils.isSimulation()) {
-            startSimThread();
-        }
-        configureAutoBuilder();
-    }
 
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
@@ -299,8 +293,21 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         swerveData.swerveControlState = state;
     }
 
+    public Supplier<SwerveControlData> swerveDataSupplier()
+    {
+        return (() -> {return swerveData;});
+    }
+
     public StatusSignal<Angle> getHeadingStatusSignalType(){
         return imu.getYaw();
+    }
+
+    public Pose2d getPose() {
+        return getState().Pose;
+    }
+
+    public ChassisSpeeds getFieldSpeeds() {
+        return getState().Speeds;
     }
     
 
@@ -318,6 +325,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         imu.reset();
     }
 
+    public PIDController getAimingPID(){
+        return swerveData.aimingPID;
+    }
+
+    private StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault()
+            .getStructTopic("Sim/SwervePose", Pose2d.struct)
+            .publish();
+
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();
 
@@ -326,11 +341,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             final double currentTime = Utils.getCurrentTimeSeconds();
             double deltaTime = currentTime - m_lastSimTime;
             m_lastSimTime = currentTime;
-
+            posePublisher.set(getState().Pose);
             /* use the measured time delta, get battery voltage from WPILib */
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
+
     }
 
     /**
@@ -411,6 +427,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public Command teleopCommand(CommandXboxController driverController) {
         return new SwerveTeleopCommand(this, driverController);
+    }
+
+    public Command aimToHub() {
+        return new SwerveAimToHub(this);
     }
 
     public Command goToPose(Pose2d targetPose) {

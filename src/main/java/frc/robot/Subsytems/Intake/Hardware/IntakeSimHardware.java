@@ -42,12 +42,12 @@ public class IntakeSimHardware extends IntakeRealHardware {
         intakeArmSim = new SingleJointedArmSim(
             intakeArmDcMotor,
             IntakeConstants.INTAKE_ARM_GEAR_REDUCTION,
-            IntakeConstants.INTAKE_ARM_INERTIA.in(KilogramSquareMeters),
+            IntakeConstants.INTAKE_ARM_INERTIA,
             IntakeConstants.INTAKE_ARM_LENGTH.in(Meters),
-            Degrees.of(0).in(Radians), // min angle (retracted)
-            Degrees.of(90).in(Radians), // max angle (deployed)
+            IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE.in(Radians), // min angle (deployed)
+            IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.in(Radians), // max angle (retracted)
             true,
-            0.0,
+            IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.in(Radians),
             0.0,
             0.0
         );
@@ -56,7 +56,6 @@ public class IntakeSimHardware extends IntakeRealHardware {
     @Override
     public void update() {
         super.update();
-
         if (!isSimulationInitialized) {
             isSimulationInitialized = true;
             getIntakeMotor().getSimState().Orientation = ChassisReference.CounterClockwise_Positive;
@@ -98,7 +97,7 @@ public class IntakeSimHardware extends IntakeRealHardware {
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
         builder.addStringProperty("IntakeSim", () -> intakeSim.getAngularPosition().per(Degrees) + " " + IntakeConstants.INTAKE_MOMENT_OF_INERTIA.per(KilogramMetersPerSecond), null);
-        builder.addStringProperty("IntakeArmSim", () -> Radians.of(intakeArmSim.getAngleRads()).per(Degrees) + " " + IntakeConstants.INTAKE_ARM_INERTIA.per(KilogramMetersPerSecond), null);
+        builder.addStringProperty("IntakeArmSim", () -> Radians.of(intakeArmSim.getAngleRads()).per(Degrees) + " " + IntakeConstants.INTAKE_ARM_INERTIA, null);
     }
 
 }

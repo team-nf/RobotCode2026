@@ -2,18 +2,19 @@ package frc.robot.Subsytems.Hopper;
 
 import com.ctre.phoenix6.Utils;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.HopperConstants;
 import frc.robot.Constants.TelemetryConstants;
-import frc.robot.Constants.States.HopperStates;
 import frc.robot.Subsytems.Hopper.Hardware.HopperHardware;
 import frc.robot.Subsytems.Hopper.Hardware.HopperRealHardware;
 import frc.robot.Subsytems.Hopper.Hardware.HopperSimHardware;
 import frc.robot.Subsytems.Hopper.StateActions.*;
 import frc.robot.Subsytems.Hopper.StateRequests.*;
 import frc.robot.Subsytems.Hopper.Utils.HopperControlData;
+import frc.robot.Utils.States.HopperStates;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,10 +25,11 @@ public class HopperSubsystem extends SubsystemBase {
   public final HopperHardware hopperHardware;
   public final HopperControlData hopperData;
 
-  public final HopperZeroAction hopperZeroAction;
-  public final HopperFeedAction hopperFeedAction;
-  public final HopperReverseAction hopperReverseAction;
-  public final HopperTestAction hopperTestAction;
+  public final Command hopperZeroAction;
+  public final Command hopperFeedAction;
+  public final Command hopperPushAction;
+  public final Command hopperReverseAction;
+  public final Command hopperTestAction;
 
   public HopperSubsystem() {
     if (Utils.isSimulation()) {
@@ -40,6 +42,7 @@ public class HopperSubsystem extends SubsystemBase {
 
     hopperZeroAction = new HopperZeroAction(this);
     hopperFeedAction = new HopperFeedAction(this);
+    hopperPushAction = new HopperPushAction(this);
     hopperReverseAction = new HopperReverseAction(this);
     hopperTestAction = new HopperTestAction(this);
   }
@@ -62,6 +65,12 @@ public class HopperSubsystem extends SubsystemBase {
 
   public void feed() {
     hopperData.hopperGoalVelocity = HopperConstants.HOPPER_FEEDING_VELOCITY;
+    updateHopperData();
+    hopperHardware.setHopperSpeed(hopperData.hopperGoalVelocity);
+  }
+
+  public void push() {
+    hopperData.hopperGoalVelocity = HopperConstants.HOPPER_PUSHING_VELOCITY;
     updateHopperData();
     hopperHardware.setHopperSpeed(hopperData.hopperGoalVelocity);
   }
@@ -102,6 +111,10 @@ public class HopperSubsystem extends SubsystemBase {
     return new HopperFeedRequest(this);
   }
 
+  public InstantCommand pushRequest() {
+    return new HopperPushRequest(this);
+  }
+
   public InstantCommand reverseRequest() {
     return new HopperReverseRequest(this);
   }
@@ -119,8 +132,11 @@ public class HopperSubsystem extends SubsystemBase {
       case ZERO:
         CommandScheduler.getInstance().schedule(hopperZeroAction);
         break;
-      case FEEDING:
+      case FEED:
         CommandScheduler.getInstance().schedule(hopperFeedAction);
+        break;
+      case PUSH:
+        CommandScheduler.getInstance().schedule(hopperPushAction);
         break;
       case REVERSE:
         CommandScheduler.getInstance().schedule(hopperReverseAction);

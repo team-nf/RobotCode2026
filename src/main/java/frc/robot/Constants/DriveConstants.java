@@ -4,6 +4,8 @@
 
 package frc.robot.Constants;
 
+import static edu.wpi.first.units.Units.*;
+
 import java.nio.file.Path;
 
 import com.pathplanner.lib.path.PathConstraints;
@@ -17,4 +19,10 @@ public class DriveConstants {
 
     public static final PathConstraints PATH_CONSTRAINTS_FOLLOW_PATH = new PathConstraints(
         4.0, 4.0, 3 * Math.PI, 6 * Math.PI);
+
+    public static final double AIMING_kP = 10.0;
+    public static final double AIMING_kI = 0.0;
+    public static final double AIMING_kD = 0.0;
+
+    public static final double AIMING_TOLERANCE_RADIANS = Degrees.of(2).in(Radians);
 }

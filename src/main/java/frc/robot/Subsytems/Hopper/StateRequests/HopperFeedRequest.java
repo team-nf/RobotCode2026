@@ -1,8 +1,8 @@
 package frc.robot.Subsytems.Hopper.StateRequests;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.States.HopperStates.HopperControlState;
 import frc.robot.Subsytems.Hopper.HopperSubsystem;
+import frc.robot.Utils.States.HopperStates.HopperControlState;
 
 public class HopperFeedRequest extends InstantCommand {
 
@@ -14,6 +14,6 @@ public class HopperFeedRequest extends InstantCommand {
 
   @Override
   public void initialize() {
-    hopperSubsystem.setHopperState(HopperControlState.FEEDING);
+    hopperSubsystem.setHopperState(HopperControlState.FEED);
   }
 }

@@ -2,18 +2,21 @@ package frc.robot.Subsytems.Intake;
 
 import com.ctre.phoenix6.Utils;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.TelemetryConstants;
-import frc.robot.Constants.States.IntakeStates;
 import frc.robot.Subsytems.Intake.Hardware.IntakeHardware;
 import frc.robot.Subsytems.Intake.Hardware.IntakeRealHardware;
 import frc.robot.Subsytems.Intake.Hardware.IntakeSimHardware;
 import frc.robot.Subsytems.Intake.StateActions.*;
 import frc.robot.Subsytems.Intake.StateRequests.*;
 import frc.robot.Subsytems.Intake.Utils.IntakeControlData;
+import frc.robot.Utils.States.IntakeStates;
+import frc.robot.Utils.States.IntakeStates.IntakePositionState;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,12 +27,12 @@ public class IntakeSubsystem extends SubsystemBase {
   public final IntakeHardware intakeHardware;
   public final IntakeControlData intakeData;
 
-  public final IntakeClosedAction intakeClosedAction;
-  public final IntakeDeployAction intakeDeployAction;
-  public final IntakeIntakeAction intakeIntakeAction;
-  public final IntakeFeedAction intakeFeedAction;
-  public final IntakeReverseAction intakeReverseAction;
-  public final IntakeTestAction intakeTestAction;
+  public final Command intakeClosedAction;
+  public final Command intakeDeployAction;
+  public final Command intakeIntakeAction;
+  public final Command intakeFeedAction;
+  public final Command intakeReverseAction;
+  public final Command intakeTestAction;
 
   public IntakeSubsystem() {
     if (Utils.isSimulation()) {
@@ -40,7 +43,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     intakeData = new IntakeControlData();
 
-  intakeClosedAction = new IntakeClosedAction(this);
+    intakeClosedAction = new IntakeClosedAction(this);
     intakeDeployAction = new IntakeDeployAction(this);
     intakeIntakeAction = new IntakeIntakeAction(this);
     intakeFeedAction = new IntakeFeedAction(this);
@@ -60,11 +63,11 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeData.intakeArmAngle = intakeHardware.getIntakeArmPosition();
     intakeData.intakeArmError = intakeData.intakeGoalArmAngle.minus(intakeData.intakeArmAngle);
 
-    if(intakeData.intakeArmAngle.lte(IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE.minus(IntakeConstants.INTAKE_ARM_ALLOWABLE_ERROR)))
+    if(intakeData.intakeArmAngle.lte(IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE.plus(IntakeConstants.INTAKE_ARM_ALLOWABLE_ERROR)))
     {
         intakeData.intakePositionState = IntakeStates.IntakePositionState.DEPLOYED;
     }
-    else if(intakeData.intakeArmAngle.gte(IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.plus(IntakeConstants.INTAKE_ARM_ALLOWABLE_ERROR)))
+    else if(intakeData.intakeArmAngle.gte(IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.minus(IntakeConstants.INTAKE_ARM_ALLOWABLE_ERROR)))
     {
         intakeData.intakePositionState = IntakeStates.IntakePositionState.RETRACTED;
     }
@@ -72,6 +75,14 @@ public class IntakeSubsystem extends SubsystemBase {
     {
         intakeData.intakePositionState = IntakeStates.IntakePositionState.BETWEEN;
     }
+  }
+
+  public IntakeStates.IntakePositionState getIntakePositionState() {
+    return intakeData.intakePositionState;
+  }
+
+  public boolean isIntakeDeployed() {
+    return intakeData.intakePositionState == IntakeStates.IntakePositionState.DEPLOYED;
   }
 
   public void close() {
@@ -84,7 +95,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void feed() {
     intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_FEEDING_VELOCITY;
-    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE;
+    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.div(3);
     updateIntakeData();
     intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
     if(intakeData.intakePositionState == IntakeStates.IntakePositionState.RETRACTED)
@@ -142,6 +153,10 @@ public class IntakeSubsystem extends SubsystemBase {
     return new IntakeCloseRequest(this);
   }
 
+  public InstantCommand deployRequest() {
+    return new IntakeDeployRequest(this);
+  }
+
   public InstantCommand intakeRequest() {
     return new IntakeIntakeRequest(this);
   }
@@ -160,6 +175,24 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public IntakeControlData getIntakeData() {
     return intakeData;
+  }
+
+  public WaitUntilCommand waitForIntakeToBeDeployed()
+  {
+    return new WaitUntilCommand(() -> {
+        return intakeData.intakePositionState == IntakePositionState.DEPLOYED;
+    }); 
+  }
+
+  public WaitUntilCommand waitForIntakeToBeRetracted()
+  {
+    return new WaitUntilCommand(() -> {
+        return intakeData.intakePositionState == IntakePositionState.RETRACTED;
+    });
+  }
+
+  public Angle getArmAngleInRealLife() {
+    return intakeHardware.getIntakeArmPosition();
   }
 
   public void stateMachine() {

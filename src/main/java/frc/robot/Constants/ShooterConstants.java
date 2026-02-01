@@ -32,10 +32,13 @@ public class ShooterConstants {
     public static final int FOURTH_SHOOTER_MOTOR_ID = 34;
     public static final int HOOD_MOTOR_ID = 35;
 
+    // Shooter Math Constants
+    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.85; // in meters (2 inches)
+
     // Configs
     public static final int NUMBER_OF_FLYWHEEL_MOTORS = 4;
 
-    public static final AngularVelocity FLYWHEEL_ALLOWABLE_ERROR = RotationsPerSecond.of(1); // Allowable error in radians per second
+    public static final AngularVelocity FLYWHEEL_ALLOWABLE_ERROR = RotationsPerSecond.of(1.5); // Allowable error in radians per second
     public static final Angle HOOD_ALLOWABLE_ERROR = Degrees.of(1); // Allowable error in radians
 
     public static final double SHOOTER_KS = 0.24;
@@ -103,7 +106,7 @@ public class ShooterConstants {
     public static final double HOOD_GEAR_REDUCTION = 10.0;
 
     private static final Mass FLYWHEEL_MASS = Kilogram.of(0.16 + 0.05*2); 
-    private static final Distance FLYWHEEL_RADIUS = Meters.of((4*2.54)/2/100); // Radius of the flywheel in meters
+    public static final Distance FLYWHEEL_RADIUS = Meters.of((4*2.54)/2/100); // Radius of the flywheel in meters
     private static final Mass ROLLER_MASS = Kilogram.of(15*20/1000); // Mass of the hood in kg
     private static final Distance ROLLER_RADIUS = Meters.of((2*2.54)/2/100); // Radius of the hood in meters
 
@@ -114,9 +117,13 @@ public class ShooterConstants {
                 KilogramSquareMeters.of(2*0.5*ROLLER_MASS.in(Kilogram)*Math.pow(ROLLER_RADIUS.in(Meters), 2));
     public static final MomentOfInertia TOTAL_MOMENT_OF_INERTIA = FLYWHEEL_MOMENT_OF_INERTIA.plus(HOOD_MOMENT_OF_INERTIA);
 
+    public static final Angle MIN_HOOD_ANGLE = Degrees.of(16.77);
+    public static final Angle MAX_HOOD_ANGLE = Degrees.of(36.77);
 
-    public static final Angle MIN_HOOD_ANGLE = Degrees.of(0).times(HOOD_GEAR_REDUCTION);
-    public static final Angle MAX_HOOD_ANGLE = Degrees.of(20).times(HOOD_GEAR_REDUCTION);
+    public static final Angle MIN_HOOD_MOTOR_ANGLE = MIN_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);
+    public static final Angle MAX_HOOD_MOTOR_ANGLE = MAX_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);
+
+
 
     public static final Mass HOOD_MASS = Kilogram.of(0.5);
     public static final Distance HOOD_LENGTH = Meters.of(0.075);
@@ -124,5 +131,17 @@ public class ShooterConstants {
     public static final MomentOfInertia HOOD_INERTIA = 
         KilogramSquareMeters.of(HOOD_MASS.in(Kilogram) * Math.pow(HOOD_LENGTH.in(Meters), 2) / 3.0);
 
+    public static final AngularVelocity MIN_FLYWHEEL_SPEED = RotationsPerSecond.of(1000/60); // in RPS
+    public static final AngularVelocity MAX_FLYWHEEL_SPEED = RotationsPerSecond.of(3000/60); // in RPS
+
+    public static final double hoodAngleFormula(double x)
+    {
+        double a = -0.18;
+        double b = 2.55;
+        double c = -5.59;
+        double d = 20.11;
+
+        return a*Math.pow(x, 3) + b*Math.pow(x, 2) + c*x + d;
+    } 
 
 }

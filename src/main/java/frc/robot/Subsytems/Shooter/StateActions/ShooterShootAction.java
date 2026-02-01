@@ -5,8 +5,8 @@
 package frc.robot.Subsytems.Shooter.StateActions;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.States.ShooterStates.ShooterControlState;
 import frc.robot.Subsytems.Shooter.ShooterSubsystem;
+import frc.robot.Utils.States.ShooterStates.ShooterControlState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ShooterShootAction extends Command {
@@ -38,6 +38,6 @@ public class ShooterShootAction extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !shooterSubsystem.isShooterState(ShooterControlState.SHOOT_READY);
+    return !shooterSubsystem.isShooterState(ShooterControlState.SHOOT);
   }
 }

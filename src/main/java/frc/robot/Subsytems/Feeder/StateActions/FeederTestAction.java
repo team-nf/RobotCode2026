@@ -5,10 +5,10 @@
 package frc.robot.Subsytems.Feeder.StateActions;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.States.FeederStates.FeederControlState;
-import frc.robot.Constants.States.ShooterStates.ShooterControlState;
 import frc.robot.Subsytems.Feeder.FeederSubsystem;
 import frc.robot.Subsytems.Shooter.ShooterSubsystem;
+import frc.robot.Utils.States.FeederStates.FeederControlState;
+import frc.robot.Utils.States.ShooterStates.ShooterControlState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class FeederTestAction extends Command {

@@ -4,14 +4,21 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Utils.FuelSim;
+import frc.robot.Utils.HopperSim;
+import frc.robot.Utils.ShooterSim;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
   private final RobotContainer m_robotContainer;
+
+  private Notifier fuelSimNotifier = null;
+  private Notifier robotFuelSimNotifier = null;
+  private Notifier swerveSimNotrifier = null;
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -70,4 +77,20 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testExit() {}
+
+  @Override
+  public void simulationInit() {
+    swerveSimNotrifier = new Notifier(() -> {
+      m_robotContainer.handleSwerveSimFieldCollisions();
+    });
+    swerveSimNotrifier.startPeriodic(0.0001);
+  }
+
+  @Override
+  public void simulationPeriodic() {
+
+    FuelSim.getInstance().updateSim();
+    HopperSim.getInstance().updateSim();
+    ShooterSim.getInstance().updateSim();
+  }
 }

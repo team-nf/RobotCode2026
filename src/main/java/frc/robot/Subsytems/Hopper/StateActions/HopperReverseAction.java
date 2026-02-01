@@ -1,8 +1,8 @@
 package frc.robot.Subsytems.Hopper.StateActions;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.States.HopperStates.HopperControlState;
 import frc.robot.Subsytems.Hopper.HopperSubsystem;
+import frc.robot.Utils.States.HopperStates.HopperControlState;
 
 public class HopperReverseAction extends Command {
 

@@ -1,6 +1,7 @@
 package frc.robot.Subsytems.Intake.Hardware;
 
 import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -43,16 +44,20 @@ public class IntakeRealHardware implements IntakeHardware {
 
         // No separate arm motor configured in constants by default. Use the intake motor as a
         // fallback for arm telemetry/control when a dedicated motor isn't supplied.
-        intakeArmMotor = intakeMotor;
+        intakeArmMotor = new TalonFX(IntakeConstants.INTAKE_ARM_MOTOR_ID);
 
+        if(!Utils.isSimulation())
+        {
+        intakeArmMotor.setPosition(IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.times(IntakeConstants.INTAKE_ARM_GEAR_REDUCTION));
+        }
         setIntakeMotorConfig(IntakeConstants.INTAKE_MOTOR_CONFIG);
-        // Arm motor config falls back to the intake motor config if a dedicated one isn't present
         setIntakeArmMotorConfig(IntakeConstants.INTAKE_ARM_MOTOR_CONFIG);
+
         updateMotorConfig();
 
         intakeVelocityControl = IntakeConstants.INTAKE_VELOCITY_CONTROL.clone();
         // Use a sensible default PositionVoltage for arm control if none provided
-        intakeArmPositionControl = new PositionVoltage(0);
+        intakeArmPositionControl = IntakeConstants.INTAKE_ARM_POSITION_CONTROL.clone();
     }
     @Override
     public void updateMotorConfig() {
@@ -135,9 +140,8 @@ public class IntakeRealHardware implements IntakeHardware {
     @Override
     public void setIntakeArmPosition(Angle position) {
         intakeArmMotor.setControl(
-            intakeArmPositionControl.withPosition(position)
+            intakeArmPositionControl.withPosition(position.times(IntakeConstants.INTAKE_ARM_GEAR_REDUCTION))
         );
-        intakeArmPosition = position;
     }
 
     @Override
@@ -159,7 +163,7 @@ public class IntakeRealHardware implements IntakeHardware {
         intakeReference = intakeMotor.getClosedLoopReference().getValue();
         intakeError = intakeMotor.getClosedLoopError().getValue();
 
-        intakeArmPosition = intakeArmMotor.getRotorPosition().getValue();
+        intakeArmPosition = intakeArmMotor.getRotorPosition().getValue().div(IntakeConstants.INTAKE_ARM_GEAR_REDUCTION);
         intakeArmMotorPosition = intakeArmMotor.getRotorPosition().getValue();
         intakeArmMotorVoltage = intakeArmMotor.getMotorVoltage().getValue();
         intakeArmMotorCurrent = intakeArmMotor.getStatorCurrent().getValue();
@@ -186,8 +190,8 @@ public class IntakeRealHardware implements IntakeHardware {
         builder.addDoubleProperty("Intake Arm Motor Position (deg)", () -> intakeArmMotorPosition.in(Degrees), null);
         builder.addDoubleProperty("Intake Arm Motor Voltage (V)", () -> intakeArmMotorVoltage.in(Volts), null);
         builder.addDoubleProperty("Intake Arm Motor Current (A)", () -> intakeArmMotorCurrent.in(Amps), null);
-        builder.addDoubleProperty("Intake Arm Reference", () -> intakeArmReference, null);
-        builder.addDoubleProperty("Intake Arm Error", () -> intakeArmError, null);
+        builder.addDoubleProperty("Intake Arm Reference", () -> intakeArmReference*360, null);
+        builder.addDoubleProperty("Intake Arm Error", () -> intakeArmError*360, null);
 
         builder.addDoubleProperty("Test Intake Goal RPM", () -> testIntakeGoal.times(60).in(RotationsPerSecond),
             (value) -> testIntakeGoal = RotationsPerSecond.of(value / 60.0));
@@ -218,6 +222,11 @@ public class IntakeRealHardware implements IntakeHardware {
 
         builder.addDoubleProperty("Intake Arm KD", () -> intakeArmMotorConfig.Slot0.kD, (value) -> {
             intakeArmMotorConfig.Slot0.kD = value;
+            updateMotorConfig();
+        });
+
+        builder.addDoubleProperty("Intake Arm KG", () -> intakeArmMotorConfig.Slot0.kG, (value) -> {
+            intakeArmMotorConfig.Slot0.kG = value;
             updateMotorConfig();
         });
 

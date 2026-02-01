@@ -5,8 +5,8 @@
 package frc.robot.Subsytems.Feeder.StateRequests;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.States.FeederStates.FeederControlState;
 import frc.robot.Subsytems.Feeder.FeederSubsystem;
+import frc.robot.Utils.States.FeederStates.FeederControlState;
 
 import static edu.wpi.first.units.Units.*;
 

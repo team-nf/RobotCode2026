@@ -6,19 +6,20 @@ package frc.robot.Subsytems.Feeder;
 
 import com.ctre.phoenix6.Utils;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FeederConstants;
 import frc.robot.Constants.TelemetryConstants;
-import frc.robot.Constants.States.FeederStates;
-import frc.robot.Constants.States.FeederStates.*;
 import frc.robot.Subsytems.Feeder.Hardware.FeederHardware;
 import frc.robot.Subsytems.Feeder.Hardware.FeederRealHardware;
 import frc.robot.Subsytems.Feeder.Hardware.FeederSimHardware;
 import frc.robot.Subsytems.Feeder.StateActions.*;
 import frc.robot.Subsytems.Feeder.StateRequests.*;
 import frc.robot.Subsytems.Feeder.Utils.FeederControlData;
+import frc.robot.Utils.States.FeederStates;
+import frc.robot.Utils.States.FeederStates.*;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -29,10 +30,10 @@ public class FeederSubsystem extends SubsystemBase {
   public final FeederHardware feederHardware;
   public final FeederControlData feederData;
 
-  public final FeederZeroAction feederZeroAction;
-  public final FeederFeedAction feederFeedAction;
-  public final FeederReverseAction feederReverseAction;
-  public final FeederTestAction feederTestAction;
+  public final Command feederZeroAction;
+  public final Command feederFeedAction;
+  public final Command feederReverseAction;
+  public final Command feederTestAction;
 
   /** Creates a new FeederSubsystem. */
   public FeederSubsystem() {
@@ -56,8 +57,8 @@ public class FeederSubsystem extends SubsystemBase {
     
     feederData.feederRollerState = RotationsPerSecond.of(feederData.feederError.abs(RotationsPerSecond))
     .lte(FeederConstants.FEEDER_ALLOWABLE_ERROR)
-        ? frc.robot.Constants.States.FeederStates.FeederRollerState.AT_SPEED
-        : frc.robot.Constants.States.FeederStates.FeederRollerState.REACHING_SPEED;
+        ? frc.robot.Utils.States.FeederStates.FeederRollerState.AT_SPEED
+        : frc.robot.Utils.States.FeederStates.FeederRollerState.REACHING_SPEED;
   }
 
   public void zero() {

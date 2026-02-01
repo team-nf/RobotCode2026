@@ -10,20 +10,18 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.Utils;
 
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TelemetryConstants;
-import frc.robot.Constants.States.ShooterStates.FlywheelState;
-import frc.robot.Constants.States.ShooterStates.HoodState;
-import frc.robot.Constants.States.ShooterStates.ShooterControlState;
 import frc.robot.Subsytems.Shooter.Hardware.ShooterHardware;
 import frc.robot.Subsytems.Shooter.Hardware.ShooterRealHardware;
 import frc.robot.Subsytems.Shooter.Hardware.ShooterSimHardware;
-import frc.robot.Subsytems.Shooter.StateActions.ShooterPrepareAction;
 import frc.robot.Subsytems.Shooter.StateActions.ShooterRestAction;
 import frc.robot.Subsytems.Shooter.StateActions.ShooterShootAction;
 import frc.robot.Subsytems.Shooter.StateActions.ShooterTestAction;
@@ -31,6 +29,9 @@ import frc.robot.Subsytems.Shooter.StateActions.ShooterZeroAction;
 import frc.robot.Subsytems.Shooter.StateRequests.*;
 import frc.robot.Subsytems.Shooter.Utils.ShooterCalculator;
 import frc.robot.Subsytems.Shooter.Utils.ShooterControlData;
+import frc.robot.Utils.States.ShooterStates.FlywheelState;
+import frc.robot.Utils.States.ShooterStates.HoodState;
+import frc.robot.Utils.States.ShooterStates.ShooterControlState;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
@@ -38,11 +39,10 @@ public class ShooterSubsystem extends SubsystemBase {
   public final ShooterControlData shooterData;
   public final ShooterCalculator shooterCalculator;
 
-  public final ShooterZeroAction shooterZeroAction;
-  public final ShooterRestAction shooterRestAction;
-  public final ShooterPrepareAction shooterPrepareAction;
-  public final ShooterShootAction shooterShootAction;
-  public final ShooterTestAction shooterTestAction;
+  public final Command shooterZeroAction;
+  public final Command shooterRestAction;
+  public final Command shooterShootAction;
+  public final Command shooterTestAction;
 
   public ShooterSubsystem(ShooterCalculator shooterCalculator) 
   {
@@ -57,7 +57,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     shooterZeroAction = new ShooterZeroAction(this);
     shooterRestAction = new ShooterRestAction(this);
-    shooterPrepareAction = new ShooterPrepareAction(this);
     shooterShootAction = new ShooterShootAction(this);
     shooterTestAction = new ShooterTestAction(this);
   }
@@ -127,9 +126,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setShooterState(ShooterControlState state) {
     if (shooterData.shooterControlState != state) {
 
-        if(state == ShooterControlState.SHOOT_READY && !isShooterState(ShooterControlState.SHOOT_PREPARE)) {
-            return; // Prevent skipping prepare state
-        }
         shooterData.prevShooterControlState = shooterData.shooterControlState;
         shooterData.shooterControlState = state;
     }
@@ -143,22 +139,31 @@ public class ShooterSubsystem extends SubsystemBase {
     return new ShooterRestRequest(this);
   }
 
-  public InstantCommand prepareRequest() {
-    return new ShooterPrepareRequest(this);
-  }
-
-  public WaitUntilCommand waitForShooterToBeReady() {
-    return new WaitUntilCommand(this::isShooterReadyToShoot);
+  public InstantCommand shootRequest() {
+    return new ShooterShootRequest(this);
   }
 
   public InstantCommand testRequest() {
     return new ShooterTestRequest(this);
   }
 
+  public WaitUntilCommand waitForShooterToBeReady() {
+    return new WaitUntilCommand(this::isShooterReadyToShoot);
+  }
+
+
+
   public ShooterControlData getShooterData() {
     return shooterData;
   }
 
+  public Angle getHoodAngleInRealLife() {
+    return shooterHardware.getHoodPosition();
+  }
+
+  public ShooterControlData getCurrentControlData() {
+    return shooterData;
+  }
 
   public void stateMachine() {
     switch (shooterData.shooterControlState) {
@@ -168,10 +173,7 @@ public class ShooterSubsystem extends SubsystemBase {
       case REST:
         CommandScheduler.getInstance().schedule(shooterRestAction);
         break;
-      case SHOOT_PREPARE:
-        CommandScheduler.getInstance().schedule(shooterPrepareAction);
-        break;
-      case SHOOT_READY:
+      case SHOOT:
         CommandScheduler.getInstance().schedule(shooterShootAction);
         break;
       case TEST:

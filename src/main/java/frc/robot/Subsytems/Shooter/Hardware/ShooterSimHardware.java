@@ -48,15 +48,12 @@ public class ShooterSimHardware extends ShooterRealHardware {
         hoodArmSim = new SingleJointedArmSim(
             hoodDcMotor,
             ShooterConstants.HOOD_GEAR_REDUCTION,
-            SingleJointedArmSim.estimateMOI(
-                ShooterConstants.HOOD_MASS.in(Kilogram),
-                ShooterConstants.HOOD_LENGTH.in(Meters)
-            ),
+            ShooterConstants.HOOD_INERTIA.in(KilogramSquareMeters),
             ShooterConstants.HOOD_LENGTH.in(Meters),
-            ShooterConstants.MIN_HOOD_ANGLE.div(ShooterConstants.HOOD_GEAR_REDUCTION).in(Radians),
-            ShooterConstants.MAX_HOOD_ANGLE.div(ShooterConstants.HOOD_GEAR_REDUCTION).in(Radians),
+            ShooterConstants.MIN_HOOD_ANGLE.in(Radians),
+            ShooterConstants.MAX_HOOD_ANGLE.in(Radians),
             true,
-            0.0,
+            ShooterConstants.MIN_HOOD_ANGLE.in(Radians),
             0.0,
             0.0
         );
