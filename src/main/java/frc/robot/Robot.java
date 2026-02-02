@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Utils.FuelSim;
 import frc.robot.Utils.HopperSim;
 import frc.robot.Utils.ShooterSim;
+import frc.robot.Utils.SwerveFieldContactSim;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -81,9 +82,10 @@ public class Robot extends TimedRobot {
   @Override
   public void simulationInit() {
     swerveSimNotrifier = new Notifier(() -> {
-      m_robotContainer.handleSwerveSimFieldCollisions();
+      SwerveFieldContactSim.getInstance().handleSwerveSimFieldCollisions();
     });
-    swerveSimNotrifier.startPeriodic(0.0001);
+    
+    swerveSimNotrifier.startPeriodic(SwerveFieldContactSim.getInstance().simLoopTimeSec);
   }
 
   @Override

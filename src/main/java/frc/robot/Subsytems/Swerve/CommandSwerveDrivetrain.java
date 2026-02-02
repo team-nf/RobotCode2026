@@ -50,6 +50,7 @@ import frc.robot.Subsytems.Swerve.Commands.SwervePathFindToPoseCommand;
 import frc.robot.Subsytems.Swerve.Commands.SwerveTeleopCommand;
 import frc.robot.Subsytems.Swerve.Utils.SwerveControlData;
 import frc.robot.Utils.Container;
+import frc.robot.Utils.SwerveFieldContactSim;
 import frc.robot.Utils.States.SwerveStates.SwerveState;
 
 /**
@@ -60,7 +61,7 @@ import frc.robot.Utils.States.SwerveStates.SwerveState;
  * https://v6.docs.ctr-electronics.com/en/stable/docs/tuner/tuner-swerve/index.html
  */
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
-    private static final double kSimLoopPeriod = 0.004; // 4 ms
+    private static final double kSimLoopPeriod = 0.001; // 4 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
     private Pigeon2 imu;
@@ -329,7 +330,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return swerveData.aimingPID;
     }
 
-    private StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault()
+    public StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault()
             .getStructTopic("Sim/SwervePose", Pose2d.struct)
             .publish();
 
@@ -346,7 +347,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
-
     }
 
     /**

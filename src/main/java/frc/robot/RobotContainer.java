@@ -30,6 +30,7 @@ import frc.robot.Utils.Container;
 import frc.robot.Utils.FuelSim;
 import frc.robot.Utils.HopperSim;
 import frc.robot.Utils.ShooterSim;
+import frc.robot.Utils.SwerveFieldContactSim;
 import frc.robot.Utils.States.IntakeStates.IntakeControlState;
 import frc.robot.Utils.States.ShooterStates.ShooterControlState;
 
@@ -73,7 +74,7 @@ public class RobotContainer {
     m_driverController = new CommandXboxController(DriveConstants.DRIVER_CONTROLLER_PORT);
 
     configureBindings();
-    if(Utils.isSimulation()) configureFuelSim();
+    if(Utils.isSimulation()) configureSims();
   }
 
   private void configureBindings() {
@@ -95,10 +96,13 @@ public class RobotContainer {
 
   }
 
-  private void configureFuelSim() {
+  private void configureSims() {
     FuelSim fuelSim = FuelSim.getInstance();
     HopperSim hopperSim = HopperSim.getInstance();
     ShooterSim shooterSim = ShooterSim.getInstance();
+
+    SwerveFieldContactSim.getInstance().setSwerveDrivetrain(m_swerveDrivetrain);
+    SwerveFieldContactSim.getInstance().setIntakeDeployedSupplier(() -> m_intakeSubsystem.isIntakeDeployed());
 
     fuelSim.spawnStartingFuel();
 
@@ -137,85 +141,6 @@ public class RobotContainer {
             .withName("Reset Fuel")
             .ignoringDisable(true));
 }
-
-private Pose2d currentSimPose = Container.START_POSE_BLUE;
-private Pose2d prevSimPose = Container.START_POSE_BLUE;
-
-public void handleSwerveSimFieldCollisions() {
-        currentSimPose = m_swerveDrivetrain.getState().Pose;
-
-        // Handle collisions with field boundaries
-        double fieldXMin = 0.1;
-        double fieldXMax = 16.33;
-        double fieldYMin = 0.1;
-        double fieldYMax = 8.15;
-
-        boolean x_collided = false;
-        boolean y_collided = false;
-
-        double frontCollisionDistance = Dimensions.BUMPER_COLLISION_DISTANCE.in(Meters) / 2.0;
-        double backCollisionDistance = Dimensions.BUMPER_COLLISION_DISTANCE.in(Meters) / 2.0;
-
-        if(m_intakeSubsystem.isIntakeDeployed()) {
-            frontCollisionDistance += Dimensions.HOPPER_EXTENSION_LENGTH.in(Meters);
-        }
-        
-        Pose2d frontLeftCorner = currentSimPose.transformBy(
-            new Transform2d(
-                frontCollisionDistance * Math.cos(currentSimPose.getRotation().getRadians() + Math.PI/4),
-                frontCollisionDistance * Math.sin(currentSimPose.getRotation().getRadians() + Math.PI/4),
-                Rotation2d.kZero
-            )
-        );
-
-        Pose2d frontRightCorner = currentSimPose.transformBy(
-            new Transform2d(
-                frontCollisionDistance * Math.cos(currentSimPose.getRotation().getRadians() - Math.PI/4),
-                frontCollisionDistance * Math.sin(currentSimPose.getRotation().getRadians() - Math.PI/4),
-                Rotation2d.kZero
-            )
-        );
-
-        Pose2d backLeftCorner = currentSimPose.transformBy(
-            new Transform2d(
-                backCollisionDistance * Math.cos(currentSimPose.getRotation().getRadians() + 3*Math.PI/4),
-                backCollisionDistance * Math.sin(currentSimPose.getRotation().getRadians() + 3*Math.PI/4),
-                Rotation2d.kZero
-            )
-        );
-
-        Pose2d backRightCorner = currentSimPose.transformBy(
-            new Transform2d(
-                backCollisionDistance * Math.cos(currentSimPose.getRotation().getRadians() - 3*Math.PI/4),
-                backCollisionDistance * Math.sin(currentSimPose.getRotation().getRadians() - 3*Math.PI/4),
-                Rotation2d.kZero
-            )
-        );
-
-        boolean[] collisionResults = Dimensions.checkFieldCollision(new Pose2d[] {
-            frontLeftCorner,
-            frontRightCorner,
-            backLeftCorner,
-            backRightCorner
-        });
-
-        x_collided = collisionResults[0];
-        y_collided = collisionResults[1];
-
-        double correctedX = currentSimPose.getX();
-        double correctedY = currentSimPose.getY();
-
-        if (x_collided) correctedX = prevSimPose.getX();
-        if (y_collided) correctedY = prevSimPose.getY();
-
-        if (x_collided || y_collided) {
-            m_swerveDrivetrain.resetPose(new Pose2d(correctedX, correctedY, prevSimPose.getRotation()));
-        }
-        else prevSimPose = currentSimPose;
-        
-    }
-
-
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
   }

@@ -34,6 +34,9 @@ public class SwerveAimToHub extends Command {
   private double MaxSpeed = 0.75 * SwerveConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
   private double MaxAngularRate = RotationsPerSecond.of(1).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
+  private double[] prevErrors = new double[10];
+  private double averageError = 0.0;
+
   private SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
@@ -61,6 +64,11 @@ public class SwerveAimToHub extends Command {
   @Override
   public void initialize() {
     aimingPID.reset();
+
+    prevErrors = new double[10];
+    for (int i = 0; i < prevErrors.length; i++) {
+      prevErrors[i] = 1.0;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -75,7 +83,7 @@ public class SwerveAimToHub extends Command {
     angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
     double output = aimingPID.calculate(-angleError);
 
-    swerveDrivetrain.updateSwerveErrors(robotPose.plus(new Transform2d(0.0, 0.0, new Rotation2d(angleError))));
+    swerveDrivetrain.updateSwerveErrors(robotPose.plus(new Transform2d(0.0, 0.0, new Rotation2d(averageError))));
     swerveDrivetrain.setSwerveState(SwerveState.AIMING);
     swerveDrivetrain.updateSwerveData();
     
@@ -83,7 +91,16 @@ public class SwerveAimToHub extends Command {
       .withRotationalRate(output)
     );
 
-    
+    for (int i = prevErrors.length - 1; i > 0; i--) {
+      prevErrors[i] = prevErrors[i - 1];
+    }
+    prevErrors[0] = Math.abs(angleError);
+
+    double errorSum = 0.0;
+    for (double error : prevErrors) {
+      errorSum += error;
+    }
+    averageError = errorSum / prevErrors.length;
   }
 
   // Called once the command ends or is interrupted.
@@ -93,6 +110,6 @@ public class SwerveAimToHub extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(aimingPID.getError()) < DriveConstants.AIMING_TOLERANCE_RADIANS;
+    return averageError < DriveConstants.AIMING_TOLERANCE_RADIANS;
   }
 }
