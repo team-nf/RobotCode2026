@@ -349,6 +349,27 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
 
+    private boolean isSimulationInitialized = false;
+    
+    @Override
+    public void simulationPeriodic() {
+
+        if(!isSimulationInitialized)
+        {
+            m_lastSimTime = Utils.getCurrentTimeSeconds();
+            isSimulationInitialized = true;
+            return;
+        }
+
+        final double currentTime = Utils.getCurrentTimeSeconds();
+        double deltaTime = currentTime - m_lastSimTime;
+        m_lastSimTime = currentTime;
+        posePublisher.set(getState().Pose);
+        /* use the measured time delta, get battery voltage from WPILib */
+        updateSimState(deltaTime, RobotController.getBatteryVoltage());
+        SwerveFieldContactSim.getInstance().handleSwerveSimFieldCollisions();
+    }
+
     /**
      * Adds a vision measurement to the Kalman Filter. This will correct the odometry pose estimate
      * while still accounting for measurement noise.

@@ -10,6 +10,8 @@ import java.nio.file.Path;
 
 import com.pathplanner.lib.path.PathConstraints;
 
+import edu.wpi.first.units.measure.AngularVelocity;
+
 /** Add your docs here. */
 public class DriveConstants {
     public static final int DRIVER_CONTROLLER_PORT = 0;
@@ -20,9 +22,10 @@ public class DriveConstants {
     public static final PathConstraints PATH_CONSTRAINTS_FOLLOW_PATH = new PathConstraints(
         4.0, 4.0, 3 * Math.PI, 6 * Math.PI);
 
-    public static final double AIMING_kP = 10.0;
-    public static final double AIMING_kI = 0.0;
-    public static final double AIMING_kD = 0.0;
+    public static final AngularVelocity AIMING_MAX_ANGULAR_VELOCITY = RotationsPerSecond.of(0.7);
+    public static final double AIMING_kP = 8.5;
+    public static final double AIMING_kI = 30.0;
+    public static final double AIMING_kD = 0.5;
 
     public static final double AIMING_TOLERANCE_RADIANS = Degrees.of(2).in(Radians);
 }

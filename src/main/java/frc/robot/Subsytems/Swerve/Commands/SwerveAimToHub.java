@@ -31,8 +31,7 @@ public class SwerveAimToHub extends Command {
 
   private Pose2d hubAimPose;
 
-  private double MaxSpeed = 0.75 * SwerveConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-  private double MaxAngularRate = RotationsPerSecond.of(1).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+  private double MaxAngularRate = DriveConstants.AIMING_MAX_ANGULAR_VELOCITY.in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
   private double[] prevErrors = new double[10];
   private double averageError = 0.0;

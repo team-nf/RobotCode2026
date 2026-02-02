@@ -16,7 +16,7 @@ import frc.robot.Constants.Dimensions;
 import frc.robot.Subsytems.Swerve.CommandSwerveDrivetrain;
 
 public class SwerveFieldContactSim {
-    public double simLoopTimeSec = 0.0001; 
+    public double simLoopTimeSec = 0.001; 
     private int pointNumberForEdge = 8;
 
     private CommandSwerveDrivetrain m_swerveDrivetrain = null;

@@ -89,34 +89,33 @@ public class HopperSim {
     private boolean isFpsCorrect = true; // Tracks if the hopper can intake fuel
 
     public boolean isHopperAbleToIntake() {
-        return isFpsCorrect && isHopperNotFull();
+        return isHopperNotFull() && isFpsCorrect;
     }
 
-    private double fuelPerSecondLimit = 4.0; // Default limit for adding fuel
-    private double lastFuelAddTime = 0;
-    private double currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
-    private double prevFuelLoad = 0;
-
-    public void setFuelPerSecondLimit(double limit) {
-        this.fuelPerSecondLimit = limit;
-    }
-
-    public void updateHopperIntakeStatus() {
-        double timeSinceLastAdd = currentTime - lastFuelAddTime;
-        prevFuelLoad = currentHopperLoad;
-        if (timeSinceLastAdd >= 1.0 / fuelPerSecondLimit) {
-            isFpsCorrect =  true; // Hopper can intake fuel
-        }
-        else {
-            isFpsCorrect = false; // Hopper is full, cannot intake more fuel
-        }
-    }
+    private long currentTime = System.currentTimeMillis();
+    private long lastFuelIntakeTime = 0;
+    private double fuelPerSecond = 3.0; // Default FPS limit
 
     public void addFuelToHopper() {
         if (currentHopperLoad < hopperMaxCapacity) {
+            lastFuelIntakeTime = System.currentTimeMillis();
             currentHopperLoad += 1;
-            lastFuelAddTime = currentTime;
         } 
+
+        rejectExtraFuels();
+    }
+
+    public void updateFPSStatus() {
+        currentTime = System.currentTimeMillis();
+        double timeSinceLastIntake = (currentTime - lastFuelIntakeTime) / 1000.0;
+
+        double currentFPS = timeSinceLastIntake > 0 ? 1.0 / timeSinceLastIntake : Double.POSITIVE_INFINITY;
+
+        if (fuelPerSecond >= currentFPS) {
+            isFpsCorrect = true;
+        } else {
+            isFpsCorrect = false;
+        }
     }
 
 
@@ -125,6 +124,41 @@ public class HopperSim {
             currentHopperLoad -= 1;
         }
     }
+
+    private double fuelPerInstance = 3.0; // Default limit for adding fuel
+    private double prevHopperLoad = 0.0;
+
+    private void rejectExtraFuels() {
+
+        double loadDifference = currentHopperLoad - prevHopperLoad;
+
+        if (loadDifference > fuelPerInstance) {
+
+            for (int i = 0; i < (int)((loadDifference) - fuelPerInstance); i++) {
+                removeFuelFromHopper();
+
+                Transform3d robotPoseTransform = 
+                new Transform3d(new Translation3d(robotPoseSupplier.get().getX(), robotPoseSupplier.get().getY(), 0), 
+                new Rotation3d(robotPoseSupplier.get().getRotation()));
+            
+                double yOffset = Dimensions.BUMPER_WIDTH.times(Math.random()*0.8 - 0.4).in(Meters); // Random offset between -1 and 1
+
+                Pose3d intakePose = new Pose3d(new Translation3d(Dimensions.HOPPER_EXTENSION_LENGTH.in(Meters), yOffset, 0.15), new Rotation3d());
+                    
+                Pose3d worldIntakePose = intakePose.transformBy(robotPoseTransform)
+                                                .rotateAround(robotPoseTransform.getTranslation(),new Rotation3d(robotPoseSupplier.get().getRotation()));
+
+                Pose3d intakeSpeed = new Pose3d(0.8, 0, 0, new Rotation3d());
+                Pose3d worldIntakeSpeed = intakeSpeed.rotateBy(new Rotation3d(robotPoseSupplier.get().getRotation()));
+
+                FuelSim.getInstance().spawnFuel(worldIntakePose.getTranslation(), worldIntakeSpeed.getTranslation());
+            }
+
+            currentHopperLoad = prevHopperLoad + fuelPerInstance;
+        }
+
+        prevHopperLoad = currentHopperLoad;
+    }   
 
     public double getCurrentHopperLoad() {
         return currentHopperLoad;
@@ -162,21 +196,22 @@ public class HopperSim {
 
     public void updateSim() {
         // This method can be expanded to include more complex simulation logic if needed
+        updateFPSStatus();        
         hopperLoadPublisher.set(currentHopperLoad);
         
         if (shouldRemoveFuel.get() && currentHopperLoad > 0 && robotPoseSupplier != null) {
             removeFuelFromHopper();
 
             Transform3d robotPoseTransform = 
-                new Transform3d(new Translation3d(robotPoseSupplier.get().getX(), robotPoseSupplier.get().getY(), 0), 
-                new Rotation3d(robotPoseSupplier.get().getRotation()));
-
+            new Transform3d(new Translation3d(robotPoseSupplier.get().getX(), robotPoseSupplier.get().getY(), 0), 
+            new Rotation3d(robotPoseSupplier.get().getRotation()));
+        
             double yOffset = Dimensions.BUMPER_WIDTH.times(Math.random()*0.8 - 0.4).in(Meters); // Random offset between -1 and 1
 
             Pose3d intakePose = new Pose3d(new Translation3d(Dimensions.HOPPER_EXTENSION_LENGTH.in(Meters), yOffset, 0.15), new Rotation3d());
-            
+                
             Pose3d worldIntakePose = intakePose.transformBy(robotPoseTransform)
-                                        .rotateAround(robotPoseTransform.getTranslation(),new Rotation3d(robotPoseSupplier.get().getRotation()));
+                                            .rotateAround(robotPoseTransform.getTranslation(),new Rotation3d(robotPoseSupplier.get().getRotation()));
 
             Pose3d intakeSpeed = new Pose3d(0.8, 0, 0, new Rotation3d());
             Pose3d worldIntakeSpeed = intakeSpeed.rotateBy(new Rotation3d(robotPoseSupplier.get().getRotation()));

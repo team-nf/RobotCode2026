@@ -92,8 +92,8 @@ public class SwerveConstants {
     private static final MomentOfInertia kSteerInertia = KilogramSquareMeters.of(0.03);
     private static final MomentOfInertia kDriveInertia = KilogramSquareMeters.of(0.03);
     // Simulated voltage necessary to overcome friction
-    private static final Voltage kSteerFrictionVoltage = Volts.of(0.2);
-    private static final Voltage kDriveFrictionVoltage = Volts.of(0.2);
+    private static final Voltage kSteerFrictionVoltage = Volts.of(0.8);
+    private static final Voltage kDriveFrictionVoltage = Volts.of(0.8);
 
     public static final SwerveDrivetrainConstants DrivetrainConstants = new SwerveDrivetrainConstants()
             .withCANBusName(kCANBus.getName())
