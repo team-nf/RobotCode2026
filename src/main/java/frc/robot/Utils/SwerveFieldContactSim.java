@@ -263,4 +263,14 @@ public class SwerveFieldContactSim {
 
         return new boolean[] {x_minus_collided, x_plus_collided, y_minus_collided, y_plus_collided, ccw_rotation_collided, cw_rotation_collided};
     }
+
+    public void reset() {
+        currentSimPose = Container.START_POSE_BLUE;
+        prevSimPose = Container.START_POSE_BLUE;
+        m_swerveDrivetrain.resetPose(currentSimPose);
+    }
+
+    public Pose2d getPose() {
+        return currentSimPose;
+    }
 }

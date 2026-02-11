@@ -221,4 +221,10 @@ public class HopperSim {
 
         publishHopperFuelPoses();
     }
+
+    public void reset() {
+        currentHopperLoad = 0;
+        prevHopperLoad = 0;
+        isFpsCorrect = true;
+    }
 }

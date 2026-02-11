@@ -152,8 +152,8 @@ public class FuelSim {
             }
 
             // hubs
-            handleHubCollisions(Hub.BLUE_HUB);
-            handleHubCollisions(Hub.RED_HUB);
+            handleHubCollisions(BLUE_HUB);
+            handleHubCollisions(RED_HUB);
 
             handleTrenchCollisions();
         }
@@ -591,13 +591,24 @@ public class FuelSim {
         registerIntake(xMin, xMax, yMin, yMax, () -> true, () -> {});
     }
 
-    public static class Hub {
-        public static final Hub BLUE_HUB =
+    public void registerBlueHubActiveSupplier(BooleanSupplier hubActiveSupplier) {
+        BLUE_HUB.setHubActiveSupplier(hubActiveSupplier);
+    }
+
+    public void registerRedHubActiveSupplier(BooleanSupplier hubActiveSupplier) {
+        RED_HUB.setHubActiveSupplier(hubActiveSupplier);
+    }
+
+            
+    public static final Hub BLUE_HUB =
                 new Hub(new Translation2d(4.61, FIELD_WIDTH / 2), new Translation3d(5.3, FIELD_WIDTH / 2, 0.89), 1);
-        public static final Hub RED_HUB = new Hub(
+        
+    public static final Hub RED_HUB = new Hub(
                 new Translation2d(FIELD_LENGTH - 4.61, FIELD_WIDTH / 2),
                 new Translation3d(FIELD_LENGTH - 5.3, FIELD_WIDTH / 2, 0.89),
                 -1);
+
+    public static class Hub {
 
         private static final double ENTRY_HEIGHT = 1.83;
         private static final double ENTRY_RADIUS = 0.56;
@@ -613,6 +624,8 @@ public class FuelSim {
         private final Translation3d exit;
         private final int exitVelXMult;
 
+        private BooleanSupplier isHubActive = null;
+
         private int score = 0;
 
         private Hub(Translation2d center, Translation3d exit, int exitVelXMult) {
@@ -621,11 +634,15 @@ public class FuelSim {
             this.exitVelXMult = exitVelXMult;
         }
 
+        public void setHubActiveSupplier(BooleanSupplier hubActiveSupplier) {
+            isHubActive = hubActiveSupplier;
+        }
+
         private void handleHubInteraction(Fuel fuel) {
             if (didFuelScore(fuel)) {
                 fuel.pos = exit;
                 fuel.vel = getDispersalVelocity();
-                score++;
+                if(isHubActive != null && isHubActive.getAsBoolean()) score++;
             }
         }
 
@@ -633,7 +650,7 @@ public class FuelSim {
             return fuel.pos.toTranslation2d().getDistance(center) <= ENTRY_RADIUS
                     && fuel.pos.getZ() <= ENTRY_HEIGHT
                     && fuel.pos.minus(fuel.vel.times(PERIOD / subticks)).getZ() > ENTRY_HEIGHT;
-        }
+            }
 
         private Translation3d getDispersalVelocity() {
             return new Translation3d(exitVelXMult * (Math.random() + 0.1) * 1.5, Math.random() * 2 - 1, 0);
