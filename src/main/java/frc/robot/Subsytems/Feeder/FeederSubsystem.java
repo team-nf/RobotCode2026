@@ -124,19 +124,24 @@ public class FeederSubsystem extends SubsystemBase {
   public void stateMachine() {
     switch (feederData.feederControlState) {
       case ZERO:
-        CommandScheduler.getInstance().schedule(feederZeroAction);
+        if(!CommandScheduler.getInstance().isScheduled(feederZeroAction))
+                    CommandScheduler.getInstance().schedule(feederZeroAction);
         break;
       case FEED:
-        CommandScheduler.getInstance().schedule(feederFeedAction);
+        if(!CommandScheduler.getInstance().isScheduled(feederFeedAction))
+                    CommandScheduler.getInstance().schedule(feederFeedAction);
         break;
       case REVERSE:
-        CommandScheduler.getInstance().schedule(feederReverseAction);
+        if(!CommandScheduler.getInstance().isScheduled(feederReverseAction))
+                    CommandScheduler.getInstance().schedule(feederReverseAction);
         break;
       case TEST:
-        CommandScheduler.getInstance().schedule(feederTestAction);
+        if(!CommandScheduler.getInstance().isScheduled(feederTestAction))
+                    CommandScheduler.getInstance().schedule(feederTestAction);
         break;
       default:
-        CommandScheduler.getInstance().schedule(feederZeroAction);
+        if(!CommandScheduler.getInstance().isScheduled(feederZeroAction))
+                    CommandScheduler.getInstance().schedule(feederZeroAction);
         break;
     }
   }

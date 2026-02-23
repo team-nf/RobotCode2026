@@ -26,17 +26,17 @@ import edu.wpi.first.units.measure.*;
 
 public class ShooterConstants {
     // Motor IDs
-    public static final int FIRST_SHOOTER_MOTOR_ID = 31;
-    public static final int SECOND_SHOOTER_MOTOR_ID = 32;
-    public static final int THIRD_SHOOTER_MOTOR_ID = 33;
-    public static final int FOURTH_SHOOTER_MOTOR_ID = 34;
-    public static final int HOOD_MOTOR_ID = 35;
+    public static final int FIRST_SHOOTER_MOTOR_ID = 51;
+    public static final int SECOND_SHOOTER_MOTOR_ID = 52;
+    public static final int THIRD_SHOOTER_MOTOR_ID = 53;
+    public static final int FOURTH_SHOOTER_MOTOR_ID = 54;
+    public static final int HOOD_MOTOR_ID = 55;
 
     // Shooter Math Constants
     public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.85; // in meters (2 inches)
 
     // Configs
-    public static final int NUMBER_OF_FLYWHEEL_MOTORS = 4;
+    public static final int NUMBER_OF_FLYWHEEL_MOTORS = 2;
 
     public static final AngularVelocity FLYWHEEL_ALLOWABLE_ERROR = RotationsPerSecond.of(1.5); // Allowable error in radians per second
     public static final Angle HOOD_ALLOWABLE_ERROR = Degrees.of(1); // Allowable error in radians
@@ -102,13 +102,13 @@ public class ShooterConstants {
 
 
     // Physical Constants
-    public static final double FLYWHEEL_GEAR_REDUCTION = 1.5;
-    public static final double HOOD_GEAR_REDUCTION = 10.0;
+    public static final double FLYWHEEL_GEAR_REDUCTION = 1.25;
+    public static final double HOOD_GEAR_REDUCTION = 324.0/20.0*26/18*8/56;
 
-    private static final Mass FLYWHEEL_MASS = Kilogram.of(0.16 + 0.05*2); 
-    public static final Distance FLYWHEEL_RADIUS = Meters.of((4*2.54)/2/100); // Radius of the flywheel in meters
-    private static final Mass ROLLER_MASS = Kilogram.of(15*20/1000); // Mass of the hood in kg
-    private static final Distance ROLLER_RADIUS = Meters.of((2*2.54)/2/100); // Radius of the hood in meters
+    private static final Mass FLYWHEEL_MASS = Kilogram.of(0.65); 
+    public static final Distance FLYWHEEL_RADIUS = Meters.of(0.05); // Radius of the flywheel in meters
+    private static final Mass ROLLER_MASS = Kilogram.of(15*60/1000); // Mass of the hood in kg
+    private static final Distance ROLLER_RADIUS = Meters.of(0.0175); // Radius of the hood in meters
 
     public static final MomentOfInertia FLYWHEEL_MOMENT_OF_INERTIA = 
                 KilogramSquareMeters.of(2*0.5*FLYWHEEL_MASS.in(Kilogram)*Math.pow(FLYWHEEL_RADIUS.in(Meters), 2));
@@ -123,9 +123,7 @@ public class ShooterConstants {
     public static final Angle MIN_HOOD_MOTOR_ANGLE = MIN_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);
     public static final Angle MAX_HOOD_MOTOR_ANGLE = MAX_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);
 
-
-
-    public static final Mass HOOD_MASS = Kilogram.of(0.5);
+    public static final Mass HOOD_MASS = Kilogram.of(1.5);
     public static final Distance HOOD_LENGTH = Meters.of(0.075);
     public static final Distance HOOD_CENTER_OF_MASS = HOOD_LENGTH.times(0.5);
     public static final MomentOfInertia HOOD_INERTIA = 

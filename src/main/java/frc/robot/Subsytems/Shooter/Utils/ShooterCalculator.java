@@ -81,8 +81,10 @@ public class ShooterCalculator {
 
         wheelSpeed = Math.max(ShooterConstants.MIN_FLYWHEEL_SPEED.in(RotationsPerSecond), Math.min(wheelSpeed, ShooterConstants.MAX_FLYWHEEL_SPEED.in(RotationsPerSecond))); // Clamp between min and max wheel speeds
 
-        return RotationsPerSecond.of(wheelSpeed);
+        //return RotationsPerSecond.of(wheelSpeed);
+        return RotationsPerSecond.of(15);
     }
+
 
     public Angle calculateHoodAngleFromCurrentPose()
     {

@@ -25,6 +25,16 @@ public final class Dimensions {
 
     public static final Distance HUB_HEIGHT = Meters.of(1.8); // 16.4 inches
 
+    public static final Distance BLUE_SHOOT_AREA_X_MIN = Meters.of(0.5);
+    public static final Distance BLUE_SHOOT_AREA_X_MAX = Meters.of(3.5);
+    public static final Distance BLUE_SHOOT_AREA_Y_MIN = Meters.of(0.5);
+    public static final Distance BLUE_SHOOT_AREA_Y_MAX = Meters.of(7.5);
+
+    public static final Distance RED_SHOOT_AREA_X_MIN = Meters.of(13);
+    public static final Distance RED_SHOOT_AREA_X_MAX = Meters.of(16);
+    public static final Distance RED_SHOOT_AREA_Y_MIN = Meters.of(0.5);
+    public static final Distance RED_SHOOT_AREA_Y_MAX = Meters.of(7.5);
+
     public static final Pose3d LEFT_SHOOTER_POSE = new Pose3d(
         Meters.of(-0.107), 
         Meters.of(0.0825), 

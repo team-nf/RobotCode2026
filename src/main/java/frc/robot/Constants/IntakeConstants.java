@@ -15,11 +15,11 @@ import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import static edu.wpi.first.units.Units.*;
 
 public class IntakeConstants {
-    public static final int INTAKE_MOTOR_ID = 51;
+    public static final int INTAKE_MOTOR_ID = 59;
 
     public static final double INTAKE_KS = 0.0;
     public static final double INTAKE_KV = 0.0;
-    public static final double INTAKE_KP = 0.01;
+    public static final double INTAKE_KP = 1.5;
     public static final double INTAKE_KI = 0.0;
     public static final double INTAKE_KD = 0.005;
 
@@ -38,17 +38,19 @@ public class IntakeConstants {
             .withCurrentLimits(new CurrentLimitsConfigs()
                 .withSupplyCurrentLimitEnable(true)
                 .withSupplyCurrentLimit(20)
-                .withStatorCurrentLimit(20));
+                .withStatorCurrentLimit(20))
+                
+            .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))    ;
 
     public static final VelocityVoltage INTAKE_VELOCITY_CONTROL = new VelocityVoltage(0)
                         .withSlot(0)
                         .withEnableFOC(false);
 
-    public static final double INTAKE_GEAR_REDUCTION = 5.0;
+    public static final double INTAKE_GEAR_REDUCTION = 20.0/12.0;
 
     public static final AngularVelocity INTAKE_ALLOWABLE_ERROR = RotationsPerSecond.of(1.0); // in RPS
 
-    public static final AngularVelocity INTAKE_INTAKING_VELOCITY = RotationsPerSecond.of(9); // in RPS
+    public static final AngularVelocity INTAKE_INTAKING_VELOCITY = RotationsPerSecond.of(40); // in RPS
     public static final AngularVelocity INTAKE_FEEDING_VELOCITY = RotationsPerSecond.of(6); // in RPS
     public static final AngularVelocity INTAKE_REVERSE_VELOCITY = RotationsPerSecond.of(-4.0); // in RPS
 
@@ -58,18 +60,19 @@ public class IntakeConstants {
     // Default ID of -1 indicates "no dedicated arm motor configured"; callers may
     // choose to fallback to using the intake motor instead.
 
-    public static final Angle INTAKE_ARM_DEPLOYED_ANGLE = Degrees.of(0);
-    public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(120);
+    public static final Angle INTAKE_ARM_DEPLOYED_ANGLE = Degrees.of(2);
+    public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(130);
+    public static final Angle INTAKE_ARM_START_ANGLE = Degrees.of(120);
     public static final Angle INTAKE_ARM_ALLOWABLE_ERROR = Degrees.of(3);
 
     public static final double INTAKE_ARM_KS = 0.0;
-    public static final double INTAKE_ARM_KV = 4;
-    public static final double INTAKE_ARM_KP = 16;
-    public static final double INTAKE_ARM_KI = 0;
-    public static final double INTAKE_ARM_KD = 0.2;
+    public static final double INTAKE_ARM_KV = 3;
+    public static final double INTAKE_ARM_KP = 3;
+    public static final double INTAKE_ARM_KI = 1;
+    public static final double INTAKE_ARM_KD = 0.3;
     public static final double INTAKE_ARM_KG = 0;
 
-    public static final int INTAKE_ARM_MOTOR_ID = 52;
+    public static final int INTAKE_ARM_MOTOR_ID = 58;
 
     public static final TalonFXConfiguration INTAKE_ARM_MOTOR_CONFIG = INTAKE_MOTOR_CONFIG.clone()
                 .withSlot0(new Slot0Configs()
@@ -80,20 +83,24 @@ public class IntakeConstants {
                 .withKD(INTAKE_ARM_KD)
                 .withKG(INTAKE_ARM_KG)
                 .withGravityType(GravityTypeValue.Arm_Cosine))
-                .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive));
+                .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
+                .withCurrentLimits(new CurrentLimitsConfigs()
+                    .withSupplyCurrentLimitEnable(true)
+                    .withSupplyCurrentLimit(20)
+                    .withStatorCurrentLimit(20));
 
     public static final PositionVoltage INTAKE_ARM_POSITION_CONTROL = new PositionVoltage(0)
                         .withSlot(0)
                         .withEnableFOC(false);
 
     // Arm physical defaults for simulation
-    public static final Mass INTAKE_ARM_MASS = Kilograms.of(1.0);
+    public static final Mass INTAKE_ARM_MASS = Kilograms.of(2.0);
     public static final Distance INTAKE_ARM_LENGTH = Meters.of(0.1);
-    public static final double INTAKE_ARM_GEAR_REDUCTION = 15.0;
+    public static final double INTAKE_ARM_GEAR_REDUCTION = 60.0/18.0*36/14*5;
     public static final double INTAKE_ARM_INERTIA = 1.0/3.0 * INTAKE_ARM_MASS.in(Kilogram) * Math.pow(INTAKE_ARM_LENGTH.in(Meters)/2, 2);
 
     // Physical defaults
-    public static final Mass ROLLER_MASS = Kilograms.of(0.15); // kg
+    public static final Mass ROLLER_MASS = Kilograms.of(0.35); // kg
     public static final Distance ROLLER_RADIUS = Meters.of(0.02); // m
     public static final int ROLLER_AMOUNT = 2;
 

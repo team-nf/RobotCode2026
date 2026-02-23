@@ -1,20 +1,22 @@
 package frc.robot.Constants;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.units.measure.*;
 import static edu.wpi.first.units.Units.*;
 
 public class FeederConstants {
-    public static final int FEEDER_MOTOR_ID = 41;
+    public static final int FEEDER_MOTOR_ID = 31;
 
-    public static final double FEEDER_KS = 0.1;
+    public static final double FEEDER_KS = 0.25;
     public static final double FEEDER_KV = 0.0;
-    public static final double FEEDER_KP = 0.1;
+    public static final double FEEDER_KP = 0.6;
     public static final double FEEDER_KI = 0.0;
     public static final double FEEDER_KD = 0.01;
 
@@ -33,18 +35,21 @@ public class FeederConstants {
             .withCurrentLimits(new CurrentLimitsConfigs()
                 .withSupplyCurrentLimitEnable(true)
                 .withSupplyCurrentLimit(15)
-                .withStatorCurrentLimit(15));
+                .withStatorCurrentLimit(15))
+                
+            .withMotorOutput(new MotorOutputConfigs()
+                .withInverted(InvertedValue.Clockwise_Positive));
 
     public static final VelocityVoltage FEEDER_VELOCITY_CONTROL = new VelocityVoltage(0)
                         .withSlot(0)
                         .withEnableFOC(false);
 
-    public static final double FEEDER_GEAR_REDUCTION = 5.0;
+    public static final double FEEDER_GEAR_REDUCTION = 1.0;
 
     public static final AngularVelocity FEEDER_ALLOWABLE_ERROR = RotationsPerSecond.of(1.0); // in RPS
 
-    public static final AngularVelocity FEEDER_FEEDING_VELOCITY = RotationsPerSecond.of(10); // in RPS
-    public static final AngularVelocity FEEDER_REVERSE_VELOCITY = RotationsPerSecond.of(-3.0); // in RPS
+    public static final AngularVelocity FEEDER_FEEDING_VELOCITY = RotationsPerSecond.of(25); // in RPS
+    public static final AngularVelocity FEEDER_REVERSE_VELOCITY = RotationsPerSecond.of(-5.0); // in RPS
 
     // Feeder syystem constants
 

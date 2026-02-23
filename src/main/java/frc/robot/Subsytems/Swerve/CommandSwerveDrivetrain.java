@@ -46,6 +46,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.SwerveConstants.TunerSwerveDrivetrain;
 import frc.robot.Subsytems.Swerve.Commands.SwerveAimToHub;
 import frc.robot.Subsytems.Swerve.Commands.SwerveFollowPathCommand;
+import frc.robot.Subsytems.Swerve.Commands.SwerveGetIntoShootAreaCommand;
 import frc.robot.Subsytems.Swerve.Commands.SwervePathFindToPoseCommand;
 import frc.robot.Subsytems.Swerve.Commands.SwerveTeleopCommand;
 import frc.robot.Subsytems.Swerve.Utils.SwerveControlData;
@@ -452,6 +453,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public Command aimToHub() {
         return new SwerveAimToHub(this);
+    }
+
+    public Command getIntoShootArea() {
+        return new SwerveGetIntoShootAreaCommand(this);
     }
 
     public Command goToPose(Pose2d targetPose) {

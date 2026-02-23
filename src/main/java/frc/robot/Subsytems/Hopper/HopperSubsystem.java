@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.function.IntFunction;
+
 public class HopperSubsystem extends SubsystemBase {
 
   public final HopperHardware hopperHardware;
@@ -130,22 +132,34 @@ public class HopperSubsystem extends SubsystemBase {
   public void stateMachine() {
     switch (hopperData.hopperControlState) {
       case ZERO:
-        CommandScheduler.getInstance().schedule(hopperZeroAction);
+        if(!CommandScheduler.getInstance().isScheduled(hopperZeroAction)) {
+          CommandScheduler.getInstance().schedule(hopperZeroAction);
+        }
         break;
       case FEED:
-        CommandScheduler.getInstance().schedule(hopperFeedAction);
+        if(!CommandScheduler.getInstance().isScheduled(hopperFeedAction)) {
+          CommandScheduler.getInstance().schedule(hopperFeedAction);
+        }
         break;
       case PUSH:
-        CommandScheduler.getInstance().schedule(hopperPushAction);
+        if(!CommandScheduler.getInstance().isScheduled(hopperPushAction)) {
+          CommandScheduler.getInstance().schedule(hopperPushAction);
+        }
         break;
       case REVERSE:
-        CommandScheduler.getInstance().schedule(hopperReverseAction);
+        if(!CommandScheduler.getInstance().isScheduled(hopperReverseAction)) {
+          CommandScheduler.getInstance().schedule(hopperReverseAction);
+        }
         break;
       case TEST:
-        CommandScheduler.getInstance().schedule(hopperTestAction);
+        if(!CommandScheduler.getInstance().isScheduled(hopperTestAction)) {
+          CommandScheduler.getInstance().schedule(hopperTestAction);
+        }
         break;
       default:
-        CommandScheduler.getInstance().schedule(hopperZeroAction);
+        if(!CommandScheduler.getInstance().isScheduled(hopperZeroAction)) {
+          CommandScheduler.getInstance().schedule(hopperZeroAction);
+        }
         break;
     }
   }

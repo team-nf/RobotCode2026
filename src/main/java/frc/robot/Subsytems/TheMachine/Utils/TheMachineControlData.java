@@ -1,5 +1,7 @@
 package frc.robot.Subsytems.TheMachine.Utils;
 
+import com.fasterxml.jackson.annotation.Nulls;
+
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.Subsytems.Feeder.Utils.FeederControlData;
@@ -15,7 +17,7 @@ public class TheMachineControlData implements Sendable{
     public HopperControlData hopperControlData = null;
     public IntakeControlData intakeControlData = null;
 
-    public TheMachineControlState theMachineControlState = TheMachineControlState.ZERO;
+    public TheMachineControlState theMachineControlState = TheMachineControlState.NONE;
 
     public TheMachineControlData(ShooterControlData shooterControlData, FeederControlData feederControlData,
             HopperControlData hopperControlData, IntakeControlData intakeControlData)

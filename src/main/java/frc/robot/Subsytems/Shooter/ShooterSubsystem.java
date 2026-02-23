@@ -168,19 +168,29 @@ public class ShooterSubsystem extends SubsystemBase {
   public void stateMachine() {
     switch (shooterData.shooterControlState) {
       case ZERO:
-        CommandScheduler.getInstance().schedule(shooterZeroAction);
+        if(!CommandScheduler.getInstance().isScheduled(shooterZeroAction)) {
+          CommandScheduler.getInstance().schedule(shooterZeroAction);
+        }
         break;
       case REST:
-        CommandScheduler.getInstance().schedule(shooterRestAction);
+        if(!CommandScheduler.getInstance().isScheduled(shooterRestAction)) {
+          CommandScheduler.getInstance().schedule(shooterRestAction);
+        }
         break;
       case SHOOT:
-        CommandScheduler.getInstance().schedule(shooterShootAction);
+        if(!CommandScheduler.getInstance().isScheduled(shooterShootAction)) {
+          CommandScheduler.getInstance().schedule(shooterShootAction);
+        }
         break;
       case TEST:
-        CommandScheduler.getInstance().schedule(shooterTestAction);
+        if(!CommandScheduler.getInstance().isScheduled(shooterTestAction)) {
+          CommandScheduler.getInstance().schedule(shooterTestAction);
+        }
         break;
       default:
-        CommandScheduler.getInstance().schedule(shooterZeroAction);
+        if(!CommandScheduler.getInstance().isScheduled(shooterZeroAction)) {
+          CommandScheduler.getInstance().schedule(shooterZeroAction);
+        }
         break;
     }
   }

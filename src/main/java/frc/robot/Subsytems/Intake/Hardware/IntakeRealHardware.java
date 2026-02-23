@@ -48,7 +48,7 @@ public class IntakeRealHardware implements IntakeHardware {
 
         if(!Utils.isSimulation())
         {
-        intakeArmMotor.setPosition(IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.times(IntakeConstants.INTAKE_ARM_GEAR_REDUCTION));
+        intakeArmMotor.setPosition(IntakeConstants.INTAKE_ARM_START_ANGLE.times(IntakeConstants.INTAKE_ARM_GEAR_REDUCTION));
         }
         setIntakeMotorConfig(IntakeConstants.INTAKE_MOTOR_CONFIG);
         setIntakeArmMotorConfig(IntakeConstants.INTAKE_ARM_MOTOR_CONFIG);

@@ -16,6 +16,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -42,13 +43,14 @@ import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineReverseRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineShootRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineTestRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineZeroRequest;
+import frc.robot.Subsytems.TheMachine.Utils.LEDController;
 import frc.robot.Subsytems.TheMachine.Utils.TheMachineControlData;
 import frc.robot.Utils.States.TheMachineStates.TheMachineControlState;
 
 public class TheMachine {
   /** Creates a new TheMachine. */
 
-  private TheMachineControlData theMachineData;;
+  private TheMachineControlData theMachineData;
 
   private ShooterSubsystem shooterSubsystem;
   private FeederSubsystem feederSubsystem;
@@ -64,6 +66,11 @@ public class TheMachine {
   private Command theMachineShootAction;
   private Command theMachineReverseAction;
   private Command theMachineTestAction;
+
+  private LEDController leftLed;
+  //private LEDController rightLed;
+  //private LEDController frontLed;
+  //private LEDController backLed;
 
   public TheMachine(
     ShooterSubsystem shooterSubsystem,
@@ -92,6 +99,11 @@ public class TheMachine {
     theMachineShootAction = TheMachineShootAction.get(this);
     theMachineReverseAction = TheMachineReverseAction.get(this);
     theMachineTestAction = TheMachineTestAction.get(this);
+
+    leftLed = new LEDController(0, 30);
+    //rightLed = new LEDController(1, 31);
+    //frontLed = new LEDController(2,31);
+    //backLed = new LEDController(3,31);
   }
 
   public TheMachineControlState getState() {
@@ -267,31 +279,70 @@ public class TheMachine {
   public void stateMachine() {
     switch (theMachineData.theMachineControlState) {
       case ZERO:
-        CommandScheduler.getInstance().schedule(theMachineZeroAction);
+        if(!CommandScheduler.getInstance().isScheduled(theMachineZeroAction))
+        {
+          CommandScheduler.getInstance().schedule(theMachineZeroAction);
+        }
         break;
       case IDLE_DEPLOYED:
-        CommandScheduler.getInstance().schedule(theMachineIdleDeployedAction);
+        if(!CommandScheduler.getInstance().isScheduled(theMachineIdleDeployedAction))
+        {
+          CommandScheduler.getInstance().schedule(theMachineIdleDeployedAction);
+        }
         break;
       case IDLE_RETRACTED:
-        CommandScheduler.getInstance().schedule(theMachineIdleRetractedAction);
+        if(!CommandScheduler.getInstance().isScheduled(theMachineIdleRetractedAction))
+        {
+          CommandScheduler.getInstance().schedule(theMachineIdleRetractedAction);
+        }
         break;
       case INTAKE:
-        CommandScheduler.getInstance().schedule(theMachineIntakeAction);
+        if(!CommandScheduler.getInstance().isScheduled(theMachineIntakeAction))
+        {
+          CommandScheduler.getInstance().schedule(theMachineIntakeAction);
+        }
         break;
       case SHOOT:
-        CommandScheduler.getInstance().schedule(theMachineShootAction);
+        if(!CommandScheduler.getInstance().isScheduled(theMachineShootAction))
+        {
+          CommandScheduler.getInstance().schedule(theMachineShootAction);
+        }
         break;
       case REVERSE:
-        CommandScheduler.getInstance().schedule(theMachineReverseAction);
+        if(!CommandScheduler.getInstance().isScheduled(theMachineReverseAction))
+        {
+          CommandScheduler.getInstance().schedule(theMachineReverseAction);
+        }
         break;
       case TEST:
-        CommandScheduler.getInstance().schedule(theMachineTestAction);
+        if(!CommandScheduler.getInstance().isScheduled(theMachineTestAction))
+        {
+          CommandScheduler.getInstance().schedule(theMachineTestAction);
+        }
+        break;
+      default:
         break;
     }
   }
 
+  public void updateLeds()
+  {
+    if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+    {
+      leftLed.setMultiple2(0,0.5, 0, 0, 255);
+    }
+    else
+    {
+      leftLed.setMultiple2(0,0.5, 255, 0, 0);
+    }
+
+    leftLed.setMultiple2(0.5,1, 0, 255, 0);
+  }
+
   public void periodic() {
     stateMachine();
+
+    updateLeds();
     
     if (TelemetryConstants.SHOULD_THEMACHINE_DATA_COMMUNICATE)
     {

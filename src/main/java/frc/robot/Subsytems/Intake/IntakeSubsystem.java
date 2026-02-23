@@ -95,7 +95,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void feed() {
     intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_FEEDING_VELOCITY;
-    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.div(3);
+    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.div(2);
     updateIntakeData();
     intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
     if(intakeData.intakePositionState == IntakeStates.IntakePositionState.RETRACTED)
@@ -198,25 +198,39 @@ public class IntakeSubsystem extends SubsystemBase {
   public void stateMachine() {
     switch (intakeData.intakeControlState) {
       case CLOSE:
-        CommandScheduler.getInstance().schedule(intakeClosedAction);
+              if(!CommandScheduler.getInstance().isScheduled(intakeClosedAction)) {
+                CommandScheduler.getInstance().schedule(intakeClosedAction);
+              }
         break;
       case DEPLOY:
-        CommandScheduler.getInstance().schedule(intakeDeployAction);
+        if(!CommandScheduler.getInstance().isScheduled(intakeDeployAction)) {
+          CommandScheduler.getInstance().schedule(intakeDeployAction);
+        }
         break;
       case INTAKE:
-        CommandScheduler.getInstance().schedule(intakeIntakeAction);
+        if(!CommandScheduler.getInstance().isScheduled(intakeIntakeAction)) {
+          CommandScheduler.getInstance().schedule(intakeIntakeAction);
+        }
         break;
       case FEED:
-        CommandScheduler.getInstance().schedule(intakeFeedAction);
+        if(!CommandScheduler.getInstance().isScheduled(intakeFeedAction)) {
+          CommandScheduler.getInstance().schedule(intakeFeedAction);
+        }
         break;
       case REVERSE:
-        CommandScheduler.getInstance().schedule(intakeReverseAction);
+        if(!CommandScheduler.getInstance().isScheduled(intakeReverseAction)) {
+          CommandScheduler.getInstance().schedule(intakeReverseAction);
+        }
         break;
       case TEST:
-        CommandScheduler.getInstance().schedule(intakeTestAction);
+        if(!CommandScheduler.getInstance().isScheduled(intakeTestAction)) {
+          CommandScheduler.getInstance().schedule(intakeTestAction);
+        }
         break;
       default:
-        CommandScheduler.getInstance().schedule(intakeClosedAction);
+        if(!CommandScheduler.getInstance().isScheduled(intakeClosedAction)) {
+          CommandScheduler.getInstance().schedule(intakeClosedAction);
+        }
         break;
     }   
   }

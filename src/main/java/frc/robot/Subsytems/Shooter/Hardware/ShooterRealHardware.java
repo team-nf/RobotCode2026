@@ -7,6 +7,7 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 
 import edu.wpi.first.units.measure.Angle;
@@ -29,10 +30,13 @@ public class ShooterRealHardware implements ShooterHardware {
     protected final TalonFX fourthShootMotor;
     protected final TalonFX hoodMotor;
 
-    private TalonFXConfiguration shootMotorConfig;
+    private TalonFXConfiguration shootMotorConfigL;
+    private TalonFXConfiguration shootMotorConfigR;
+
     private TalonFXConfiguration hoodMotorConfig;
 
-    private final VelocityVoltage shootVelocityControl;
+    private final VelocityVoltage shootVelocityControlL;
+    private final VelocityVoltage shootVelocityControlR;
     private final PositionVoltage hoodPositionControl;
 
     private AngularVelocity flywheelVelocity = RotationsPerSecond.of(0);
@@ -47,8 +51,8 @@ public class ShooterRealHardware implements ShooterHardware {
     private Current hoodCurrent = Amps.of(0);
     private double hoodReference = 0.0;
     private double hoodError = 0.0;
-    private AngularVelocity testFlywheelGoal= RotationsPerSecond.of(0);
-    private Angle testHoodGoal = ShooterConstants.MIN_HOOD_MOTOR_ANGLE;
+    private AngularVelocity testFlywheelGoal= RotationsPerSecond.of(7);
+    private Angle testHoodGoal = Degrees.of(5.0);
 
     public ShooterRealHardware() {
         firstShootMotor = new TalonFX(ShooterConstants.FIRST_SHOOTER_MOTOR_ID);
@@ -63,10 +67,11 @@ public class ShooterRealHardware implements ShooterHardware {
         updateMotorConfigs();
 
         secondShootMotor.setControl(new Follower(firstShootMotor.getDeviceID(), MotorAlignmentValue.Aligned));
-        thirdShootMotor.setControl(new Follower(firstShootMotor.getDeviceID(), MotorAlignmentValue.Aligned));
-        fourthShootMotor.setControl(new Follower(firstShootMotor.getDeviceID(), MotorAlignmentValue.Aligned));
+        fourthShootMotor.setControl(new Follower(thirdShootMotor.getDeviceID(), MotorAlignmentValue.Aligned));
 
-        shootVelocityControl = ShooterConstants.SHOOTER_VELOCITY_CONTROL.clone();
+        shootVelocityControlL = ShooterConstants.SHOOTER_VELOCITY_CONTROL.clone();
+        shootVelocityControlR = ShooterConstants.SHOOTER_VELOCITY_CONTROL.clone();
+
         hoodPositionControl = ShooterConstants.HOOD_POSITION_CONTROL.clone();
 
         if(!Utils.isSimulation()) hoodMotor.setPosition(ShooterConstants.MIN_HOOD_ANGLE);
@@ -76,9 +81,16 @@ public class ShooterRealHardware implements ShooterHardware {
     public void updateMotorConfigs() {
         StatusCode status = StatusCode.StatusCodeNotInitialized;
         for (int i = 0; i < 5; ++i) {
-            status = firstShootMotor.getConfigurator().apply(shootMotorConfig);
+            status = firstShootMotor.getConfigurator().apply(shootMotorConfigL);
             if (status.isOK()) break;
         }
+
+        status = StatusCode.StatusCodeNotInitialized;
+        for (int i = 0; i < 5; ++i) {
+            status = thirdShootMotor.getConfigurator().apply(shootMotorConfigR);
+            if (status.isOK()) break;
+        }
+        
         if (!status.isOK()) {
             System.out.println("Could not apply configs, error code: " + status.toString());
         }
@@ -95,10 +107,10 @@ public class ShooterRealHardware implements ShooterHardware {
 
     @Override
     public void setShootMotorConfig(TalonFXConfiguration config) {
-        shootMotorConfig = config.clone();
+        shootMotorConfigR = config.clone();
+        shootMotorConfigL = config.clone().withMotorOutput(config.MotorOutput.withInverted(InvertedValue.Clockwise_Positive));
     }
 
-    @Override
     public void setHoodMotorConfig(TalonFXConfiguration config) {
         hoodMotorConfig = config.clone();
     }
@@ -133,19 +145,24 @@ public class ShooterRealHardware implements ShooterHardware {
     public void flywheelSetPower(double power) {
         // Sets the power for the first shooter motor (others are followers)
         firstShootMotor.set(power);
+        thirdShootMotor.set(power);
     }
 
     @Override
     public void setFlywheelSpeed(AngularVelocity velocity) {
         // Set velocity in rotations per second
         firstShootMotor.setControl(
-            shootVelocityControl.withVelocity(velocity.times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION).in(RotationsPerSecond))
+            shootVelocityControlL.withVelocity(velocity.times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION).in(RotationsPerSecond))
+        );
+        thirdShootMotor.setControl(
+            shootVelocityControlR.withVelocity(velocity.times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION).in(RotationsPerSecond))
         );
     }
 
     @Override
     public void flywheelStop() {
         firstShootMotor.set(0.0);
+        thirdShootMotor.set(0.0);
     }
 
     @Override
@@ -229,24 +246,24 @@ public class ShooterRealHardware implements ShooterHardware {
             testHoodGoal = Degrees.of(val);
         });
 
-        builder.addDoubleProperty("Shoot KS", () -> shootMotorConfig.Slot0.kS, (val) -> {
-            shootMotorConfig.Slot0.kS = val;
+        builder.addDoubleProperty("Shoot KS", () -> shootMotorConfigR.Slot0.kS, (val) -> {
+            shootMotorConfigR.Slot0.kS = val;
             updateMotorConfigs();
         });
-        builder.addDoubleProperty("Shoot KV", () -> shootMotorConfig.Slot0.kV, (val) -> {
-            shootMotorConfig.Slot0.kV = val;
+        builder.addDoubleProperty("Shoot KV", () -> shootMotorConfigR.Slot0.kV, (val) -> {
+            shootMotorConfigR.Slot0.kV = val;
             updateMotorConfigs();
         });
-        builder.addDoubleProperty("Shoot KP", () -> shootMotorConfig.Slot0.kP, (val) -> {
-            shootMotorConfig.Slot0.kP = val;
+        builder.addDoubleProperty("Shoot KP", () -> shootMotorConfigR.Slot0.kP, (val) -> {
+            shootMotorConfigR.Slot0.kP = val;
             updateMotorConfigs();
         });
-        builder.addDoubleProperty("Shoot KI", () -> shootMotorConfig.Slot0.kI, (val) -> {
-            shootMotorConfig.Slot0.kI = val;
+        builder.addDoubleProperty("Shoot KI", () -> shootMotorConfigR.Slot0.kI, (val) -> {
+            shootMotorConfigR.Slot0.kI = val;
             updateMotorConfigs();
         });
-        builder.addDoubleProperty("Shoot KD", () -> shootMotorConfig.Slot0.kD, (val) -> {
-            shootMotorConfig.Slot0.kD = val;
+        builder.addDoubleProperty("Shoot KD", () -> shootMotorConfigR.Slot0.kD, (val) -> {
+            shootMotorConfigR.Slot0.kD = val;
             updateMotorConfigs();
         });
 
@@ -274,8 +291,5 @@ public class ShooterRealHardware implements ShooterHardware {
             hoodMotorConfig.Slot0.kG = val;
             updateMotorConfigs();
         });
-
-
-
     }
 }

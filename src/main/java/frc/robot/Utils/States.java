@@ -99,7 +99,8 @@ public class States {
                 INTAKE,
                 SHOOT,
                 REVERSE,
-                TEST
+                TEST,
+                NONE
             }
     }
 
