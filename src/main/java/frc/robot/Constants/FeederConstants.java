@@ -14,7 +14,7 @@ import static edu.wpi.first.units.Units.*;
 public class FeederConstants {
     public static final int FEEDER_MOTOR_ID = 31;
 
-    public static final double FEEDER_KS = 0.25;
+    public static final double FEEDER_KS = 0.4;
     public static final double FEEDER_KV = 0.0;
     public static final double FEEDER_KP = 0.6;
     public static final double FEEDER_KI = 0.0;
@@ -29,13 +29,13 @@ public class FeederConstants {
                 .withKD(FEEDER_KD))
 
             .withVoltage(new VoltageConfigs()
-                .withPeakForwardVoltage(12)
-                .withPeakReverseVoltage(-12))
+                .withPeakForwardVoltage(9)
+                .withPeakReverseVoltage(-9))
 
             .withCurrentLimits(new CurrentLimitsConfigs()
                 .withSupplyCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(15)
-                .withStatorCurrentLimit(15))
+                .withSupplyCurrentLimit(20)
+                .withStatorCurrentLimit(20))
                 
             .withMotorOutput(new MotorOutputConfigs()
                 .withInverted(InvertedValue.Clockwise_Positive));
@@ -48,7 +48,7 @@ public class FeederConstants {
 
     public static final AngularVelocity FEEDER_ALLOWABLE_ERROR = RotationsPerSecond.of(1.0); // in RPS
 
-    public static final AngularVelocity FEEDER_FEEDING_VELOCITY = RotationsPerSecond.of(25); // in RPS
+    public static final AngularVelocity FEEDER_FEEDING_VELOCITY = RotationsPerSecond.of(8); // in RPS
     public static final AngularVelocity FEEDER_REVERSE_VELOCITY = RotationsPerSecond.of(-5.0); // in RPS
 
     // Feeder syystem constants

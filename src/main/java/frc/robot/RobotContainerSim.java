@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.HopperConstants;
-import frc.robot.Constants.SwerveConstants;
+import frc.robot.Constants.TunerConstants;
 import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Subsytems.Feeder.FeederSubsystem;
 import frc.robot.Subsytems.Hopper.HopperSubsystem;
@@ -60,7 +60,7 @@ public class RobotContainerSim {
 
     m_intakeSubsystem = new IntakeSubsystem();
 
-    m_swerveDrivetrain = SwerveConstants.createDrivetrain();
+    m_swerveDrivetrain = TunerConstants.createDrivetrain();
 
     m_shooterCalculator = new ShooterCalculator(m_swerveDrivetrain.swerveDataSupplier());
     m_shooterSubsystem = new ShooterSubsystem(m_shooterCalculator);

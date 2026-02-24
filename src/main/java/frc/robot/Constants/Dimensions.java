@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Meters;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -34,6 +35,10 @@ public final class Dimensions {
     public static final Distance RED_SHOOT_AREA_X_MAX = Meters.of(16);
     public static final Distance RED_SHOOT_AREA_Y_MIN = Meters.of(0.5);
     public static final Distance RED_SHOOT_AREA_Y_MAX = Meters.of(7.5);
+
+ 
+    public static final Pose2d BLUE_HUB_AIM_POSE = new Pose2d(4.61, 4.1, new Rotation2d());
+    public static final Pose2d RED_HUB_AIM_POSE = new Pose2d(11.6, 4.1, new Rotation2d());
 
     public static final Pose3d LEFT_SHOOTER_POSE = new Pose3d(
         Meters.of(-0.107), 

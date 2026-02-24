@@ -32,13 +32,13 @@ public class IntakeConstants {
                 .withKD(INTAKE_KD))
 
             .withVoltage(new VoltageConfigs()
-                .withPeakForwardVoltage(8)
-                .withPeakReverseVoltage(-8))
+                .withPeakForwardVoltage(9)
+                .withPeakReverseVoltage(-9))
 
             .withCurrentLimits(new CurrentLimitsConfigs()
                 .withSupplyCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(20)
-                .withStatorCurrentLimit(20))
+                .withSupplyCurrentLimit(30)
+                .withStatorCurrentLimit(30))
                 
             .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))    ;
 
@@ -51,7 +51,7 @@ public class IntakeConstants {
     public static final AngularVelocity INTAKE_ALLOWABLE_ERROR = RotationsPerSecond.of(1.0); // in RPS
 
     public static final AngularVelocity INTAKE_INTAKING_VELOCITY = RotationsPerSecond.of(40); // in RPS
-    public static final AngularVelocity INTAKE_FEEDING_VELOCITY = RotationsPerSecond.of(6); // in RPS
+    public static final AngularVelocity INTAKE_FEEDING_VELOCITY = RotationsPerSecond.of(20); // in RPS
     public static final AngularVelocity INTAKE_REVERSE_VELOCITY = RotationsPerSecond.of(-4.0); // in RPS
 
     // Optional arm motor constants (defaults provided). If you use a dedicated arm motor,
@@ -60,8 +60,8 @@ public class IntakeConstants {
     // Default ID of -1 indicates "no dedicated arm motor configured"; callers may
     // choose to fallback to using the intake motor instead.
 
-    public static final Angle INTAKE_ARM_DEPLOYED_ANGLE = Degrees.of(2);
-    public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(130);
+    public static final Angle INTAKE_ARM_DEPLOYED_ANGLE = Degrees.of(0);
+    public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(128);
     public static final Angle INTAKE_ARM_START_ANGLE = Degrees.of(120);
     public static final Angle INTAKE_ARM_ALLOWABLE_ERROR = Degrees.of(3);
 
@@ -84,10 +84,13 @@ public class IntakeConstants {
                 .withKG(INTAKE_ARM_KG)
                 .withGravityType(GravityTypeValue.Arm_Cosine))
                 .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))
+                .withVoltage(new VoltageConfigs()
+                    .withPeakForwardVoltage(9)
+                    .withPeakReverseVoltage(-9))
                 .withCurrentLimits(new CurrentLimitsConfigs()
                     .withSupplyCurrentLimitEnable(true)
-                    .withSupplyCurrentLimit(20)
-                    .withStatorCurrentLimit(20));
+                    .withSupplyCurrentLimit(30)
+                    .withStatorCurrentLimit(30));
 
     public static final PositionVoltage INTAKE_ARM_POSITION_CONTROL = new PositionVoltage(0)
                         .withSlot(0)

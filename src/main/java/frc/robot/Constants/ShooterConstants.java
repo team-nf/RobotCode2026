@@ -33,19 +33,19 @@ public class ShooterConstants {
     public static final int HOOD_MOTOR_ID = 55;
 
     // Shooter Math Constants
-    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.85; // in meters (2 inches)
+    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.7; // in meters (2 inches)
 
     // Configs
     public static final int NUMBER_OF_FLYWHEEL_MOTORS = 2;
 
-    public static final AngularVelocity FLYWHEEL_ALLOWABLE_ERROR = RotationsPerSecond.of(1.5); // Allowable error in radians per second
+    public static final AngularVelocity FLYWHEEL_ALLOWABLE_ERROR = RotationsPerSecond.of(0.8); // Allowable error in radians per second
     public static final Angle HOOD_ALLOWABLE_ERROR = Degrees.of(1); // Allowable error in radians
 
-    public static final double SHOOTER_KS = 0.24;
+    public static final double SHOOTER_KS = 0.0;
     public static final double SHOOTER_KV = 0.12;    
-    public static final double SHOOTER_KP = 0.5;
+    public static final double SHOOTER_KP = 0.1;
     public static final double SHOOTER_KI = 0.0;
-    public static final double SHOOTER_KD = 0.0; 
+    public static final double SHOOTER_KD = SHOOTER_KP*0.2; 
 
 
     public static final MotorOutputConfigs SHOOTER_MOTOR_OUTPUT_CONFIGS = new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive);
@@ -77,8 +77,8 @@ public class ShooterConstants {
 
     public static final double HOOD_KS = 0.0;
     public static final double HOOD_KV = 0.0;
-    public static final double HOOD_KP = 16.0;
-    public static final double HOOD_KI = 3.5;
+    public static final double HOOD_KP = 8.0;
+    public static final double HOOD_KI = 2;
     public static final double HOOD_KD = 0.2;
     public static final double HOOD_KG = 0.21;
 
@@ -103,7 +103,7 @@ public class ShooterConstants {
 
     // Physical Constants
     public static final double FLYWHEEL_GEAR_REDUCTION = 1.25;
-    public static final double HOOD_GEAR_REDUCTION = 324.0/20.0*26/18*8/56;
+    public static final double HOOD_GEAR_REDUCTION = 324.0/20.0*26/18*56/8;
 
     private static final Mass FLYWHEEL_MASS = Kilogram.of(0.65); 
     public static final Distance FLYWHEEL_RADIUS = Meters.of(0.05); // Radius of the flywheel in meters

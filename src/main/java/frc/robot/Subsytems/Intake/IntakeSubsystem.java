@@ -95,10 +95,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void feed() {
     intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_FEEDING_VELOCITY;
-    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.div(2);
+    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.div(2.5);
     updateIntakeData();
     intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
-    if(intakeData.intakePositionState == IntakeStates.IntakePositionState.RETRACTED)
+    if(intakeData.intakePositionState == IntakeStates.IntakePositionState.BETWEEN)
         intakeHardware.setIntakeSpeed(intakeData.intakeGoalVelocity);
   }
 

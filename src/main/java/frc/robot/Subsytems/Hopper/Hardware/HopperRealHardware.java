@@ -2,8 +2,11 @@ package frc.robot.Subsytems.Hopper.Hardware;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.pathplanner.lib.commands.FollowPathCommand;
 
 import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.units.measure.*;
@@ -13,6 +16,9 @@ import frc.robot.Constants.HopperConstants;
 public class HopperRealHardware implements HopperHardware {
 
     protected TalonFX hopperMotor;
+    
+    private TalonFX hopperMotor2;
+
 
     private TalonFXConfiguration hopperMotorConfig;
 
@@ -29,10 +35,14 @@ public class HopperRealHardware implements HopperHardware {
     public HopperRealHardware() {
         hopperMotor = new TalonFX(HopperConstants.HOPPER_MOTOR_ID);
 
+        hopperMotor2 = new TalonFX(HopperConstants.HOPPER_MOTOR_2_ID);
+
         setHopperMotorConfig(HopperConstants.HOPPER_MOTOR_CONFIG);
         updateMotorConfig();
 
         hopperVelocityControl = HopperConstants.HOPPER_VELOCITY_CONTROL.clone();
+
+        hopperMotor2.setControl(new Follower(hopperMotor.getDeviceID(), MotorAlignmentValue.Opposed));
     }
 
     @Override

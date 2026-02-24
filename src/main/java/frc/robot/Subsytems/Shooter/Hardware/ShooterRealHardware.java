@@ -74,7 +74,7 @@ public class ShooterRealHardware implements ShooterHardware {
 
         hoodPositionControl = ShooterConstants.HOOD_POSITION_CONTROL.clone();
 
-        if(!Utils.isSimulation()) hoodMotor.setPosition(ShooterConstants.MIN_HOOD_ANGLE);
+        if(!Utils.isSimulation()) hoodMotor.setPosition(ShooterConstants.MIN_HOOD_ANGLE.times(ShooterConstants.HOOD_GEAR_REDUCTION));
     }
 
     @Override
@@ -291,5 +291,17 @@ public class ShooterRealHardware implements ShooterHardware {
             hoodMotorConfig.Slot0.kG = val;
             updateMotorConfigs();
         });
+    }
+
+    @Override
+    public AngularVelocity getTestFlywheelGoal()
+    {
+        return testFlywheelGoal;
+    }
+
+    @Override
+    public Angle getTestHoodGoal()
+    {
+        return testHoodGoal;
     }
 }

@@ -39,6 +39,7 @@ import frc.robot.Subsytems.TheMachine.StateActions.TheMachineZeroAction;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleDeployedRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleRetractedRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIntakeRequest;
+import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineNoneRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineReverseRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineShootRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineTestRequest;
@@ -242,6 +243,10 @@ public class TheMachine {
       return new TheMachineTestRequest(this);
   }
 
+  public Command noneRequest() {
+    return new TheMachineNoneRequest(this);
+  }
+
   private StructPublisher<Pose3d> hoodPosePublisher = NetworkTableInstance.getDefault()
   .getStructTopic("Sim/HoodPose", Pose3d.struct).publish();
 
@@ -342,7 +347,7 @@ public class TheMachine {
   public void periodic() {
     stateMachine();
 
-    updateLeds();
+    //updateLeds();
     
     if (TelemetryConstants.SHOULD_THEMACHINE_DATA_COMMUNICATE)
     {

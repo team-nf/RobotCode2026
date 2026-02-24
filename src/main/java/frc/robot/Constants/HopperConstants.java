@@ -13,6 +13,7 @@ import static edu.wpi.first.units.Units.*;
 
 public class HopperConstants {
     public static final int HOPPER_MOTOR_ID = 32;
+    public static final int HOPPER_MOTOR_2_ID = 33;
 
     public static final double HOPPER_KS = 0.5;
     public static final double HOPPER_KV = 0.0;
@@ -29,13 +30,13 @@ public class HopperConstants {
                 .withKD(HOPPER_KD))
 
             .withVoltage(new VoltageConfigs()
-                .withPeakForwardVoltage(12)
-                .withPeakReverseVoltage(-12))
+                .withPeakForwardVoltage(8)
+                .withPeakReverseVoltage(-8))
 
             .withCurrentLimits(new CurrentLimitsConfigs()
                 .withSupplyCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(35)
-                .withStatorCurrentLimit(35))
+                .withSupplyCurrentLimit(20)
+                .withStatorCurrentLimit(20))
                 
             .withMotorOutput(new MotorOutputConfigs()
                 .withInverted(InvertedValue.Clockwise_Positive));
@@ -48,8 +49,8 @@ public class HopperConstants {
 
     public static final AngularVelocity HOPPER_ALLOWABLE_ERROR = RotationsPerSecond.of(1.0); // in RPS
 
-    public static final AngularVelocity HOPPER_FEEDING_VELOCITY = RotationsPerSecond.of(30); // in RPS
-    public static final AngularVelocity HOPPER_PUSHING_VELOCITY = RotationsPerSecond.of(10); // in RPS
+    public static final AngularVelocity HOPPER_FEEDING_VELOCITY = RotationsPerSecond.of(12.5); // in RPS
+    public static final AngularVelocity HOPPER_PUSHING_VELOCITY = RotationsPerSecond.of(0.1); // in RPS
     public static final AngularVelocity HOPPER_REVERSE_VELOCITY = RotationsPerSecond.of(-10.0); // in RPS
 
     // Hopper physical constants (defaults - adjust if needed)

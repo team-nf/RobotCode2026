@@ -17,9 +17,11 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.measure.*;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Subsytems.Swerve.Utils.SwerveControlData;
+import pabeles.concurrency.IntOperatorTask.Min;
 
 /** Add your docs here. */
 public class ShooterCalculator {
@@ -50,7 +52,17 @@ public class ShooterCalculator {
         Transform3d robotPoseTransform = 
                     new Transform3d(new Translation3d(robotPose.getX(), robotPose.getY(), 0), 
                     new Rotation3d(robotPose.getRotation()));
-        Pose3d hubPose =  new Pose3d(4.61, 4.1, Dimensions.HUB_HEIGHT.in(Meters), new Rotation3d());
+
+        double hubX = Dimensions.BLUE_HUB_AIM_POSE.getX();
+        double hubY = Dimensions.BLUE_HUB_AIM_POSE.getY();
+        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+        {
+            hubX = Dimensions.RED_HUB_AIM_POSE.getX();
+            hubY = Dimensions.RED_HUB_AIM_POSE.getY();
+        }
+        Pose3d hubPose =  new Pose3d(hubX, hubY, Dimensions.HUB_HEIGHT.in(Meters), new Rotation3d());
+
+
         double hoodAngle = calculateHoodAngleFromCurrentPose().in(Radians);
         double fuelAngle = Math.PI/2 - hoodAngle;
 
@@ -71,7 +83,7 @@ public class ShooterCalculator {
 
         double verticalDistance = hubPose.getZ() - wordFuelLaunchPose.getZ();
 
-        double t = Math.sqrt((Math.tan(fuelAngle) - verticalDistance / horizontalDistance) * 2 * horizontalDistance / 9.81);
+        double t = Math.sqrt((Math.tan(fuelAngle) - verticalDistance / horizontalDistance) * 2 * horizontalDistance / 10);
         
         double requiredVelocity = horizontalDistance / (t * Math.cos(fuelAngle));
 
@@ -79,10 +91,14 @@ public class ShooterCalculator {
             requiredVelocity / (2 * Math.PI * ShooterConstants.FLYWHEEL_RADIUS.in(Meters) * ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT)
         );
 
+        wheelSpeed *= Math.max((hoodAngle/ShooterConstants.MIN_HOOD_ANGLE.in(Radians))/1.3,1);
+
         wheelSpeed = Math.max(ShooterConstants.MIN_FLYWHEEL_SPEED.in(RotationsPerSecond), Math.min(wheelSpeed, ShooterConstants.MAX_FLYWHEEL_SPEED.in(RotationsPerSecond))); // Clamp between min and max wheel speeds
 
-        //return RotationsPerSecond.of(wheelSpeed);
-        return RotationsPerSecond.of(15);
+
+
+        return RotationsPerSecond.of(wheelSpeed);
+        //return RotationsPerSecond.of(35);
     }
 
 
@@ -90,7 +106,14 @@ public class ShooterCalculator {
     {
         Pose2d robotPose = swerveDataSupplier.get().robotPose;
         
-        Pose3d hubPose =  new Pose3d(4.61, 4.1, Dimensions.HUB_HEIGHT.in(Meters), new Rotation3d());
+        double hubX = Dimensions.BLUE_HUB_AIM_POSE.getX();
+        double hubY = Dimensions.BLUE_HUB_AIM_POSE.getY();
+        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+        {
+            hubX = Dimensions.RED_HUB_AIM_POSE.getX();
+            hubY = Dimensions.RED_HUB_AIM_POSE.getY();
+        }
+        Pose3d hubPose =  new Pose3d(hubX, hubY, Dimensions.HUB_HEIGHT.in(Meters), new Rotation3d());
      
         double distance = Math.sqrt(
             Math.pow(hubPose.getX() - robotPose.getX(), 2) +
@@ -110,13 +133,13 @@ public class ShooterCalculator {
     {
         // Placeholder implementation
         // Replace with actual logic to calculate shooter wheel speed based on robot's current pose
-        return calculateFlywheelSpeedFromCurrentPose();
+        return calculateFlywheelSpeedFromCurrentPose().div(3.0);
     }
 
     public Angle calculateRestHoodAngleFromCurrentPose()
     {
         // Placeholder implementation
         // Replace with actual logic to calculate hood angle based on robot's current pose
-        return calculateHoodAngleFromCurrentPose();
+        return ShooterConstants.MIN_HOOD_ANGLE;
     }
 }

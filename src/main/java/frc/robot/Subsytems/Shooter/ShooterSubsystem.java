@@ -74,7 +74,7 @@ public class ShooterSubsystem extends SubsystemBase {
         : FlywheelState.REACHING_SPEED;
 
     shooterData.hoodState = Degrees.of(shooterData.hoodError.abs(Degrees))
-      .lte(ShooterConstants.HOOD_ALLOWABLE_ERROR)
+      .lte(ShooterConstants.HOOD_ALLOWABLE_ERROR.times(ShooterConstants.HOOD_GEAR_REDUCTION))
       ? HoodState.AT_POSITION
       : HoodState.MOVING_TO_POSITION;
   }
@@ -106,6 +106,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void test() {
+    shooterData.flywheelGoalVelocity = shooterHardware.getTestFlywheelGoal();
+    shooterData.hoodGoalAngle = shooterHardware.getTestHoodGoal();
     updateShooterData();
     shooterHardware.testShooter();
   }

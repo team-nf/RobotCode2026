@@ -11,6 +11,9 @@ public interface ShooterHardware extends Sendable{
     public void setShootMotorConfig(TalonFXConfiguration config);
     public void setHoodMotorConfig(TalonFXConfiguration config);
 
+    public AngularVelocity getTestFlywheelGoal();
+    public Angle getTestHoodGoal();
+
     public TalonFX getFirstShootMotor();
     public TalonFX getSecondShootMotor();
     public TalonFX getThirdShootMotor();

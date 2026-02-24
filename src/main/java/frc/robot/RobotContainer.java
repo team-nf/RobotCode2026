@@ -14,11 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.HopperConstants;
-import frc.robot.Constants.SwerveConstants;
+import frc.robot.Constants.TunerConstants;
 import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Subsytems.Feeder.FeederSubsystem;
 import frc.robot.Subsytems.Hopper.HopperSubsystem;
@@ -64,7 +65,7 @@ public class RobotContainer {
 
     m_intakeSubsystem = new IntakeSubsystem();
 
-    m_swerveDrivetrain = SwerveConstants.createDrivetrain();
+    m_swerveDrivetrain = TunerConstants.createDrivetrain();
 
     m_shooterCalculator = new ShooterCalculator(m_swerveDrivetrain.swerveDataSupplier());
     m_shooterSubsystem = new ShooterSubsystem(m_shooterCalculator);
@@ -87,34 +88,38 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-   //m_swerveDrivetrain.setDefaultCommand(m_swerveDrivetrain.teleopCommand(m_driverController));
+   m_swerveDrivetrain.setDefaultCommand(m_swerveDrivetrain.teleopCommand(m_driverController));
+
+     m_swerveDrivetrain.setDefaultCommand(m_swerveDrivetrain.teleopCommand(m_driverController));
 
     m_driverController.b()
-        .onTrue(m_feederSubsystem.feedRequest())
-        .onFalse(m_feederSubsystem.zeroRequest());
-
-    m_driverController.a()
-        .onTrue(m_hopperSubsystem.feedRequest())
-        .onFalse(m_hopperSubsystem.zeroRequest());
+        .onTrue(m_theMachine.reverseRequest());
 
     m_driverController.y()
-        .onTrue(m_intakeSubsystem.closeRequest());
-
-    m_driverController.x()
-        .onTrue(m_intakeSubsystem.intakeRequest())
-        .onFalse(m_intakeSubsystem.deployRequest());
+        .whileTrue(m_swerveDrivetrain.getIntoShootArea().andThen(m_swerveDrivetrain.aimToHub()).andThen(m_theMachine.shootRequest()))
+        .onFalse(m_theMachine.idleDeployedRequest());
 
     m_driverController.rightBumper()
-        .onTrue(m_shooterSubsystem.shootRequest())
-        .onFalse(m_shooterSubsystem.restRequest());
+        .whileTrue(m_theMachine.shootRequest())
+        .onFalse(m_theMachine.zeroRequest());
 
-     m_driverController.leftBumper()
-        .onTrue(m_shooterSubsystem.testRequest())
-        .onFalse(m_shooterSubsystem.zeroRequest());
+    m_driverController.a()
+        .onTrue(m_theMachine.idleRetractedRequest());
 
-     m_driverController.povDown().onTrue(m_theMachine.shootRequest()).onFalse(m_theMachine.zeroRequest());
-  
-  }
+    m_driverController.x()
+        .onTrue(m_theMachine.intakeRequest());
+
+    m_driverController.povDown()
+        .onTrue(m_theMachine.zeroRequest());
+
+    m_driverController.povLeft()
+        .onTrue(m_theMachine.noneRequest());
+
+    m_driverController.povUp()
+          .onTrue(m_swerveDrivetrain.resetToStartPoseCmd());
+
+    m_driverController.povRight().onTrue(m_shooterSubsystem.testRequest()).onFalse(m_shooterSubsystem.zeroRequest());
+    }
 
 
   public Command getAutonomousCommand() {

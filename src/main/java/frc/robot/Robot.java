@@ -16,7 +16,7 @@ import frc.robot.Utils.SwerveFieldContactSim;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private final RobotContainer m_robotContainer;
+  private RobotContainer m_robotContainer;
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -76,24 +76,26 @@ public class Robot extends TimedRobot {
   @Override
   public void testExit() {}
 
+  private Notifier swerveSimNotrifier;
+
   @Override
   public void simulationInit() {
-    /* 
+    
     swerveSimNotrifier = new Notifier(() -> {
       SwerveFieldContactSim.getInstance().handleSwerveSimFieldCollisions();
     });
     
     swerveSimNotrifier.startPeriodic(SwerveFieldContactSim.getInstance().simLoopTimeSec);
-    */
+    
   }
 
   @Override
   public void simulationPeriodic() {
-    /* 
+    
     FuelSim.getInstance().updateSim();
     HopperSim.getInstance().updateSim();
     ShooterSim.getInstance().updateSim();
     MatchTracker.getInstance().updateMatchTracker();
-    */
+    
   }
 }

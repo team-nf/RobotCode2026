@@ -37,13 +37,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.SwerveConstants.TunerSwerveDrivetrain;
+import frc.robot.Constants.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.Subsytems.Swerve.Commands.SwerveAimToHub;
 import frc.robot.Subsytems.Swerve.Commands.SwerveFollowPathCommand;
 import frc.robot.Subsytems.Swerve.Commands.SwerveGetIntoShootAreaCommand;
@@ -165,12 +166,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
         configureAutoBuilder();
 
-        if(DriverStation.getAlliance().equals(Alliance.Red)){
-            resetPose(Container.START_POSE_RED);
-        }
-        else{
-            resetPose(Container.START_POSE_BLUE);
-        }
+        setStartPose();
     }
 
 
@@ -204,6 +200,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         if (Utils.isSimulation()) {
             startSimThread();
         }
+
+        setStartPose();
     }
 
     /**
@@ -447,6 +445,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
     }
 
+
+    
     public Command teleopCommand(CommandXboxController driverController) {
         return new SwerveTeleopCommand(this, driverController);
     }
@@ -465,5 +465,20 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public Command followPath(PathPlannerPath path) {
         return new SwerveFollowPathCommand(this, path);
+    }
+
+    public void setStartPose()
+    {
+        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+            resetPose(Container.START_POSE_RED);
+        }
+        else{
+            resetPose(Container.START_POSE_BLUE);
+        }
+    }
+
+    public InstantCommand resetToStartPoseCmd()
+    {
+        return new InstantCommand(() -> setStartPose());
     }
 }
