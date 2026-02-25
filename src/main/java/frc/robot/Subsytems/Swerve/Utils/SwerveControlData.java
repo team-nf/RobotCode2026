@@ -23,6 +23,8 @@ public class SwerveControlData implements Sendable {
     public LinearVelocity robotSpeed = MetersPerSecond.of(0.0);
     public AngularVelocity robotAngularVelocity = RotationsPerSecond.of(0.0);
 
+    public boolean isAimed = false;
+
     public Distance robotXError = Meters.of(0.0);
     public Distance robotYError = Meters.of(0.0);
     public Angle robotAngleError = Degrees.of(0.0);
@@ -54,6 +56,8 @@ public class SwerveControlData implements Sendable {
         builder.addDoubleProperty("RobotXError", () -> robotXError.in(Meters), null);
         builder.addDoubleProperty("RobotYError", () -> robotYError.in(Meters), null);
         builder.addDoubleProperty("RobotAngleError", () -> robotAngleError.in(Degrees), null);
+
+        builder.addBooleanProperty("IsAimed", () -> isAimed, null);
 
         builder.addDoubleProperty("AimingPID_P", () -> aimingPID.getP(), (value) -> aimingPID.setP(value));
         builder.addDoubleProperty("AimingPID_I", () -> aimingPID.getI(), (value) -> aimingPID.setI(value));

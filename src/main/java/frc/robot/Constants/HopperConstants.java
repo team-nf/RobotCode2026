@@ -17,7 +17,7 @@ public class HopperConstants {
 
     public static final double HOPPER_KS = 0.5;
     public static final double HOPPER_KV = 0.0;
-    public static final double HOPPER_KP = 8;
+    public static final double HOPPER_KP = 10;
     public static final double HOPPER_KI = 0.0;
     public static final double HOPPER_KD = 0.005;
 
@@ -35,8 +35,8 @@ public class HopperConstants {
 
             .withCurrentLimits(new CurrentLimitsConfigs()
                 .withSupplyCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(20)
-                .withStatorCurrentLimit(20))
+                .withSupplyCurrentLimit(30)
+                .withStatorCurrentLimit(30))
                 
             .withMotorOutput(new MotorOutputConfigs()
                 .withInverted(InvertedValue.Clockwise_Positive));
@@ -49,7 +49,7 @@ public class HopperConstants {
 
     public static final AngularVelocity HOPPER_ALLOWABLE_ERROR = RotationsPerSecond.of(1.0); // in RPS
 
-    public static final AngularVelocity HOPPER_FEEDING_VELOCITY = RotationsPerSecond.of(12.5); // in RPS
+    public static final AngularVelocity HOPPER_FEEDING_VELOCITY = RotationsPerSecond.of(30); // in RPS
     public static final AngularVelocity HOPPER_PUSHING_VELOCITY = RotationsPerSecond.of(0.1); // in RPS
     public static final AngularVelocity HOPPER_REVERSE_VELOCITY = RotationsPerSecond.of(-10.0); // in RPS
 

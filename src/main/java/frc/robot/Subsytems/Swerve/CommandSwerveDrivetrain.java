@@ -2,7 +2,9 @@ package frc.robot.Subsytems.Swerve;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.lang.annotation.Retention;
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.SignalLogger;
@@ -39,6 +41,8 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.TelemetryConstants;
@@ -480,5 +484,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public InstantCommand resetToStartPoseCmd()
     {
         return new InstantCommand(() -> setStartPose());
+    }
+
+    public void setIsAimed(boolean isAimed)
+    {
+        swerveData.isAimed = isAimed;
+    }
+
+    public Command waitForAtAim()
+    {
+        return new WaitUntilCommand(() -> {return swerveData.isAimed;});
     }
 }

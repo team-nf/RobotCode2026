@@ -65,7 +65,7 @@ public class SwerveAimToHub extends Command {
   public void initialize() {
     aimingPID.reset();
 
-    prevErrors = new double[10];
+    prevErrors = new double[15];
     for (int i = 0; i < prevErrors.length; i++) {
       prevErrors[i] = 1.0;
     }
@@ -101,15 +101,20 @@ public class SwerveAimToHub extends Command {
       errorSum += error;
     }
     averageError = errorSum / prevErrors.length;
+
+    swerveDrivetrain.setIsAimed(averageError < DriveConstants.AIMING_TOLERANCE_RADIANS);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    swerveDrivetrain.setIsAimed(false);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return averageError < DriveConstants.AIMING_TOLERANCE_RADIANS;
+    //return averageError < DriveConstants.AIMING_TOLERANCE_RADIANS;
+    return false;
   }
 }

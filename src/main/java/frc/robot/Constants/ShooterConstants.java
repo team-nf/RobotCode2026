@@ -58,13 +58,13 @@ public class ShooterConstants {
         .withKD(SHOOTER_KD);
 
     public static final VoltageConfigs SHOOTER_VOLTAGE_CONFIGS = new VoltageConfigs()
-        .withPeakForwardVoltage(8)
-        .withPeakReverseVoltage(-8);
+        .withPeakForwardVoltage(10)
+        .withPeakReverseVoltage(-10);
 
     public static final CurrentLimitsConfigs SHOOTER_CURRENT_LIMITS = new CurrentLimitsConfigs()
         .withSupplyCurrentLimitEnable(true)
-        .withSupplyCurrentLimit(20)
-        .withStatorCurrentLimit(20);
+        .withSupplyCurrentLimit(35)
+        .withStatorCurrentLimit(35);
 
     public static final TalonFXConfiguration SHOOTER_CONFIG = new TalonFXConfiguration()
             .withSlot0(SHOOTER_PID_CONFIGS)

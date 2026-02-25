@@ -14,6 +14,8 @@ import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import static edu.wpi.first.units.Units.*;
 
+import javax.security.auth.login.FailedLoginException;
+
 public class IntakeConstants {
     public static final int INTAKE_MOTOR_ID = 59;
 
@@ -64,6 +66,7 @@ public class IntakeConstants {
     public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(128);
     public static final Angle INTAKE_ARM_START_ANGLE = Degrees.of(120);
     public static final Angle INTAKE_ARM_ALLOWABLE_ERROR = Degrees.of(3);
+    public static final Angle INTAKE_FEED_ANGLE = Degrees.of(37.5);
 
     public static final double INTAKE_ARM_KS = 0.0;
     public static final double INTAKE_ARM_KV = 3;

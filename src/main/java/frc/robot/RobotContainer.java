@@ -96,7 +96,8 @@ public class RobotContainer {
         .onTrue(m_theMachine.reverseRequest());
 
     m_driverController.y()
-        .whileTrue(m_swerveDrivetrain.getIntoShootArea().andThen(m_swerveDrivetrain.aimToHub()).andThen(m_theMachine.shootRequest()))
+        .whileTrue(m_swerveDrivetrain.aimToHub()
+                .alongWith(m_swerveDrivetrain.waitForAtAim().andThen(m_theMachine.shootRequest())))
         .onFalse(m_theMachine.idleDeployedRequest());
 
     m_driverController.rightBumper()

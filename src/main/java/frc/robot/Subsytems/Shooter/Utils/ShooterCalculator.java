@@ -91,7 +91,7 @@ public class ShooterCalculator {
             requiredVelocity / (2 * Math.PI * ShooterConstants.FLYWHEEL_RADIUS.in(Meters) * ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT)
         );
 
-        wheelSpeed *= Math.max((hoodAngle/ShooterConstants.MIN_HOOD_ANGLE.in(Radians))/1.3,1);
+        wheelSpeed *= Math.max((hoodAngle/ShooterConstants.MIN_HOOD_ANGLE.in(Radians))/1.5,1);
 
         wheelSpeed = Math.max(ShooterConstants.MIN_FLYWHEEL_SPEED.in(RotationsPerSecond), Math.min(wheelSpeed, ShooterConstants.MAX_FLYWHEEL_SPEED.in(RotationsPerSecond))); // Clamp between min and max wheel speeds
 
