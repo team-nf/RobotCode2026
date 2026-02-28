@@ -144,10 +144,11 @@ public class RobotContainer {
             .alongWith(m_swerveDrivetrain.waitForAtAim().andThen(m_theMachine.shootRequest()))
             .withTimeout(Seconds.of(5))
             .andThen(m_theMachine.idleRetractedRequest()));
-            
+
     NamedCommands.registerCommand("MachineIntakeRequest", m_theMachine.intakeRequest());
     NamedCommands.registerCommand("MachineIdleDeployedRequest", m_theMachine.idleDeployedRequest());
     NamedCommands.registerCommand("MachineIdleRetractedRequest", m_theMachine.idleRetractedRequest());
+    NamedCommands.registerCommand("MachineIdleRequest", m_theMachine.idleRequest());
 
     NamedCommands.registerCommand("SetStartPose1", m_swerveDrivetrain.setStartPose1Command());
 

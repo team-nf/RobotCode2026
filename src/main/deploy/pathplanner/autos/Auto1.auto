@@ -31,6 +31,12 @@
         {
           "type": "named",
           "data": {
+            "name": "MachineIdleRequest"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "IntakeFromTrench1"
           }
         },

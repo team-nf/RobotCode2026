@@ -132,7 +132,7 @@ public class ShooterCalculator {
     {
         // Placeholder implementation
         // Replace with actual logic to calculate shooter wheel speed based on robot's current pose
-        return calculateFlywheelSpeedFromCurrentPose().div((3.0));
+        return calculateFlywheelSpeedFromCurrentPose();//.div((3.0))
     }
 
     public Angle calculateRestHoodAngleFromCurrentPose()

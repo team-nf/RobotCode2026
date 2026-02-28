@@ -40,6 +40,7 @@ import frc.robot.Subsytems.TheMachine.StateActions.TheMachineShootAction;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineTestAction;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineZeroAction;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleDeployedRequest;
+import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleRetractedRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIntakeRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineNoneRequest;
@@ -251,6 +252,10 @@ public class TheMachine {
   
   public Command idleRetractedRequest() {
       return new TheMachineIdleRetractedRequest(this);
+  }
+
+  public Command idleRequest() {
+    return new TheMachineIdleRequest(this);
   }
 
   public Command intakeRequest() {
