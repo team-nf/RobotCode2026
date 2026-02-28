@@ -15,7 +15,7 @@ public class TheMachineIntakeToggledRequest extends InstantCommand {
     @Override
     public void initialize() {
         if (theMachine.isState(TheMachineControlState.INTAKE)) {
-            theMachine.setState(TheMachineControlState.IDLE);
+            theMachine.setState(TheMachineControlState.IDLE_DEPLOYED);
         } else {    
         theMachine.setState(TheMachineControlState.INTAKE);
        }

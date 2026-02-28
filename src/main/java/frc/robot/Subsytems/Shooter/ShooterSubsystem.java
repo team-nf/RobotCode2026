@@ -63,7 +63,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void updateShooterData() {
     shooterData.flywheelVelocityL = shooterHardware.getFlywheelVelocityL();
-    shooterData.flywheelVelocityR = shooterHardware.getFlywheelVelocityR().unaryMinus();
+    shooterData.flywheelVelocityR = shooterHardware.getFlywheelVelocityR();
     shooterData.hoodAngle = shooterHardware.getHoodPosition();
 
     shooterData.flywheelErrorL = shooterData.flywheelGoalVelocity.minus(shooterData.flywheelVelocityL);

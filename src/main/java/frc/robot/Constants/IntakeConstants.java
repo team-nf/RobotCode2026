@@ -52,7 +52,7 @@ public class IntakeConstants {
 
     public static final AngularVelocity INTAKE_ALLOWABLE_ERROR = RotationsPerSecond.of(1.0); // in RPS
 
-    public static final AngularVelocity INTAKE_INTAKING_VELOCITY = RotationsPerSecond.of(40); // in RPS
+    public static final AngularVelocity INTAKE_INTAKING_VELOCITY = RotationsPerSecond.of(30); // in RPS
     public static final AngularVelocity INTAKE_FEEDING_VELOCITY = RotationsPerSecond.of(20); // in RPS
     public static final AngularVelocity INTAKE_REVERSE_VELOCITY = RotationsPerSecond.of(-4.0); // in RPS
 
@@ -63,10 +63,10 @@ public class IntakeConstants {
     // choose to fallback to using the intake motor instead.
 
     public static final Angle INTAKE_ARM_DEPLOYED_ANGLE = Degrees.of(0);
-    public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(128);
+    public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(120);
     public static final Angle INTAKE_ARM_START_ANGLE = Degrees.of(120);
     public static final Angle INTAKE_FEED_ANGLE = Degrees.of(42.5);
-    public static final Angle INTAKE_ARM_BETWEEN_ANGLE = Degrees.of(10);
+    public static final Angle INTAKE_ARM_BETWEEN_ANGLE = Degrees.of(0);
 
     public static final Angle INTAKE_ARM_ALLOWABLE_ERROR = Degrees.of(6);
 

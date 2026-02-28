@@ -33,19 +33,20 @@ public class ShooterConstants {
     public static final int HOOD_MOTOR_ID = 55;
 
     // Shooter Math Constants
-    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.7; // in meters (2 inches)
+    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.83; // in meters (2 inches)
 
     // Configs
     public static final int NUMBER_OF_FLYWHEEL_MOTORS = 2;
 
-    public static final AngularVelocity FLYWHEEL_ALLOWABLE_ERROR = RotationsPerSecond.of(0.5); // Allowable error in radians per second
+    public static final AngularVelocity FLYWHEEL_ALLOWABLE_ERROR = RotationsPerSecond.of(1); // Allowable error in radians per second
     public static final Angle HOOD_ALLOWABLE_ERROR = Degrees.of(1); // Allowable error in radians
 
-    public static final double SHOOTER_KS = 0.0;
-    public static final double SHOOTER_KV = 0.12;    
-    public static final double SHOOTER_KP = 0.1;
+    public static final double SHOOTER_KS = 0.15;
+    public static final double SHOOTER_KV = 0.1195;    
+    public static final double SHOOTER_KP = 0.0525;
     public static final double SHOOTER_KI = 0.0;
-    public static final double SHOOTER_KD = SHOOTER_KP*0.2; 
+    public static final double SHOOTER_KD = 0.001;
+    public static final double SHOOTER_KA = 0.005; 
 
 
     public static final MotorOutputConfigs SHOOTER_MOTOR_OUTPUT_CONFIGS = new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive);
@@ -55,7 +56,8 @@ public class ShooterConstants {
         .withKV(SHOOTER_KV)
         .withKP(SHOOTER_KP)
         .withKI(SHOOTER_KI)
-        .withKD(SHOOTER_KD);
+        .withKD(SHOOTER_KD)
+        .withKA(SHOOTER_KA);
 
     public static final VoltageConfigs SHOOTER_VOLTAGE_CONFIGS = new VoltageConfigs()
         .withPeakForwardVoltage(10)

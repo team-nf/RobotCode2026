@@ -133,6 +133,10 @@ public class RobotContainer {
     m_driverController.povLeft()
         .onTrue(m_theMachine.noneRequest());
 
+    m_driverController.povRight()
+        .whileTrue(m_theMachine.testRequest())
+        .onFalse(m_theMachine.idleDeployedRequest());
+
     m_driverController.povUp()
           .onTrue(m_swerveDrivetrain.resetToStartPoseCmd());
 
