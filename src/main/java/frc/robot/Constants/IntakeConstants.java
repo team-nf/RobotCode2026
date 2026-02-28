@@ -65,8 +65,10 @@ public class IntakeConstants {
     public static final Angle INTAKE_ARM_DEPLOYED_ANGLE = Degrees.of(0);
     public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(128);
     public static final Angle INTAKE_ARM_START_ANGLE = Degrees.of(120);
-    public static final Angle INTAKE_ARM_ALLOWABLE_ERROR = Degrees.of(3);
-    public static final Angle INTAKE_FEED_ANGLE = Degrees.of(37.5);
+    public static final Angle INTAKE_FEED_ANGLE = Degrees.of(42.5);
+    public static final Angle INTAKE_ARM_BETWEEN_ANGLE = Degrees.of(10);
+
+    public static final Angle INTAKE_ARM_ALLOWABLE_ERROR = Degrees.of(6);
 
     public static final double INTAKE_ARM_KS = 0.0;
     public static final double INTAKE_ARM_KV = 3;
@@ -100,7 +102,7 @@ public class IntakeConstants {
                         .withEnableFOC(false);
 
     // Arm physical defaults for simulation
-    public static final Mass INTAKE_ARM_MASS = Kilograms.of(2.0);
+    public static final Mass INTAKE_ARM_MASS = Kilograms.of(0.1);
     public static final Distance INTAKE_ARM_LENGTH = Meters.of(0.1);
     public static final double INTAKE_ARM_GEAR_REDUCTION = 60.0/18.0*36/14*5;
     public static final double INTAKE_ARM_INERTIA = 1.0/3.0 * INTAKE_ARM_MASS.in(Kilogram) * Math.pow(INTAKE_ARM_LENGTH.in(Meters)/2, 2);

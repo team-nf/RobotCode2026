@@ -9,7 +9,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Utils.States.SwerveStates.SwerveState;
+import frc.robot.Constants.States.SwerveStates.SwerveState;
 
 public class SwerveControlData implements Sendable {
 

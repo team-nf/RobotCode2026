@@ -31,8 +31,8 @@ public class IntakeRealHardware implements IntakeHardware {
     private double intakeError = 0.0;
     private AngularVelocity testIntakeGoal = RotationsPerSecond.of(0);
 
-    private Angle intakeArmPosition = Degrees.of(0);
-    private Angle intakeArmMotorPosition = Degrees.of(0);
+    private Angle intakeArmPosition = IntakeConstants.INTAKE_ARM_START_ANGLE;
+    private Angle intakeArmMotorPosition = IntakeConstants.INTAKE_ARM_START_ANGLE.times(IntakeConstants.INTAKE_ARM_GEAR_REDUCTION);
     private Voltage intakeArmMotorVoltage = Volts.of(0);
     private Current intakeArmMotorCurrent = Amps.of(0);
     private double intakeArmReference = 0.0;

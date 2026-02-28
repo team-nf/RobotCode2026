@@ -19,7 +19,8 @@ public interface ShooterHardware extends Sendable{
     public TalonFX getThirdShootMotor();
     public TalonFX getFourthShootMotor();
 
-    public AngularVelocity getFlywheelVelocity();
+    public AngularVelocity getFlywheelVelocityL();
+    public AngularVelocity getFlywheelVelocityR();
 
     public void flywheelSetPower(double power);
     public void setFlywheelSpeed(AngularVelocity velocity);

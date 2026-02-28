@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants.Dimensions;
+import frc.robot.Constants.PoseConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Subsytems.Swerve.Utils.SwerveControlData;
 import pabeles.concurrency.IntOperatorTask.Min;
@@ -53,12 +54,12 @@ public class ShooterCalculator {
                     new Transform3d(new Translation3d(robotPose.getX(), robotPose.getY(), 0), 
                     new Rotation3d(robotPose.getRotation()));
 
-        double hubX = Dimensions.BLUE_HUB_AIM_POSE.getX();
-        double hubY = Dimensions.BLUE_HUB_AIM_POSE.getY();
+        double hubX = PoseConstants.BLUE_HUB_AIM_POSE.getX();
+        double hubY = PoseConstants.BLUE_HUB_AIM_POSE.getY();
         if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
         {
-            hubX = Dimensions.RED_HUB_AIM_POSE.getX();
-            hubY = Dimensions.RED_HUB_AIM_POSE.getY();
+            hubX = PoseConstants.RED_HUB_AIM_POSE.getX();
+            hubY = PoseConstants.RED_HUB_AIM_POSE.getY();
         }
         Pose3d hubPose =  new Pose3d(hubX, hubY, Dimensions.HUB_HEIGHT.in(Meters), new Rotation3d());
 
@@ -91,8 +92,6 @@ public class ShooterCalculator {
             requiredVelocity / (2 * Math.PI * ShooterConstants.FLYWHEEL_RADIUS.in(Meters) * ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT)
         );
 
-        wheelSpeed *= Math.max((hoodAngle/ShooterConstants.MIN_HOOD_ANGLE.in(Radians))/1.5,1);
-
         wheelSpeed = Math.max(ShooterConstants.MIN_FLYWHEEL_SPEED.in(RotationsPerSecond), Math.min(wheelSpeed, ShooterConstants.MAX_FLYWHEEL_SPEED.in(RotationsPerSecond))); // Clamp between min and max wheel speeds
 
 
@@ -106,12 +105,12 @@ public class ShooterCalculator {
     {
         Pose2d robotPose = swerveDataSupplier.get().robotPose;
         
-        double hubX = Dimensions.BLUE_HUB_AIM_POSE.getX();
-        double hubY = Dimensions.BLUE_HUB_AIM_POSE.getY();
+        double hubX = PoseConstants.BLUE_HUB_AIM_POSE.getX();
+        double hubY = PoseConstants.BLUE_HUB_AIM_POSE.getY();
         if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
         {
-            hubX = Dimensions.RED_HUB_AIM_POSE.getX();
-            hubY = Dimensions.RED_HUB_AIM_POSE.getY();
+            hubX = PoseConstants.RED_HUB_AIM_POSE.getX();
+            hubY = PoseConstants.RED_HUB_AIM_POSE.getY();
         }
         Pose3d hubPose =  new Pose3d(hubX, hubY, Dimensions.HUB_HEIGHT.in(Meters), new Rotation3d());
      
@@ -133,7 +132,7 @@ public class ShooterCalculator {
     {
         // Placeholder implementation
         // Replace with actual logic to calculate shooter wheel speed based on robot's current pose
-        return calculateFlywheelSpeedFromCurrentPose().div(3.0);
+        return calculateFlywheelSpeedFromCurrentPose().div((3.0));
     }
 
     public Angle calculateRestHoodAngleFromCurrentPose()

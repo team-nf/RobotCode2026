@@ -4,7 +4,7 @@
       "x": -8,
       "y": -8,
       "width": 1722,
-      "height": 1082,
+      "height": 1034,
       "state": {
         "sidebar": {
           "width": 216,
@@ -132,7 +132,7 @@
                     "type": "robot",
                     "logKey": "NT:Sim/Swerve/CornerPoses",
                     "logType": "Pose2d[]",
-                    "visible": true,
+                    "visible": false,
                     "options": {
                       "model": "Rod"
                     }
@@ -141,7 +141,7 @@
                     "type": "robot",
                     "logKey": "NT:Sim/Swerve/EdgePoses",
                     "logType": "Pose2d[]",
-                    "visible": true,
+                    "visible": false,
                     "options": {
                       "model": "Rod"
                     }
@@ -154,17 +154,17 @@
                 "cameraIndex": -1,
                 "orbitFov": 50,
                 "cameraPosition": [
-                  -8.431647827789732,
-                  5.896426959354638,
-                  3.243886347642353
+                  6.499573855318273,
+                  7.64663541985497,
+                  7.74713785406481
                 ],
                 "cameraTarget": [
-                  -4.857378953858151,
-                  -2.5347048326375603,
-                  3.2185318899363793
+                  4.198798593723538,
+                  0.7615734586097901,
+                  0.28528064992137764
                 ]
               },
-              "controlsHeight": 377
+              "controlsHeight": 298
             },
             {
               "type": 2,

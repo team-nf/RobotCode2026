@@ -11,8 +11,10 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.Dimensions;
+import frc.robot.Constants.PoseConstants;
 import frc.robot.Subsytems.Swerve.CommandSwerveDrivetrain;
 
 public class SwerveFieldContactSim {
@@ -39,8 +41,16 @@ public class SwerveFieldContactSim {
         return instance;
     }
 
-    private Pose2d currentSimPose = Container.START_POSE_BLUE;
-    private Pose2d prevSimPose = Container.START_POSE_BLUE;
+    private Pose2d currentSimPose = PoseConstants.START_POSE_BLUE_1;
+    private Pose2d prevSimPose = PoseConstants.START_POSE_BLUE_1;
+
+
+    private SwerveFieldContactSim() {
+        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+            currentSimPose = PoseConstants.START_POSE_RED_1;
+            prevSimPose = PoseConstants.START_POSE_RED_1;
+        }
+    } 
 
     public CommandSwerveDrivetrain getSwerveDrivetrain() {
         return m_swerveDrivetrain;
@@ -265,8 +275,8 @@ public class SwerveFieldContactSim {
     }
 
     public void reset() {
-        currentSimPose = Container.START_POSE_BLUE;
-        prevSimPose = Container.START_POSE_BLUE;
+        currentSimPose = PoseConstants.START_POSE_BLUE_1;
+        prevSimPose = PoseConstants.START_POSE_BLUE_1;
         m_swerveDrivetrain.resetPose(currentSimPose);
     }
 

@@ -45,9 +45,9 @@ public class IntakeSimHardware extends IntakeRealHardware {
             IntakeConstants.INTAKE_ARM_INERTIA,
             IntakeConstants.INTAKE_ARM_LENGTH.in(Meters),
             IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE.in(Radians), // min angle (deployed)
-            IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.in(Radians), // max angle (retracted)
+            IntakeConstants.INTAKE_ARM_START_ANGLE.in(Radians), // max angle (retracted)
             true,
-            IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.in(Radians),
+            IntakeConstants.INTAKE_ARM_START_ANGLE.in(Radians),
             0.0,
             0.0
         );
@@ -61,7 +61,7 @@ public class IntakeSimHardware extends IntakeRealHardware {
             getIntakeMotor().getSimState().Orientation = ChassisReference.CounterClockwise_Positive;
             getIntakeMotor().getSimState().setMotorType(TalonFXSimState.MotorType.KrakenX60);
 
-            getIntakeArmMotor().getSimState().Orientation = ChassisReference.CounterClockwise_Positive;
+            getIntakeArmMotor().getSimState().Orientation = ChassisReference.Clockwise_Positive;
             getIntakeArmMotor().getSimState().setMotorType(TalonFXSimState.MotorType.KrakenX60);
         }
         else {

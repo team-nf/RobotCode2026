@@ -1,0 +1,33 @@
+package frc.robot.Subsytems.Intake.StateActions;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.States.IntakeStates.IntakeControlState;
+import frc.robot.Subsytems.Intake.IntakeSubsystem;
+
+public class IntakeIdleBetweenAction extends Command {
+
+  private final IntakeSubsystem intakeSubsystem;
+
+  public IntakeIdleBetweenAction(IntakeSubsystem intakeSubsystem) {
+    this.intakeSubsystem = intakeSubsystem;
+    addRequirements(intakeSubsystem);
+  }
+
+  @Override
+  public void initialize() {
+    intakeSubsystem.idleBetween();
+  }
+
+  @Override
+  public void execute() {
+    intakeSubsystem.idleBetween();
+  }
+
+  @Override
+  public void end(boolean interrupted) {}
+
+  @Override
+  public boolean isFinished() {
+    return !intakeSubsystem.isIntakeState(IntakeControlState.IDLE_BETWEEN);
+  }
+}

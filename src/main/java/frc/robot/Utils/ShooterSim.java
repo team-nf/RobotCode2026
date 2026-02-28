@@ -50,7 +50,7 @@ public class ShooterSim {
         this.shouldShootSupplier = supplier;
     }
 
-    private double fuelPerSecondLimit = 7.0; // Default limit
+    private double fuelPerSecondLimit = 9.0; // Default limit
     private double lastShootTime = 0;
     private int fuelShotCount = 0;
 
@@ -72,7 +72,7 @@ public class ShooterSim {
                     new Rotation3d(robotPoseSupplier.get().getRotation()));
 
             double launchAngle = Math.PI / 2 - controlData.hoodAngle.in(Radians);
-            double fuelVelocity = controlData.flywheelVelocity.in(RotationsPerSecond) * 2 * Math.PI * ShooterConstants.FLYWHEEL_RADIUS.in(Meters) * ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
+            double fuelVelocity = controlData.flywheelVelocityL.in(RotationsPerSecond) * 2 * Math.PI * ShooterConstants.FLYWHEEL_RADIUS.in(Meters) * ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
 
             Pose3d leftFuelShootPose = new Pose3d(
                 Dimensions.LEFT_SHOOTER_POSE.getX() + Dimensions.FUEL_SHOOTER_OFFSET.in(Meters) * Math.cos(controlData.hoodAngle.in(Radians)),

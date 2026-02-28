@@ -12,14 +12,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FeederConstants;
 import frc.robot.Constants.TelemetryConstants;
+import frc.robot.Constants.States.FeederStates;
+import frc.robot.Constants.States.FeederStates.*;
 import frc.robot.Subsytems.Feeder.Hardware.FeederHardware;
 import frc.robot.Subsytems.Feeder.Hardware.FeederRealHardware;
 import frc.robot.Subsytems.Feeder.Hardware.FeederSimHardware;
 import frc.robot.Subsytems.Feeder.StateActions.*;
 import frc.robot.Subsytems.Feeder.StateRequests.*;
 import frc.robot.Subsytems.Feeder.Utils.FeederControlData;
-import frc.robot.Utils.States.FeederStates;
-import frc.robot.Utils.States.FeederStates.*;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -57,8 +57,8 @@ public class FeederSubsystem extends SubsystemBase {
     
     feederData.feederRollerState = RotationsPerSecond.of(feederData.feederError.abs(RotationsPerSecond))
     .lte(FeederConstants.FEEDER_ALLOWABLE_ERROR)
-        ? frc.robot.Utils.States.FeederStates.FeederRollerState.AT_SPEED
-        : frc.robot.Utils.States.FeederStates.FeederRollerState.REACHING_SPEED;
+        ? frc.robot.Constants.States.FeederStates.FeederRollerState.AT_SPEED
+        : frc.robot.Constants.States.FeederStates.FeederRollerState.REACHING_SPEED;
   }
 
   public void zero() {

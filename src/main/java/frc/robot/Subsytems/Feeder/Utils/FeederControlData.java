@@ -9,8 +9,8 @@ import static edu.wpi.first.units.Units.Rotation;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import frc.robot.Utils.States.FeederStates.FeederControlState;
-import frc.robot.Utils.States.FeederStates.FeederRollerState;
+import frc.robot.Constants.States.FeederStates.FeederControlState;
+import frc.robot.Constants.States.FeederStates.FeederRollerState;
 import edu.wpi.first.units.measure.*;
 import static edu.wpi.first.units.Units.*;
 

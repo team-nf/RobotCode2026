@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "SetStartPose1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MachineIntakeRequest"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeFromWall"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeFromTrench1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AimAndShoot"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": null,
+  "choreoAuto": false
+}

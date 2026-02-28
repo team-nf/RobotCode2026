@@ -9,14 +9,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.TelemetryConstants;
+import frc.robot.Constants.States.IntakeStates;
+import frc.robot.Constants.States.IntakeStates.IntakePositionState;
 import frc.robot.Subsytems.Intake.Hardware.IntakeHardware;
 import frc.robot.Subsytems.Intake.Hardware.IntakeRealHardware;
 import frc.robot.Subsytems.Intake.Hardware.IntakeSimHardware;
 import frc.robot.Subsytems.Intake.StateActions.*;
 import frc.robot.Subsytems.Intake.StateRequests.*;
 import frc.robot.Subsytems.Intake.Utils.IntakeControlData;
-import frc.robot.Utils.States.IntakeStates;
-import frc.robot.Utils.States.IntakeStates.IntakePositionState;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -32,6 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public final Command intakeIntakeAction;
   public final Command intakeFeedAction;
   public final Command intakeReverseAction;
+  public final Command intakeIdleBetweenAction;
   public final Command intakeTestAction;
 
   public IntakeSubsystem() {
@@ -48,6 +49,7 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeIntakeAction = new IntakeIntakeAction(this);
     intakeFeedAction = new IntakeFeedAction(this);
     intakeReverseAction = new IntakeReverseAction(this);
+    intakeIdleBetweenAction = new IntakeIdleBetweenAction(this);
     intakeTestAction = new IntakeTestAction(this);
   }
 
@@ -130,6 +132,14 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeHardware.setIntakeSpeed(intakeData.intakeGoalVelocity);
   }
 
+  public void idleBetween() {
+    intakeData.intakeGoalVelocity = RotationsPerSecond.of(0);
+    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_BETWEEN_ANGLE;
+    updateIntakeData();
+    intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
+    intakeHardware.intakeStop();
+  }
+
   public void test() {
     updateIntakeData();
     intakeHardware.testIntake();
@@ -171,6 +181,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public InstantCommand testRequest() {
     return new IntakeTestRequest(this);
+  }
+
+  public InstantCommand idleBetweenRequest() {
+    return new IntakeIdleBetweenRequest(this);
   }
 
   public IntakeControlData getIntakeData() {
@@ -220,6 +234,11 @@ public class IntakeSubsystem extends SubsystemBase {
       case REVERSE:
         if(!CommandScheduler.getInstance().isScheduled(intakeReverseAction)) {
           CommandScheduler.getInstance().schedule(intakeReverseAction);
+        }
+        break;
+      case IDLE_BETWEEN:
+        if(!CommandScheduler.getInstance().isScheduled(intakeIdleBetweenAction)) {
+          CommandScheduler.getInstance().schedule(intakeIdleBetweenAction);
         }
         break;
       case TEST:

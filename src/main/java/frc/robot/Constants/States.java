@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.Utils;
+package frc.robot.Constants;
 
 /** Add your docs here. */
 public class States {
@@ -66,6 +66,7 @@ public class States {
                 INTAKE,
                 REVERSE,
                 FEED,
+                IDLE_BETWEEN,
                 TEST
             }
 
@@ -86,7 +87,6 @@ public class States {
             public enum SwerveState {
                 TELEOP,
                 AIMING,
-                AIM_READY,
                 PATH_FOLLOWING,
             }
     }
@@ -100,7 +100,9 @@ public class States {
                 SHOOT,
                 REVERSE,
                 TEST,
-                NONE
+                NONE,
+                IDLE,
+                GET_READY
             }
     }
 

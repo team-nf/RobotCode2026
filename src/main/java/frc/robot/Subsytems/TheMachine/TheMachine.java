@@ -24,11 +24,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Constants.TheMachineConstants;
+import frc.robot.Constants.States.TheMachineStates.TheMachineControlState;
 import frc.robot.Subsytems.Feeder.FeederSubsystem;
 import frc.robot.Subsytems.Hopper.HopperSubsystem;
 import frc.robot.Subsytems.Intake.IntakeSubsystem;
 import frc.robot.Subsytems.Shooter.ShooterSubsystem;
 import frc.robot.Subsytems.Swerve.Utils.SwerveControlData;
+import frc.robot.Subsytems.TheMachine.StateActions.TheMachineGetReadyAction;
+import frc.robot.Subsytems.TheMachine.StateActions.TheMachineIdleAction;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineIdleDeployedAction;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineIdleRetractedAction;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineIntakeAction;
@@ -40,13 +43,13 @@ import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleDeployedReques
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleRetractedRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIntakeRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineNoneRequest;
+import frc.robot.Subsytems.TheMachine.StateRequests.TheMachinePreviousStateRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineReverseRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineShootRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineTestRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineZeroRequest;
 import frc.robot.Subsytems.TheMachine.Utils.LEDController;
 import frc.robot.Subsytems.TheMachine.Utils.TheMachineControlData;
-import frc.robot.Utils.States.TheMachineStates.TheMachineControlState;
 
 public class TheMachine {
   /** Creates a new TheMachine. */
@@ -67,6 +70,8 @@ public class TheMachine {
   private Command theMachineShootAction;
   private Command theMachineReverseAction;
   private Command theMachineTestAction;
+  private Command theMachineIdleAction;
+  private Command theMachineGetReadyAction;
 
   private LEDController leftLed;
   //private LEDController rightLed;
@@ -100,6 +105,8 @@ public class TheMachine {
     theMachineShootAction = TheMachineShootAction.get(this);
     theMachineReverseAction = TheMachineReverseAction.get(this);
     theMachineTestAction = TheMachineTestAction.get(this);
+    theMachineIdleAction = TheMachineIdleAction.get(this);
+    theMachineGetReadyAction = TheMachineGetReadyAction.get(this);
 
     leftLed = new LEDController(0, 30);
     //rightLed = new LEDController(1, 31);
@@ -111,8 +118,19 @@ public class TheMachine {
     return theMachineData.theMachineControlState;
   }
 
+  public TheMachineControlState getPreviousState() {
+    return theMachineData.previousTheMachineControlState;
+  }
+
   public void setState(TheMachineControlState newState) {
-    theMachineData.theMachineControlState = newState;
+    if (theMachineData.theMachineControlState != newState) {
+      theMachineData.previousTheMachineControlState = theMachineData.theMachineControlState;
+      theMachineData.theMachineControlState = newState;
+    }
+  }
+
+  public boolean isState(TheMachineControlState state) {
+    return theMachineData.theMachineControlState == state;
   }
 
   // Shooter State Requests
@@ -195,6 +213,10 @@ public class TheMachine {
     return intakeSubsystem.reverseRequest();
   }
 
+  public InstantCommand intakeIdleBetweenRequest() {
+    return intakeSubsystem.idleBetweenRequest();
+  }
+
   public InstantCommand intakeTestRequest() {
     return intakeSubsystem.testRequest();
   }
@@ -213,6 +235,10 @@ public class TheMachine {
   public WaitUntilCommand waitForIntakeRetract()
   {
     return intakeSubsystem.waitForIntakeToBeRetracted();
+  }
+
+  public Command previousStateRequest() {
+    return new TheMachinePreviousStateRequest(this);
   }
 
   public Command zeroRequest(){
@@ -323,6 +349,16 @@ public class TheMachine {
         if(!CommandScheduler.getInstance().isScheduled(theMachineTestAction))
         {
           CommandScheduler.getInstance().schedule(theMachineTestAction);
+        }
+        break;
+      case IDLE:
+        if (!CommandScheduler.getInstance().isScheduled(theMachineIdleAction)) {
+          CommandScheduler.getInstance().schedule(theMachineIdleAction);
+        }
+        break;
+      case GET_READY:
+        if (!CommandScheduler.getInstance().isScheduled(theMachineGetReadyAction)) {
+          CommandScheduler.getInstance().schedule(theMachineGetReadyAction);
         }
         break;
       default:

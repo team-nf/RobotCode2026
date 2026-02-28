@@ -21,8 +21,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.States.SwerveStates.SwerveState;
 import frc.robot.Subsytems.Swerve.CommandSwerveDrivetrain;
-import frc.robot.Utils.States.SwerveStates.SwerveState;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

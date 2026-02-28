@@ -19,6 +19,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TelemetryConstants;
+import frc.robot.Constants.States.ShooterStates.FlywheelState;
+import frc.robot.Constants.States.ShooterStates.HoodState;
+import frc.robot.Constants.States.ShooterStates.ShooterControlState;
 import frc.robot.Subsytems.Shooter.Hardware.ShooterHardware;
 import frc.robot.Subsytems.Shooter.Hardware.ShooterRealHardware;
 import frc.robot.Subsytems.Shooter.Hardware.ShooterSimHardware;
@@ -29,9 +32,6 @@ import frc.robot.Subsytems.Shooter.StateActions.ShooterZeroAction;
 import frc.robot.Subsytems.Shooter.StateRequests.*;
 import frc.robot.Subsytems.Shooter.Utils.ShooterCalculator;
 import frc.robot.Subsytems.Shooter.Utils.ShooterControlData;
-import frc.robot.Utils.States.ShooterStates.FlywheelState;
-import frc.robot.Utils.States.ShooterStates.HoodState;
-import frc.robot.Utils.States.ShooterStates.ShooterControlState;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
@@ -62,13 +62,20 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void updateShooterData() {
-    shooterData.flywheelVelocity = shooterHardware.getFlywheelVelocity();
+    shooterData.flywheelVelocityL = shooterHardware.getFlywheelVelocityL();
+    shooterData.flywheelVelocityR = shooterHardware.getFlywheelVelocityR().unaryMinus();
     shooterData.hoodAngle = shooterHardware.getHoodPosition();
 
-    shooterData.flywheelError = shooterData.flywheelGoalVelocity.minus(shooterData.flywheelVelocity);
+    shooterData.flywheelErrorL = shooterData.flywheelGoalVelocity.minus(shooterData.flywheelVelocityL);
+    shooterData.flywheelErrorR = shooterData.flywheelGoalVelocity.minus(shooterData.flywheelVelocityR);
     shooterData.hoodError = shooterData.hoodGoalAngle.minus(shooterData.hoodAngle);
 
-    shooterData.flywheelState = RotationsPerSecond.of(shooterData.flywheelError.abs(RotationsPerSecond))
+    shooterData.flywheelStateL = RotationsPerSecond.of(shooterData.flywheelErrorL.abs(RotationsPerSecond))
+      .lte(ShooterConstants.FLYWHEEL_ALLOWABLE_ERROR)
+        ? FlywheelState.AT_SPEED
+        : FlywheelState.REACHING_SPEED;
+
+    shooterData.flywheelStateR = RotationsPerSecond.of(shooterData.flywheelErrorR.abs(RotationsPerSecond))
       .lte(ShooterConstants.FLYWHEEL_ALLOWABLE_ERROR)
         ? FlywheelState.AT_SPEED
         : FlywheelState.REACHING_SPEED;
@@ -121,7 +128,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isShooterReadyToShoot() {
-    return shooterData.flywheelState == FlywheelState.AT_SPEED
+    return shooterData.flywheelStateL == FlywheelState.AT_SPEED
+      && shooterData.flywheelStateR == FlywheelState.AT_SPEED
       && shooterData.hoodState == HoodState.AT_POSITION;
   }
 

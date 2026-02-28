@@ -5,8 +5,8 @@
 package frc.robot.Subsytems.TheMachine.StateRequests;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants.States.TheMachineStates.TheMachineControlState;
 import frc.robot.Subsytems.TheMachine.TheMachine;
-import frc.robot.Utils.States.TheMachineStates.TheMachineControlState;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

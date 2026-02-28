@@ -18,9 +18,10 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.PoseConstants;
 import frc.robot.Constants.TunerConstants;
+import frc.robot.Constants.States.SwerveStates.SwerveState;
 import frc.robot.Subsytems.Swerve.CommandSwerveDrivetrain;
-import frc.robot.Utils.States.SwerveStates.SwerveState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SwerveAimToHub extends Command {
@@ -48,11 +49,11 @@ public class SwerveAimToHub extends Command {
 
     if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
     {
-      hubAimPose = Dimensions.BLUE_HUB_AIM_POSE;
+      hubAimPose = PoseConstants.BLUE_HUB_AIM_POSE;
     }
     else
     {
-      hubAimPose = Dimensions.RED_HUB_AIM_POSE;
+      hubAimPose = PoseConstants.RED_HUB_AIM_POSE;
     }
 
     //hubAimPose = new Pose2d(4.61, 4.1, new Rotation2d());

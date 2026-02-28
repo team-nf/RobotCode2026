@@ -44,7 +44,7 @@ public class FeederConstants {
                         .withSlot(0)
                         .withEnableFOC(false);
 
-    public static final double FEEDER_GEAR_REDUCTION = 1.0;
+    public static final double FEEDER_GEAR_REDUCTION = 2.0;
 
     public static final AngularVelocity FEEDER_ALLOWABLE_ERROR = RotationsPerSecond.of(1.0); // in RPS
 

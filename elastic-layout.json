@@ -8,24 +8,38 @@
         "layouts": [
           {
             "title": "Shooter Control Data",
-            "x": 256.0,
+            "x": 0.0,
             "y": 0.0,
             "width": 256.0,
-            "height": 640.0,
+            "height": 512.0,
             "type": "List Layout",
             "properties": {
               "label_position": "TOP"
             },
             "children": [
               {
-                "title": "FlywheelErrorRPM",
+                "title": "FlywheelErrorRPM-L",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/Shooter Control Data/FlywheelErrorRPM",
+                  "topic": "/SmartDashboard/Shooter Control Data/FlywheelErrorRPM-L",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "FlywheelErrorRPM-R",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Shooter Control Data/FlywheelErrorRPM-R",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -46,30 +60,30 @@
                 }
               },
               {
-                "title": "FlywheelRPM",
+                "title": "FlywheelRPM-L",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/Shooter Control Data/FlywheelRPM",
+                  "topic": "/SmartDashboard/Shooter Control Data/FlywheelRPM-L",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
                 }
               },
               {
-                "title": "FlywheelState",
+                "title": "FlywheelRPM-R",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/Shooter Control Data/FlywheelState",
+                  "topic": "/SmartDashboard/Shooter Control Data/FlywheelRPM-R",
                   "period": 0.06,
-                  "data_type": "string",
+                  "data_type": "double",
                   "show_submit_button": false
                 }
               },
@@ -128,34 +142,34 @@
                   "data_type": "string",
                   "show_submit_button": false
                 }
-              }
-            ]
-          },
-          {
-            "title": "Shooter Telemetry",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 640.0,
-            "type": "List Layout",
-            "properties": {
-              "label_position": "TOP"
-            },
-            "children": [
+              },
               {
-                "title": "Flywheel Velocity",
+                "title": "PrevShooterControlState",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/Shooter Telemetry/Flywheel Velocity",
+                  "topic": "/SmartDashboard/Shooter Control Data/PrevShooterControlState",
                   "period": 0.06,
-                  "data_type": "double",
+                  "data_type": "string",
                   "show_submit_button": false
                 }
-              },
+              }
+            ]
+          },
+          {
+            "title": "Shooter Telemetry",
+            "x": 256.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 512.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
               {
                 "title": "Hood Current",
                 "x": 0.0,
@@ -339,28 +353,56 @@
                 }
               },
               {
-                "title": "Shoot Current",
+                "title": "Shoot Current Left",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Current",
+                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Current Left",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
                 }
               },
               {
-                "title": "Shoot Error",
+                "title": "Shoot Current Right",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Error",
+                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Current Right",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Shoot Error Left",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Error Left",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Shoot Error Right",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Error Right",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -437,42 +479,84 @@
                 }
               },
               {
-                "title": "Shoot Motor Velocity",
+                "title": "Shoot Motor Velocity Left",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Motor Velocity",
+                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Motor Velocity Left",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
                 }
               },
               {
-                "title": "Shoot Reference",
+                "title": "Shoot Motor Velocity Right",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Reference",
+                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Motor Velocity Right",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
                 }
               },
               {
-                "title": "Shoot Voltage",
+                "title": "Shoot Reference Left",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
                 "height": 128.0,
                 "type": "Text Display",
                 "properties": {
-                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Voltage",
+                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Reference Left",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Shoot Reference Right",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Reference Right",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Shoot Voltage Left",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Voltage Left",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Shoot Voltage Right",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Shooter Telemetry/Shoot Voltage Right",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -510,22 +594,6 @@
           }
         ],
         "containers": [
-          {
-            "title": "Flywheel Velocity",
-            "x": 1280.0,
-            "y": 128.0,
-            "width": 384.0,
-            "height": 384.0,
-            "type": "Graph",
-            "properties": {
-              "topic": "/SmartDashboard/Shooter Telemetry/Flywheel Velocity",
-              "period": 0.033,
-              "data_type": "double",
-              "time_displayed": 5.0,
-              "color": 4278238420,
-              "line_width": 2.0
-            }
-          },
           {
             "title": "Shoot KD",
             "x": 896.0,
@@ -612,9 +680,9 @@
           },
           {
             "title": "Hood Position",
-            "x": 896.0,
+            "x": 640.0,
             "y": 128.0,
-            "width": 384.0,
+            "width": 256.0,
             "height": 384.0,
             "type": "Graph",
             "properties": {
@@ -628,8 +696,8 @@
           },
           {
             "title": "Shoot Reference",
-            "x": 768.0,
-            "y": 256.0,
+            "x": 512.0,
+            "y": 384.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
@@ -642,7 +710,7 @@
           },
           {
             "title": "Hood Reference",
-            "x": 640.0,
+            "x": 512.0,
             "y": 256.0,
             "width": 128.0,
             "height": 128.0,
@@ -768,8 +836,8 @@
           },
           {
             "title": "PrevShooterControlState",
-            "x": 640.0,
-            "y": 128.0,
+            "x": 512.0,
+            "y": 0.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
@@ -782,7 +850,7 @@
           },
           {
             "title": "ShooterControlState",
-            "x": 768.0,
+            "x": 512.0,
             "y": 128.0,
             "width": 128.0,
             "height": 128.0,
@@ -792,6 +860,80 @@
               "period": 0.06,
               "data_type": "string",
               "show_submit_button": false
+            }
+          },
+          {
+            "title": "Flywheel Velocity Left",
+            "x": 896.0,
+            "y": 128.0,
+            "width": 384.0,
+            "height": 384.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter Telemetry/Flywheel Velocity Left",
+              "period": 0.033,
+              "data_type": "double",
+              "time_displayed": 5.0,
+              "color": 4278238420,
+              "line_width": 2.0
+            }
+          },
+          {
+            "title": "FlywheelState-L",
+            "x": 0.0,
+            "y": 512.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter Control Data/FlywheelState-L",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "FlywheelState-R",
+            "x": 128.0,
+            "y": 512.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter Control Data/FlywheelState-R",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "ShooterControlState",
+            "x": 256.0,
+            "y": 512.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter Control Data/ShooterControlState",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Flywheel Velocity Right",
+            "x": 1280.0,
+            "y": 128.0,
+            "width": 384.0,
+            "height": 384.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter Telemetry/Flywheel Velocity Right",
+              "period": 0.033,
+              "data_type": "double",
+              "time_displayed": 5.0,
+              "color": 4278238420,
+              "line_width": 2.0
             }
           }
         ]
@@ -821,20 +963,6 @@
                 "type": "Text Display",
                 "properties": {
                   "topic": "/SmartDashboard/Feeder Control Data/FeederGoalRPM",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "FeederRPM",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/SmartDashboard/Feeder Control Data/FeederRPM",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -895,6 +1023,20 @@
                   "data_type": "string",
                   "show_submit_button": false
                 }
+              },
+              {
+                "title": "FeederRPM",
+                "x": 0.0,
+                "y": 512.0,
+                "width": 768.0,
+                "height": 384.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Feeder Control Data/FeederRPM",
+                  "period": 0.033,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
               }
             ]
           },
@@ -903,56 +1045,14 @@
             "x": 0.0,
             "y": 0.0,
             "width": 256.0,
-            "height": 640.0,
+            "height": 896.0,
             "type": "List Layout",
             "properties": {
               "label_position": "TOP"
             },
             "children": [
               {
-                "title": "Feeder Velocity",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/SmartDashboard/Feeder Telemetry/Feeder Velocity (RPM)",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Feeder Motor Velocity",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/SmartDashboard/Feeder Telemetry/Feeder Motor Velocity (RPM)",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Feeder Voltage",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/SmartDashboard/Feeder Telemetry/Feeder Voltage (V)",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Feeder Current",
+                "title": "Feeder Current (A)",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
@@ -960,6 +1060,104 @@
                 "type": "Text Display",
                 "properties": {
                   "topic": "/SmartDashboard/Feeder Telemetry/Feeder Current (A)",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Feeder Error",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Feeder Telemetry/Feeder Error",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Feeder KD",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Feeder Telemetry/Feeder KD",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Feeder KI",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Feeder Telemetry/Feeder KI",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Feeder KP",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Feeder Telemetry/Feeder KP",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Feeder KS",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Feeder Telemetry/Feeder KS",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Feeder KV",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Feeder Telemetry/Feeder KV",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Feeder Motor Velocity (RPM)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Feeder Telemetry/Feeder Motor Velocity (RPM)",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -978,11 +1176,70 @@
                   "data_type": "double",
                   "show_submit_button": false
                 }
+              },
+              {
+                "title": "Feeder Velocity (RPM)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Feeder Telemetry/Feeder Velocity (RPM)",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Feeder Voltage (V)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Feeder Telemetry/Feeder Voltage (V)",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Test Feeder Goal (RPM)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Feeder Telemetry/Test Feeder Goal (RPM)",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
               }
             ]
           }
         ],
-        "containers": []
+        "containers": [
+          {
+            "title": "FeederRPM",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 768.0,
+            "height": 384.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "/SmartDashboard/Feeder Control Data/FeederRPM",
+              "period": 0.033,
+              "data_type": "double",
+              "time_displayed": 5.0,
+              "color": 4278238420,
+              "line_width": 2.0
+            }
+          }
+        ]
       }
     },
     {
@@ -1000,34 +1257,6 @@
               "label_position": "TOP"
             },
             "children": [
-              {
-                "title": "HopperGoalRPM",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/SmartDashboard/Hopper Control Data/HopperGoalRPM",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "HopperRPM",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/SmartDashboard/Hopper Control Data/HopperRPM",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
               {
                 "title": "HopperErrorRPM",
                 "x": 0.0,
@@ -1083,6 +1312,34 @@
                   "data_type": "string",
                   "show_submit_button": false
                 }
+              },
+              {
+                "title": "HopperGoalRPM",
+                "x": 256.0,
+                "y": 512.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Hopper Control Data/HopperGoalRPM",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "HopperRPM",
+                "x": 384.0,
+                "y": 384.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Hopper Control Data/HopperRPM",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
               }
             ]
           },
@@ -1091,56 +1348,14 @@
             "x": 0.0,
             "y": 0.0,
             "width": 256.0,
-            "height": 640.0,
+            "height": 896.0,
             "type": "List Layout",
             "properties": {
               "label_position": "TOP"
             },
             "children": [
               {
-                "title": "Hopper Velocity",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/SmartDashboard/Hopper Telemetry/Hopper Velocity (RPM)",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Hopper Motor Velocity",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/SmartDashboard/Hopper Telemetry/Hopper Motor Velocity (RPM)",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Hopper Voltage",
-                "x": 0.0,
-                "y": 0.0,
-                "width": 128.0,
-                "height": 128.0,
-                "type": "Text Display",
-                "properties": {
-                  "topic": "/SmartDashboard/Hopper Telemetry/Hopper Voltage (V)",
-                  "period": 0.06,
-                  "data_type": "double",
-                  "show_submit_button": false
-                }
-              },
-              {
-                "title": "Hopper Current",
+                "title": "Hopper Current (A)",
                 "x": 0.0,
                 "y": 0.0,
                 "width": 128.0,
@@ -1148,6 +1363,104 @@
                 "type": "Text Display",
                 "properties": {
                   "topic": "/SmartDashboard/Hopper Telemetry/Hopper Current (A)",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Hopper Error",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Hopper Telemetry/Hopper Error",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Hopper KD",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Hopper Telemetry/Hopper KD",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Hopper KI",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Hopper Telemetry/Hopper KI",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Hopper KP",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Hopper Telemetry/Hopper KP",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Hopper KS",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Hopper Telemetry/Hopper KS",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Hopper KV",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Hopper Telemetry/Hopper KV",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Hopper Motor Velocity (RPM)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Hopper Telemetry/Hopper Motor Velocity (RPM)",
                   "period": 0.06,
                   "data_type": "double",
                   "show_submit_button": false
@@ -1166,11 +1479,86 @@
                   "data_type": "double",
                   "show_submit_button": false
                 }
+              },
+              {
+                "title": "Hopper Velocity (RPM)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Hopper Telemetry/Hopper Velocity (RPM)",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Hopper Voltage (V)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Hopper Telemetry/Hopper Voltage (V)",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "Test Hopper Goal (RPM)",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Hopper Telemetry/Test Hopper Goal (RPM)",
+                  "period": 0.06,
+                  "data_type": "double",
+                  "show_submit_button": false
+                }
               }
             ]
           }
         ],
-        "containers": []
+        "containers": [
+          {
+            "title": "HopperGoalRPM",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 512.0,
+            "height": 384.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "/SmartDashboard/Hopper Control Data/HopperGoalRPM",
+              "period": 0.033,
+              "data_type": "double",
+              "time_displayed": 5.0,
+              "color": 4278238420,
+              "line_width": 2.0
+            }
+          },
+          {
+            "title": "HopperRPM",
+            "x": 1024.0,
+            "y": 0.0,
+            "width": 384.0,
+            "height": 384.0,
+            "type": "Graph",
+            "properties": {
+              "topic": "/SmartDashboard/Hopper Control Data/HopperRPM",
+              "period": 0.033,
+              "data_type": "double",
+              "time_displayed": 5.0,
+              "color": 4278238420,
+              "line_width": 2.0
+            }
+          }
+        ]
       }
     },
     {
@@ -1968,6 +2356,209 @@
             "properties": {
               "topic": "/SmartDashboard/Command Scheduler",
               "period": 0.06
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TelemetryControl",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "Settings",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/Settings",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Feeder Control",
+            "x": 0.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/Feeder Control",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Feeder Hardware",
+            "x": 256.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/Feeder Hardware",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Hopper Control",
+            "x": 0.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/Hopper Control",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Hopper Hardware",
+            "x": 256.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/Hopper Hardware",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Intake Control",
+            "x": 0.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/Intake Control",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Intake Hardware",
+            "x": 256.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/Intake Hardware",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Scheduler",
+            "x": 256.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/Scheduler",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Shooter Control",
+            "x": 0.0,
+            "y": 512.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/Shooter Control",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Shooter Hardware",
+            "x": 256.0,
+            "y": 512.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/Shooter Hardware",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "TheMachine Data",
+            "x": 256.0,
+            "y": 768.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/TheMachine Data",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Swerve CTRE",
+            "x": 256.0,
+            "y": 640.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/Swerve CTRE",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Swerve Data",
+            "x": 0.0,
+            "y": 640.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/Swerve Data",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "TheMachine Sim Poses",
+            "x": 0.0,
+            "y": 768.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Telemetry/TheMachine Sim Poses",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "Auto Chooser",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 512.0,
+            "height": 256.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Auto Chooser",
+              "period": 0.06,
+              "sort_options": false
             }
           }
         ]

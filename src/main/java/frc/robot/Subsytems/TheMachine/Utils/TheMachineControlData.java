@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.Nulls;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import frc.robot.Constants.States.TheMachineStates.TheMachineControlState;
 import frc.robot.Subsytems.Feeder.Utils.FeederControlData;
 import frc.robot.Subsytems.Hopper.Utils.HopperControlData;
 import frc.robot.Subsytems.Intake.Utils.IntakeControlData;
 import frc.robot.Subsytems.Shooter.Utils.ShooterControlData;
-import frc.robot.Utils.States.TheMachineStates.TheMachineControlState;
 
 public class TheMachineControlData implements Sendable{
     
@@ -17,6 +17,7 @@ public class TheMachineControlData implements Sendable{
     public HopperControlData hopperControlData = null;
     public IntakeControlData intakeControlData = null;
 
+    public TheMachineControlState previousTheMachineControlState = TheMachineControlState.NONE;
     public TheMachineControlState theMachineControlState = TheMachineControlState.NONE;
 
     public TheMachineControlData(ShooterControlData shooterControlData, FeederControlData feederControlData,
@@ -31,6 +32,7 @@ public class TheMachineControlData implements Sendable{
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addStringProperty("TheMachineControlState", () -> theMachineControlState.toString(), null);
+        builder.addStringProperty("PreviousTheMachineControlState", () -> previousTheMachineControlState.toString(), null);
         builder.addStringProperty("ShooterControlState", () -> shooterControlData.toString(), null);
         builder.addStringProperty("FeederControlState", () -> feederControlData.toString(), null);
         builder.addStringProperty("HopperControlState", () -> hopperControlData.toString(), null);

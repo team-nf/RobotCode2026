@@ -1,8 +1,8 @@
 package frc.robot.Subsytems.Intake.StateActions;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.States.IntakeStates.IntakeControlState;
 import frc.robot.Subsytems.Intake.IntakeSubsystem;
-import frc.robot.Utils.States.IntakeStates.IntakeControlState;
 
 public class IntakeTestAction extends Command {
 

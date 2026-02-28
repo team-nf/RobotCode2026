@@ -2,8 +2,8 @@ package frc.robot.Subsytems.Hopper.Utils;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import frc.robot.Utils.States.HopperStates.HopperControlState;
-import frc.robot.Utils.States.HopperStates.HopperRollerState;
+import frc.robot.Constants.States.HopperStates.HopperControlState;
+import frc.robot.Constants.States.HopperStates.HopperRollerState;
 import edu.wpi.first.units.measure.AngularVelocity;
 import static edu.wpi.first.units.Units.*;
 

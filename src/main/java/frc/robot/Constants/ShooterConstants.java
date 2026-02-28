@@ -38,7 +38,7 @@ public class ShooterConstants {
     // Configs
     public static final int NUMBER_OF_FLYWHEEL_MOTORS = 2;
 
-    public static final AngularVelocity FLYWHEEL_ALLOWABLE_ERROR = RotationsPerSecond.of(0.8); // Allowable error in radians per second
+    public static final AngularVelocity FLYWHEEL_ALLOWABLE_ERROR = RotationsPerSecond.of(0.5); // Allowable error in radians per second
     public static final Angle HOOD_ALLOWABLE_ERROR = Degrees.of(1); // Allowable error in radians
 
     public static final double SHOOTER_KS = 0.0;
@@ -117,8 +117,8 @@ public class ShooterConstants {
                 KilogramSquareMeters.of(2*0.5*ROLLER_MASS.in(Kilogram)*Math.pow(ROLLER_RADIUS.in(Meters), 2));
     public static final MomentOfInertia TOTAL_MOMENT_OF_INERTIA = FLYWHEEL_MOMENT_OF_INERTIA.plus(HOOD_MOMENT_OF_INERTIA);
 
-    public static final Angle MIN_HOOD_ANGLE = Degrees.of(16.77);
-    public static final Angle MAX_HOOD_ANGLE = Degrees.of(36.77);
+    public static final Angle MIN_HOOD_ANGLE = Degrees.of(18);
+    public static final Angle MAX_HOOD_ANGLE = Degrees.of(40);
 
     public static final Angle MIN_HOOD_MOTOR_ANGLE = MIN_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);
     public static final Angle MAX_HOOD_MOTOR_ANGLE = MAX_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);

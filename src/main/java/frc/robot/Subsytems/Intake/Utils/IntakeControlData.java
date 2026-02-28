@@ -2,9 +2,9 @@ package frc.robot.Subsytems.Intake.Utils;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import frc.robot.Utils.States.IntakeStates.IntakeControlState;
-import frc.robot.Utils.States.IntakeStates.IntakePositionState;
-import frc.robot.Utils.States.IntakeStates.IntakeRollerState;
+import frc.robot.Constants.States.IntakeStates.IntakeControlState;
+import frc.robot.Constants.States.IntakeStates.IntakePositionState;
+import frc.robot.Constants.States.IntakeStates.IntakeRollerState;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import static edu.wpi.first.units.Units.*;

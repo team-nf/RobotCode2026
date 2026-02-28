@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.HopperConstants;
 import frc.robot.Constants.TelemetryConstants;
+import frc.robot.Constants.States.HopperStates;
 import frc.robot.Subsytems.Hopper.Hardware.HopperHardware;
 import frc.robot.Subsytems.Hopper.Hardware.HopperRealHardware;
 import frc.robot.Subsytems.Hopper.Hardware.HopperSimHardware;
 import frc.robot.Subsytems.Hopper.StateActions.*;
 import frc.robot.Subsytems.Hopper.StateRequests.*;
 import frc.robot.Subsytems.Hopper.Utils.HopperControlData;
-import frc.robot.Utils.States.HopperStates;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

@@ -2,10 +2,13 @@ package frc.robot.Subsytems.Swerve;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
+
+import org.json.simple.parser.ParseException;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.StatusSignal;
@@ -19,6 +22,8 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.pathfinding.Pathfinder;
+import com.pathplanner.lib.util.FileVersionException;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
@@ -40,24 +45,23 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.TelemetryConstants;
+import frc.robot.Constants.States.SwerveStates.SwerveState;
 import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.PoseConstants;
 import frc.robot.Constants.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.Subsytems.Swerve.Commands.SwerveAimToHub;
-import frc.robot.Subsytems.Swerve.Commands.SwerveFollowPathCommand;
 import frc.robot.Subsytems.Swerve.Commands.SwerveGetIntoShootAreaCommand;
-import frc.robot.Subsytems.Swerve.Commands.SwervePathFindToPoseCommand;
 import frc.robot.Subsytems.Swerve.Commands.SwerveTeleopCommand;
 import frc.robot.Subsytems.Swerve.Utils.SwerveControlData;
-import frc.robot.Utils.Container;
 import frc.robot.Utils.SwerveFieldContactSim;
-import frc.robot.Utils.States.SwerveStates.SwerveState;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
@@ -170,7 +174,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
         configureAutoBuilder();
 
-        setStartPose();
+        setStartPose1();
     }
 
 
@@ -205,7 +209,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
 
-        setStartPose();
+        setStartPose1();
     }
 
     /**
@@ -276,7 +280,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         swerveData.robotSpeed =  MetersPerSecond.of(
             Math.hypot(getState().Speeds.vxMetersPerSecond, getState().Speeds.vyMetersPerSecond));
         swerveData.robotAngularVelocity = RadiansPerSecond.of(getState().Speeds.omegaRadiansPerSecond);
-
     }
 
     public void updateSwerveErrors(
@@ -441,7 +444,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 ),
                 config,
                 // Assume the path needs to be flipped for Red vs Blue, this is normally the case
-                () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
+                () -> {return false;},
                 this // Subsystem for requirements
             );
         } catch (Exception ex) {
@@ -464,26 +467,58 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public Command goToPose(Pose2d targetPose) {
-        return new SwervePathFindToPoseCommand(this, targetPose);
+        return AutoBuilder.pathfindToPose(targetPose, DriveConstants.PATH_CONSTRAINTS_TO_POSE).deadlineFor(new RunCommand(() -> {
+          updateSwerveErrors(targetPose);
+          setSwerveState(SwerveState.PATH_FOLLOWING);
+        }));
     }
 
     public Command followPath(PathPlannerPath path) {
-        return new SwerveFollowPathCommand(this, path);
+
+        final PathPlannerPath pathToFollow;
+
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+            pathToFollow = path.flipPath();
+        } else {
+            pathToFollow = path;
+        }
+        
+        return AutoBuilder.followPath(pathToFollow).deadlineFor(new RunCommand(() -> {
+          updateSwerveErrors(pathToFollow.getPathPoses().get(pathToFollow.getPathPoses().size() - 1));
+          setSwerveState(SwerveState.PATH_FOLLOWING);
+        }));
     }
 
-    public void setStartPose()
-    {
-        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
-            resetPose(Container.START_POSE_RED);
+    public Command pathfindThenFollowPath(PathPlannerPath path) {
+
+        final PathPlannerPath pathToFollow;
+
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+            pathToFollow = path.flipPath();
         }
         else{
-            resetPose(Container.START_POSE_BLUE);
+            pathToFollow = path;
+        }
+
+        return AutoBuilder.pathfindThenFollowPath(pathToFollow, DriveConstants.PATH_CONSTRAINTS_TO_POSE).deadlineFor(new RunCommand(() -> {
+          updateSwerveErrors(pathToFollow.getPathPoses().get(pathToFollow.getPathPoses().size() - 1));
+          setSwerveState(SwerveState.PATH_FOLLOWING);
+        }));
+    }
+
+    public void setStartPose1()
+    {
+        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+            resetPose(PoseConstants.START_POSE_RED_1);
+        }
+        else{
+            resetPose(PoseConstants.START_POSE_BLUE_1);
         }
     }
 
     public InstantCommand resetToStartPoseCmd()
     {
-        return new InstantCommand(() -> setStartPose());
+        return new InstantCommand(() -> setStartPose1());
     }
 
     public void setIsAimed(boolean isAimed)
@@ -495,4 +530,66 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     {
         return new WaitUntilCommand(() -> {return swerveData.isAimed;});
     }
+
+    public Command pathFindToIntakeWall()
+    {
+        Pose2d targetPose = new Pose2d(-1, -1, Rotation2d.fromDegrees(-1));
+
+        try {
+            targetPose = PathPlannerPath.fromPathFile("WallIntake").getPathPoses().get(0);
+
+        } catch (FileVersionException | IOException | ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+
+        return goToPose(targetPose);
+    }
+
+    public Command pathFindToTrench1()
+    {
+        Pose2d targetPose = new Pose2d(-1, -1, Rotation2d.fromDegrees(-1));
+
+        try {
+            targetPose = PathPlannerPath.fromPathFile("TrenchIntake1").getPathPoses().get(0);
+        } catch (FileVersionException | IOException | ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+
+        return goToPose(targetPose);
+    }
+
+    public InstantCommand setStartPose1Command()
+    {
+        return new InstantCommand(() -> setStartPose1());
+    }
+
+    public Command followPathIntakeWall()
+    {
+        PathPlannerPath path = null;
+
+        try {
+            path = PathPlannerPath.fromPathFile("IntakeWall");
+        } catch (FileVersionException | IOException | ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+
+        return pathfindThenFollowPath(path);
+    }
+
+     public Command followPathTrench1()
+    {
+        PathPlannerPath path = null;
+
+        try {
+            path = PathPlannerPath.fromPathFile("TrenchIntake1");
+        } catch (FileVersionException | IOException | ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+
+        return pathfindThenFollowPath(path);
+     }
 }
