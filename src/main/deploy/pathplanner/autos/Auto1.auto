@@ -45,6 +45,12 @@
           "data": {
             "name": "AimAndShoot"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MachineIdleRequest"
+          }
         }
       ]
     }

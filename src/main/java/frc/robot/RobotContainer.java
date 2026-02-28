@@ -125,8 +125,7 @@ public class RobotContainer {
         .onTrue(m_theMachine.idleRetractedRequest());
 
     m_driverController.x()
-        .onTrue(m_theMachine.intakeRequest().onlyIf(() -> !m_theMachine.isState(TheMachineControlState.INTAKE)))
-        .onTrue(m_theMachine.idleDeployedRequest().onlyIf(() -> m_theMachine.isState(TheMachineControlState.INTAKE)));
+        .onTrue(m_theMachine.intakeToggledRequest());
 
     m_driverController.povDown()
         .onTrue(m_theMachine.zeroRequest());
