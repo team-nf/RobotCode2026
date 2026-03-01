@@ -16,9 +16,12 @@ public class TheMachineShootAction {
         .andThen(new WaitCommand(0.1))
         .andThen(
             theMachine.hopperFeedRequest(),
-            theMachine.feederFeedRequest(),
-            theMachine.intakeFeedRequest()
-        )
+            theMachine.feederFeedRequest())
+        .andThen(new WaitCommand(0.5))
+        .andThen(theMachine.intakeIdleBetweenRequest())
+        .andThen(new WaitCommand(1.5))
+        .andThen(theMachine.intakeFeedRequest())
+        .andThen(new WaitCommand(3))
     ).until(() -> (theMachine.getState() != TheMachineControlState.SHOOT));
   }
 }

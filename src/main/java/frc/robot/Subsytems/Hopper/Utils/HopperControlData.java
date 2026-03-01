@@ -14,9 +14,9 @@ public class HopperControlData implements Sendable {
     public HopperControlState hopperControlState = HopperControlState.ZERO;
     public HopperControlState prevHopperControlState = HopperControlState.ZERO;
 
-    public AngularVelocity hopperGoalVelocity = RotationsPerSecond.of(0);
-    public AngularVelocity hopperVelocity = RotationsPerSecond.of(0);
-    public AngularVelocity hopperError = RotationsPerSecond.of(0);
+    public double hopperGoalVelocity = 0;
+    public double hopperVelocity = 0;
+    public double hopperError = 0;
 
     @Override
     public void initSendable(SendableBuilder builder) {
@@ -24,8 +24,8 @@ public class HopperControlData implements Sendable {
         builder.addStringProperty("HopperControlState", () -> hopperControlState.toString(), null);
         builder.addStringProperty("HopperPrevControlState", () -> prevHopperControlState.toString(), null);
         builder.addStringProperty("HopperRollerState", () -> hopperRollerState.toString(), null);
-        builder.addDoubleProperty("HopperGoalRPM", () -> TelemetryConstants.roundTelemetry(hopperGoalVelocity.in(RotationsPerSecond) * 60), null);
-        builder.addDoubleProperty("HopperRPM", () -> TelemetryConstants.roundTelemetry(hopperVelocity.in(RotationsPerSecond) * 60), null);
-        builder.addDoubleProperty("HopperErrorRPM", () -> TelemetryConstants.roundTelemetry(hopperError.in(RotationsPerSecond) * 60), null);
+        builder.addDoubleProperty("HopperGoalRPM", () -> TelemetryConstants.roundTelemetry(hopperGoalVelocity * 60), null);
+        builder.addDoubleProperty("HopperRPM", () -> TelemetryConstants.roundTelemetry(hopperVelocity * 60), null);
+        builder.addDoubleProperty("HopperErrorRPM", () -> TelemetryConstants.roundTelemetry(hopperError * 60), null);
     }
 }

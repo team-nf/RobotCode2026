@@ -22,18 +22,21 @@ public class Localization {
     LimelightHelpers.PoseEstimate currentPoseEstimateFinal;
     boolean useMT2;
 
+    private boolean isMode1Set = false;
+    private boolean isLLReady = false;
 
     public Localization(CommandSwerveDrivetrain drivetrain) {
         this.drivetrain = drivetrain;
         this.useMT2 = true;
 
         // Switch to internal IMU with external assist when enabled
-        LimelightHelpers.SetIMUMode("limelight-left", 1);
         //LimelightHelpers.SetIMUAssistAlpha("limelight-left", 0.001);  // Adjust correction strength
 
         // Switch to internal IMU with external assist when enabled
-        LimelightHelpers.SetIMUMode("limelight-right", 1);
         //LimelightHelpers.SetIMUAssistAlpha("limelight-right", 0.001);  // Adjust correction strength
+
+        SmartDashboard.putBoolean("LL-Left_Enabled", true);
+        SmartDashboard.putBoolean("LL-Right_Enabled", true);
 
     }
 
@@ -125,9 +128,6 @@ public class Localization {
 
     public void addVisionMeasurement() {
         // First, tell Limelight your robot's current orientation
-    LimelightHelpers.SetIMUMode("limelight-left", 1);
-    LimelightHelpers.SetIMUMode("limelight-right", 1);
-
     double robotYaw = drivetrain.getGyroHeading();
     LimelightHelpers.SetRobotOrientation("limelight-left", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
     LimelightHelpers.SetRobotOrientation("limelight-right", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
@@ -170,18 +170,19 @@ public class Localization {
 
     if(!doRejectUpdate)
     {
-        if(!doRejectLeft)
+        if(!doRejectLeft && SmartDashboard.getBoolean("LL-Left_Enabled", false))
         {
-            drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+            drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.6,.6,9999999));
+
             drivetrain.addVisionMeasurement(
             limelightMeasurementLeft.pose,
             limelightMeasurementLeft.timestampSeconds
             );
         }
 
-        if(!doRejectRight)
+        if(!doRejectRight && SmartDashboard.getBoolean("LL-Right_Enabled", false))
         {
-            drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+            drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.6,.6,9999999));
             drivetrain.addVisionMeasurement(
             limelightMeasurementRight.pose,
             limelightMeasurementRight.timestampSeconds
@@ -189,6 +190,33 @@ public class Localization {
         }
     }
     }
+
+    public void setImuMode1()
+    {
+        double robotYaw = drivetrain.getGyroHeading();
+
+
+        LimelightHelpers.SetRobotOrientation("limelight-left", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
+        LimelightHelpers.SetIMUMode("limelight-left", 1);
+  
+        
+        LimelightHelpers.SetRobotOrientation("limelight-right", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
+        LimelightHelpers.SetIMUMode("limelight-right", 1);
+    }
+
+    public void setImuMode2()
+    {
+        double robotYaw = drivetrain.getGyroHeading();
+
+
+        LimelightHelpers.SetRobotOrientation("limelight-left", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
+        LimelightHelpers.SetIMUMode("limelight-left", 2);
+  
+        
+        LimelightHelpers.SetRobotOrientation("limelight-right", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
+        LimelightHelpers.SetIMUMode("limelight-right", 2);
+    }
+
 
     public boolean hasAnEstimate() {
         return (currentPoseEstimateFinal != null);
@@ -215,5 +243,22 @@ public class Localization {
     
     public Command useMT() {
         return new InstantCommand(()->{useMT2 = false;});
+    }
+
+    public void disabledPeriodic()
+    {
+        setImuMode1();
+        isMode1Set = true;
+    }
+
+    public void enabledPeriodic()
+    {   
+        if(!isLLReady && isMode1Set)
+        {
+            setImuMode2();
+            isLLReady = true;
+        }
+
+        if(isLLReady) addVisionMeasurement();
     }
 }

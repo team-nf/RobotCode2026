@@ -71,20 +71,20 @@ public class ShooterSim {
                     new Transform3d(new Translation3d(robotPoseSupplier.get().getX(), robotPoseSupplier.get().getY(), 0), 
                     new Rotation3d(robotPoseSupplier.get().getRotation()));
 
-            double launchAngle = Math.PI / 2 - controlData.hoodAngle.in(Radians);
-            double fuelVelocity = controlData.flywheelVelocityL.in(RotationsPerSecond) * 2 * Math.PI * ShooterConstants.FLYWHEEL_RADIUS.in(Meters) * ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
+            double launchAngle = Math.PI / 2 - Math.toRadians(controlData.hoodAngle*360);
+            double fuelVelocity = controlData.flywheelVelocityL * 2 * Math.PI * ShooterConstants.FLYWHEEL_RADIUS.in(Meters) * ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
 
             Pose3d leftFuelShootPose = new Pose3d(
-                Dimensions.LEFT_SHOOTER_POSE.getX() + Dimensions.FUEL_SHOOTER_OFFSET.in(Meters) * Math.cos(controlData.hoodAngle.in(Radians)),
+                Dimensions.LEFT_SHOOTER_POSE.getX() + Dimensions.FUEL_SHOOTER_OFFSET.in(Meters) * Math.cos(controlData.hoodAngle*2*Math.PI),
                 Dimensions.LEFT_SHOOTER_POSE.getY(),
-                Dimensions.LEFT_SHOOTER_POSE.getZ() + Dimensions.FUEL_SHOOTER_OFFSET.in(Meters) * Math.sin(controlData.hoodAngle.in(Radians)),
+                Dimensions.LEFT_SHOOTER_POSE.getZ() + Dimensions.FUEL_SHOOTER_OFFSET.in(Meters) * Math.sin(controlData.hoodAngle*2*Math.PI),
                 new Rotation3d()
             );
 
             Pose3d rightFuelShootPose = new Pose3d(
-                Dimensions.RIGHT_SHOOTER_POSE.getX() + Dimensions.FUEL_SHOOTER_OFFSET.in(Meters) * Math.cos(controlData.hoodAngle.in(Radians)),
+                Dimensions.RIGHT_SHOOTER_POSE.getX() + Dimensions.FUEL_SHOOTER_OFFSET.in(Meters) * Math.cos(controlData.hoodAngle*2*Math.PI),
                 Dimensions.RIGHT_SHOOTER_POSE.getY(),
-                Dimensions.RIGHT_SHOOTER_POSE.getZ() + Dimensions.FUEL_SHOOTER_OFFSET.in(Meters) * Math.sin(controlData.hoodAngle.in(Radians)),
+                Dimensions.RIGHT_SHOOTER_POSE.getZ() + Dimensions.FUEL_SHOOTER_OFFSET.in(Meters) * Math.sin(controlData.hoodAngle*2*Math.PI),
                 new Rotation3d()
             );
 

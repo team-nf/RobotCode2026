@@ -21,7 +21,6 @@ public class IntakeReverseAction extends Command {
 
   @Override
   public void execute() {
-    intakeSubsystem.reverse();
   }
 
   @Override

@@ -20,7 +20,6 @@ public class HopperTestAction extends Command {
 
   @Override
   public void execute() {
-    hopperSubsystem.test();
   }
 
   @Override

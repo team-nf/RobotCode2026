@@ -25,13 +25,13 @@ public class HopperRealHardware implements HopperHardware {
 
     private final VelocityVoltage hopperVelocityControl;
 
-    private AngularVelocity hopperVelocity = RotationsPerSecond.of(0);
-    private AngularVelocity hopperMotorVelocity = RotationsPerSecond.of(0);
-    private Voltage hopperVoltage = Volts.of(0);
-    private Current hopperCurrent = Amps.of(0);
+    private double hopperVelocity = 0;
+    private double hopperMotorVelocity = 0;
+    private double hopperVoltage = 0;
+    private double hopperCurrent = 0;
     private double hopperReference = 0.0;
     private double hopperError = 0.0;
-    private AngularVelocity testHopperGoal = RotationsPerSecond.of(0);
+    private double testHopperGoal = 0;
 
     public HopperRealHardware() {
         hopperMotor = new TalonFX(HopperConstants.HOPPER_MOTOR_ID);
@@ -69,7 +69,7 @@ public class HopperRealHardware implements HopperHardware {
     }
 
     @Override
-    public AngularVelocity getHopperVelocity() {
+    public double getHopperVelocity() {
         return hopperVelocity;
     }
 
@@ -79,9 +79,9 @@ public class HopperRealHardware implements HopperHardware {
     }
 
     @Override
-    public void setHopperSpeed(AngularVelocity velocity) {
+    public void setHopperSpeed(double velocity) {
         hopperMotor.setControl(
-            hopperVelocityControl.withVelocity(velocity.times(HopperConstants.HOPPER_GEAR_REDUCTION))
+            hopperVelocityControl.withVelocity(velocity * HopperConstants.HOPPER_GEAR_REDUCTION)
         );
     }
 
@@ -97,11 +97,11 @@ public class HopperRealHardware implements HopperHardware {
     
     @Override
     public void updateVariables() {
-        hopperVelocity = hopperMotor.getVelocity().getValue().div(HopperConstants.HOPPER_GEAR_REDUCTION);
-        hopperMotorVelocity = hopperMotor.getVelocity().getValue();
-        hopperVoltage = hopperMotor.getMotorVoltage().getValue();
-        hopperCurrent = hopperMotor.getStatorCurrent().getValue();
-        hopperReference = hopperMotor.getClosedLoopReference().getValue();
+        hopperVelocity = hopperMotor.getVelocity().getValue().div(HopperConstants.HOPPER_GEAR_REDUCTION).in(RotationsPerSecond);
+        //hopperMotorVelocity = hopperMotor.getVelocity().getValue();
+        //hopperVoltage = hopperMotor.getMotorVoltage().getValue();
+        //hopperCurrent = hopperMotor.getStatorCurrent().getValue();
+        //hopperReference = hopperMotor.getClosedLoopReference().getValue();
         hopperError = hopperMotor.getClosedLoopError().getValue();
     }
 
@@ -114,15 +114,15 @@ public class HopperRealHardware implements HopperHardware {
     public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("HopperHardware");
 
-    builder.addDoubleProperty("Hopper Velocity (RPM)", () -> TelemetryConstants.roundTelemetry(hopperVelocity.times(60).in(RotationsPerSecond)), null);
-    builder.addDoubleProperty("Hopper Motor Velocity (RPM)", () -> TelemetryConstants.roundTelemetry(hopperMotorVelocity.times(60).in(RotationsPerSecond)), null);
-    builder.addDoubleProperty("Hopper Voltage (V)", () -> TelemetryConstants.roundTelemetry(hopperVoltage.in(Volts)), null);
-    builder.addDoubleProperty("Hopper Current (A)", () -> TelemetryConstants.roundTelemetry(hopperCurrent.in(Amps)), null);
-    builder.addDoubleProperty("Hopper Reference", () -> TelemetryConstants.roundTelemetry(hopperReference), null);
-    builder.addDoubleProperty("Hopper Error", () -> TelemetryConstants.roundTelemetry(hopperError), null);
-        
-        builder.addDoubleProperty("Test Hopper Goal (RPM)", () -> testHopperGoal.times(60).in(RotationsPerSecond),
-            (val) -> testHopperGoal = RotationsPerSecond.of(val / 60));
+        builder.addDoubleProperty("Hopper Velocity (RPM)", () -> TelemetryConstants.roundTelemetry(hopperVelocity*(60)), null);
+        builder.addDoubleProperty("Hopper Motor Velocity (RPM)", () -> TelemetryConstants.roundTelemetry(hopperMotorVelocity*(60)), null);
+        builder.addDoubleProperty("Hopper Voltage (V)", () -> TelemetryConstants.roundTelemetry(hopperVoltage), null);
+        builder.addDoubleProperty("Hopper Current (A)", () -> TelemetryConstants.roundTelemetry(hopperCurrent), null);
+        builder.addDoubleProperty("Hopper Reference", () -> TelemetryConstants.roundTelemetry(hopperReference), null);
+        builder.addDoubleProperty("Hopper Error", () -> TelemetryConstants.roundTelemetry(hopperError), null);
+            
+            builder.addDoubleProperty("Test Hopper Goal (RPM)", () -> testHopperGoal*(60),
+                (val) -> testHopperGoal = (val / 60));
 
         builder.addDoubleProperty("Hopper KS", () -> hopperMotorConfig.Slot0.kS, 
             (val) -> {

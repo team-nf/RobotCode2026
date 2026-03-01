@@ -20,7 +20,6 @@ public class IntakeDeployAction extends Command {
 
   @Override
   public void execute() {
-    intakeSubsystem.deploy();
   }
 
   @Override

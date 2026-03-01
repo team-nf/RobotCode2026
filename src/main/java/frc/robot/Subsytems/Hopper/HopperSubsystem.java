@@ -51,40 +51,34 @@ public class HopperSubsystem extends SubsystemBase {
 
   public void updateHopperData() {
     hopperData.hopperVelocity = hopperHardware.getHopperVelocity();
-    hopperData.hopperError = hopperData.hopperGoalVelocity.minus(hopperData.hopperVelocity);
+    hopperData.hopperError = hopperData.hopperGoalVelocity - hopperData.hopperVelocity;
     
-    hopperData.hopperRollerState = RotationsPerSecond.of(hopperData.hopperError.abs(RotationsPerSecond))
-    .lte(HopperConstants.HOPPER_ALLOWABLE_ERROR)
+    hopperData.hopperRollerState = Math.abs(hopperData.hopperError) <= HopperConstants.HOPPER_ALLOWABLE_ERROR.in(RotationsPerSecond)
         ? HopperStates.HopperRollerState.AT_SPEED
         : HopperStates.HopperRollerState.REACHING_SPEED;
   }
 
   public void zero() {
-    hopperData.hopperGoalVelocity = RotationsPerSecond.of(0);
-    updateHopperData();
+    hopperData.hopperGoalVelocity = 0;
     hopperHardware.hopperStop();
   }
 
   public void feed() {
-    hopperData.hopperGoalVelocity = HopperConstants.HOPPER_FEEDING_VELOCITY;
-    updateHopperData();
+    hopperData.hopperGoalVelocity = HopperConstants.HOPPER_FEEDING_VELOCITY.in(RotationsPerSecond);
     hopperHardware.setHopperSpeed(hopperData.hopperGoalVelocity);
   }
 
   public void push() {
-    hopperData.hopperGoalVelocity = HopperConstants.HOPPER_PUSHING_VELOCITY;
-    updateHopperData();
+    hopperData.hopperGoalVelocity = HopperConstants.HOPPER_PUSHING_VELOCITY.in(RotationsPerSecond);
     hopperHardware.setHopperSpeed(hopperData.hopperGoalVelocity);
   }
 
   public void reverse() {
-    hopperData.hopperGoalVelocity = HopperConstants.HOPPER_REVERSE_VELOCITY;
-    updateHopperData();
+    hopperData.hopperGoalVelocity = HopperConstants.HOPPER_REVERSE_VELOCITY.in(RotationsPerSecond);
     hopperHardware.setHopperSpeed(hopperData.hopperGoalVelocity);
   }
 
   public void test() {
-    updateHopperData();
     hopperHardware.testHopper();
   }
 
@@ -178,6 +172,8 @@ public class HopperSubsystem extends SubsystemBase {
     }
 
     stateMachine();
+    updateHopperData();
+
   }
 
   @Override

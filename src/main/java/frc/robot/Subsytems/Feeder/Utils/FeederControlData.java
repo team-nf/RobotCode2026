@@ -21,9 +21,9 @@ public class FeederControlData implements Sendable{
     public FeederControlState feederControlState = FeederControlState.ZERO;
     public FeederControlState prevFeederControlState = FeederControlState.ZERO;
 
-    public AngularVelocity feederGoalVelocity = RotationsPerSecond.of(0);
-    public AngularVelocity feederVelocity = RotationsPerSecond.of(0);
-    public AngularVelocity feederError = RotationsPerSecond.of(0);
+    public double feederGoalVelocity = 0;
+    public double feederVelocity = 0;
+    public double feederError = 0;
 
     @Override
     public void initSendable(SendableBuilder builder) {
@@ -31,8 +31,8 @@ public class FeederControlData implements Sendable{
         builder.addStringProperty("FeederControlState", () -> feederControlState.toString(), null);
         builder.addStringProperty("FeederPrevControlState", () -> prevFeederControlState.toString(), null);
         builder.addStringProperty("FeederRollerState", () -> feederRollerState.toString(), null);
-        builder.addDoubleProperty("FeederGoalRPM", () -> TelemetryConstants.roundTelemetry(feederGoalVelocity.in(RotationsPerSecond) * 60), null);
-        builder.addDoubleProperty("FeederRPM", () -> TelemetryConstants.roundTelemetry(feederVelocity.in(RotationsPerSecond) * 60), null);
-        builder.addDoubleProperty("FeederErrorRPM", () -> TelemetryConstants.roundTelemetry(feederError.in(RotationsPerSecond) * 60), null);
+        builder.addDoubleProperty("FeederGoalRPM", () -> TelemetryConstants.roundTelemetry(feederGoalVelocity * 60), null);
+        builder.addDoubleProperty("FeederRPM", () -> TelemetryConstants.roundTelemetry(feederVelocity * 60), null);
+        builder.addDoubleProperty("FeederErrorRPM", () -> TelemetryConstants.roundTelemetry(feederError * 60), null);
     }
 }

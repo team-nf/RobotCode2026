@@ -55,21 +55,20 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void updateIntakeData() {
     intakeData.intakeVelocity = intakeHardware.getIntakeVelocity();
-    intakeData.intakeError = intakeData.intakeGoalVelocity.minus(intakeData.intakeVelocity);
+    intakeData.intakeError = intakeData.intakeGoalVelocity - intakeData.intakeVelocity;
     
-    intakeData.intakeRollerState = RotationsPerSecond.of(intakeData.intakeError.abs(RotationsPerSecond))
-    .lte(IntakeConstants.INTAKE_ALLOWABLE_ERROR)
+    intakeData.intakeRollerState = Math.abs(intakeData.intakeError) <= IntakeConstants.INTAKE_ALLOWABLE_ERROR.in(RotationsPerSecond)
         ? IntakeStates.IntakeRollerState.AT_SPEED
         : IntakeStates.IntakeRollerState.REACHING_SPEED;
 
     intakeData.intakeArmAngle = intakeHardware.getIntakeArmPosition();
-    intakeData.intakeArmError = intakeData.intakeGoalArmAngle.minus(intakeData.intakeArmAngle);
+    intakeData.intakeArmError = intakeData.intakeGoalArmAngle - intakeData.intakeArmAngle;
 
-    if(intakeData.intakeArmAngle.lte(IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE.plus(IntakeConstants.INTAKE_ARM_ALLOWABLE_ERROR)))
+    if(intakeData.intakeArmAngle <= IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE.plus(IntakeConstants.INTAKE_ARM_ALLOWABLE_ERROR).in(Rotations))
     {
         intakeData.intakePositionState = IntakeStates.IntakePositionState.DEPLOYED;
     }
-    else if(intakeData.intakeArmAngle.gte(IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.minus(IntakeConstants.INTAKE_ARM_ALLOWABLE_ERROR)))
+    else if(intakeData.intakeArmAngle >= IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.minus(IntakeConstants.INTAKE_ARM_ALLOWABLE_ERROR).in(Rotations))
     {
         intakeData.intakePositionState = IntakeStates.IntakePositionState.RETRACTED;
     }
@@ -88,34 +87,30 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void close() {
-    intakeData.intakeGoalVelocity = RotationsPerSecond.of(0);
-    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE;
-    updateIntakeData();
+    intakeData.intakeGoalVelocity = 0;
+    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_RETRACTED_ANGLE.in(Rotations);
     intakeHardware.intakeStop();
     intakeHardware.intakeArmZero();
   }
 
   public void feed() {
-    intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_FEEDING_VELOCITY;
-    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_FEED_ANGLE;
-    updateIntakeData();
+    intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_FEEDING_VELOCITY.in(RotationsPerSecond);
+    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_FEED_ANGLE.in(Rotations);
     intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
     if(intakeData.intakePositionState == IntakeStates.IntakePositionState.BETWEEN)
         intakeHardware.setIntakeSpeed(intakeData.intakeGoalVelocity);
   }
 
   public void deploy() {
-    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE;
-    intakeData.intakeGoalVelocity = RotationsPerSecond.of(0);
-    updateIntakeData();
+    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE.in(Rotations);
+    intakeData.intakeGoalVelocity = 0;
     intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
     intakeHardware.intakeStop();
   }
 
   public void intake() {
-    intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_INTAKING_VELOCITY;
-    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE;
-    updateIntakeData();
+    intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_INTAKING_VELOCITY.in(RotationsPerSecond);
+    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE.in(Rotations);
     intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
 
     if(intakeData.intakePositionState == IntakeStates.IntakePositionState.DEPLOYED)
@@ -124,24 +119,21 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void reverse() {
-    intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_REVERSE_VELOCITY;
-    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE;
-    updateIntakeData();
+    intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_REVERSE_VELOCITY.in(RotationsPerSecond);
+    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE.in(Rotations);
     intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
     if(intakeData.intakePositionState == IntakeStates.IntakePositionState.DEPLOYED)
         intakeHardware.setIntakeSpeed(intakeData.intakeGoalVelocity);
   }
 
   public void idleBetween() {
-    intakeData.intakeGoalVelocity = RotationsPerSecond.of(0);
-    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_BETWEEN_ANGLE;
-    updateIntakeData();
+    intakeData.intakeGoalVelocity = 0;
+    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_BETWEEN_ANGLE.in(Rotations);
     intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
     intakeHardware.intakeStop();
   }
 
   public void test() {
-    updateIntakeData();
     intakeHardware.testIntake();
     intakeHardware.testArmIntake();
   }
@@ -205,7 +197,7 @@ public class IntakeSubsystem extends SubsystemBase {
     });
   }
 
-  public Angle getArmAngleInRealLife() {
+  public double getArmAngleInRealLife() {
     return intakeHardware.getIntakeArmPosition();
   }
 
@@ -268,6 +260,8 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     stateMachine();
+    updateIntakeData();
+
   }
 
   @Override

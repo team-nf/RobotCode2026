@@ -39,17 +39,17 @@ public class ShooterRealHardware implements ShooterHardware {
     private final VelocityVoltage shootVelocityControlR;
     private final PositionVoltage hoodPositionControl;
 
-    private AngularVelocity flywheelVelocityLeft = RotationsPerSecond.of(0);
-    private AngularVelocity flywheelVelocityRight = RotationsPerSecond.of(0);
+    private double flywheelVelocityLeft = 0;
+    private double flywheelVelocityRight = 0;
 
-    private AngularVelocity shootVelocityLeft = RotationsPerSecond.of(0);
-    private AngularVelocity shootVelocityRight = RotationsPerSecond.of(0);
+    private double shootVelocityLeft = 0;
+    private double shootVelocityRight = 0;
 
-    private Voltage shootVoltageLeft = Volts.of(0);
-    private Voltage shootVoltageRight = Volts.of(0);
+    private double shootVoltageLeft = 0;
+    private double shootVoltageRight = 0;
 
-    private Current shootCurrentLeft = Amps.of(0);
-    private Current shootCurrentRight = Amps.of(0);
+    private double shootCurrentLeft = 0;
+    private double shootCurrentRight = 0;
 
     private double shootErrorLeft = 0.0;
     private double shootErrorRight = 0.0;
@@ -58,15 +58,15 @@ public class ShooterRealHardware implements ShooterHardware {
     private double shootReferenceRight = 0.0;
 
 
-    private Angle hoodPosition = Degrees.of(0);
-    private Angle hoodMotorPosition = Degrees.of(0);
-    private Voltage hoodVoltage = Volts.of(0);
-    private Current hoodCurrent = Amps.of(0);
+    private double hoodPosition = 0;
+    private double hoodMotorPosition = 0;
+    private double hoodVoltage = 0;
+    private double hoodCurrent = 0;
     private double hoodReference = 0.0;
     private double hoodError = 0.0;
 
-    private AngularVelocity testFlywheelGoal= RotationsPerSecond.of(20);
-    private Angle testHoodGoal = Degrees.of(15);
+    private double testFlywheelGoal= 20;
+    private double testHoodGoal = 15/360;
 
     public ShooterRealHardware() {
         firstShootMotor = new TalonFX(ShooterConstants.FIRST_SHOOTER_MOTOR_ID);
@@ -150,13 +150,13 @@ public class ShooterRealHardware implements ShooterHardware {
     }
 
     @Override
-    public AngularVelocity getFlywheelVelocityL() {
+    public double getFlywheelVelocityL() {
         // Returns the velocity of the first shooter motor in rotations per second
         return flywheelVelocityLeft;
     }
 
     @Override
-    public AngularVelocity getFlywheelVelocityR() {
+    public double getFlywheelVelocityR() {
         return flywheelVelocityRight;
     }
 
@@ -168,13 +168,13 @@ public class ShooterRealHardware implements ShooterHardware {
     }
 
     @Override
-    public void setFlywheelSpeed(AngularVelocity velocity) {
+    public void setFlywheelSpeed(double velocity) {
         // Set velocity in rotations per second
         firstShootMotor.setControl(
-            shootVelocityControlL.withVelocity(velocity.times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION).in(RotationsPerSecond))
+            shootVelocityControlL.withVelocity(velocity*(ShooterConstants.FLYWHEEL_GEAR_REDUCTION))
         );
         thirdShootMotor.setControl(
-            shootVelocityControlR.withVelocity(velocity.times(ShooterConstants.FLYWHEEL_GEAR_REDUCTION).in(RotationsPerSecond))
+            shootVelocityControlR.withVelocity(velocity*(ShooterConstants.FLYWHEEL_GEAR_REDUCTION))
         );
     }
 
@@ -190,26 +190,26 @@ public class ShooterRealHardware implements ShooterHardware {
     }
 
     @Override
-    public Angle getHoodPosition() {
+    public double getHoodPosition() {
         // Example: Returns the hood position in rotations
         return hoodPosition;
     }
 
     @Override
-    public void setHoodAngle(Angle hoodAngle) {
+    public void setHoodAngle(double hoodAngle) {
         // Set hood position in rotations
         hoodMotor.setControl(
-            hoodPositionControl.withPosition(hoodAngle.times(ShooterConstants.HOOD_GEAR_REDUCTION).in(Rotations))
+            hoodPositionControl.withPosition(hoodAngle*(ShooterConstants.HOOD_GEAR_REDUCTION))
         );
     }
 
     @Override
     public void hoodZero() {
-        setHoodAngle(ShooterConstants.MIN_HOOD_ANGLE);
+        setHoodAngle(ShooterConstants.MIN_HOOD_ANGLE.in(Rotations));
     }
 
     @Override
-    public void setShooter(AngularVelocity velocity, Angle hoodAngle) {
+    public void setShooter(double velocity, double hoodAngle) {
         setFlywheelSpeed(velocity);
         setHoodAngle(hoodAngle);
     }
@@ -222,29 +222,29 @@ public class ShooterRealHardware implements ShooterHardware {
     
     @Override
     public void updateVariables() {
-        flywheelVelocityLeft = firstShootMotor.getVelocity().getValue().div(ShooterConstants.FLYWHEEL_GEAR_REDUCTION);
-        flywheelVelocityRight = thirdShootMotor.getVelocity().getValue().div(ShooterConstants.FLYWHEEL_GEAR_REDUCTION);
+        flywheelVelocityLeft = firstShootMotor.getVelocity().getValue().div(ShooterConstants.FLYWHEEL_GEAR_REDUCTION).in(RotationsPerSecond);
+        flywheelVelocityRight = thirdShootMotor.getVelocity().getValue().div(ShooterConstants.FLYWHEEL_GEAR_REDUCTION).in(RotationsPerSecond);
 
-        shootVelocityLeft = firstShootMotor.getVelocity().getValue();
-        shootVelocityRight = thirdShootMotor.getVelocity().getValue();
+        //shootVelocityLeft = firstShootMotor.getVelocity().getValue();
+        //shootVelocityRight = thirdShootMotor.getVelocity().getValue();
 
-        shootVoltageLeft = firstShootMotor.getMotorVoltage().getValue();
-        shootVoltageRight = thirdShootMotor.getMotorVoltage().getValue();
+        //shootVoltageLeft = firstShootMotor.getMotorVoltage().getValue();
+        //shootVoltageRight = thirdShootMotor.getMotorVoltage().getValue();
 
-        shootCurrentLeft = firstShootMotor.getStatorCurrent().getValue();
-        shootCurrentRight = thirdShootMotor.getStatorCurrent().getValue();
+        //shootCurrentLeft = firstShootMotor.getStatorCurrent().getValue();
+        //shootCurrentRight = thirdShootMotor.getStatorCurrent().getValue();
 
         shootErrorLeft = firstShootMotor.getClosedLoopError().getValue();
         shootErrorRight = thirdShootMotor.getClosedLoopError().getValue();
 
-        shootReferenceLeft = firstShootMotor.getClosedLoopReference().getValue();
-        shootReferenceRight = thirdShootMotor.getClosedLoopReference().getValue();
+        //shootReferenceLeft = firstShootMotor.getClosedLoopReference().getValue();
+        //shootReferenceRight = thirdShootMotor.getClosedLoopReference().getValue();
 
-        hoodPosition = hoodMotor.getPosition().getValue().div(ShooterConstants.HOOD_GEAR_REDUCTION);
-        hoodMotorPosition = hoodMotor.getPosition().getValue();
-        hoodVoltage = hoodMotor.getMotorVoltage().getValue();
-        hoodCurrent = hoodMotor.getStatorCurrent().getValue();
-        hoodReference = hoodMotor.getClosedLoopReference().getValue();
+        hoodPosition = hoodMotor.getPosition().getValue().div(ShooterConstants.HOOD_GEAR_REDUCTION).in(Rotations);
+        //hoodMotorPosition = hoodMotor.getPosition().getValue();
+        //hoodVoltage = hoodMotor.getMotorVoltage().getValue();
+        //hoodCurrent = hoodMotor.getStatorCurrent().getValue();
+        //hoodReference = hoodMotor.getClosedLoopReference().getValue();
         hoodError = hoodMotor.getClosedLoopError().getValue();
     }
 
@@ -255,31 +255,31 @@ public class ShooterRealHardware implements ShooterHardware {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("Flywheel Velocity Left", () -> TelemetryConstants.roundTelemetry(flywheelVelocityLeft.times(60).in(RotationsPerSecond)), null);
-    builder.addDoubleProperty("Flywheel Velocity Right", () -> TelemetryConstants.roundTelemetry(flywheelVelocityRight.times(60).in(RotationsPerSecond)), null);
-    builder.addDoubleProperty("Shoot Motor Velocity Left", () -> TelemetryConstants.roundTelemetry(shootVelocityLeft.times(60).in(RotationsPerSecond)), null);
-    builder.addDoubleProperty("Shoot Motor Velocity Right", () -> TelemetryConstants.roundTelemetry(shootVelocityRight.times(60).in(RotationsPerSecond)), null);
-    builder.addDoubleProperty("Shoot Voltage Left", () -> TelemetryConstants.roundTelemetry(shootVoltageLeft.in(Volts)), null);
-    builder.addDoubleProperty("Shoot Voltage Right", () -> TelemetryConstants.roundTelemetry(shootVoltageRight.in(Volts)), null);
-    builder.addDoubleProperty("Shoot Current Left", () -> TelemetryConstants.roundTelemetry(shootCurrentLeft.in(Amps)), null);
-    builder.addDoubleProperty("Shoot Current Right", () -> TelemetryConstants.roundTelemetry(shootCurrentRight.in(Amps)), null);
+    builder.addDoubleProperty("Flywheel Velocity Left", () -> TelemetryConstants.roundTelemetry(flywheelVelocityLeft*60), null);
+    builder.addDoubleProperty("Flywheel Velocity Right", () -> TelemetryConstants.roundTelemetry(flywheelVelocityRight*60), null);
+    builder.addDoubleProperty("Shoot Motor Velocity Left", () -> TelemetryConstants.roundTelemetry(shootVelocityLeft*(60)), null);
+    builder.addDoubleProperty("Shoot Motor Velocity Right", () -> TelemetryConstants.roundTelemetry(shootVelocityRight*(60)), null);
+    builder.addDoubleProperty("Shoot Voltage Left", () -> TelemetryConstants.roundTelemetry(shootVoltageLeft), null);
+    builder.addDoubleProperty("Shoot Voltage Right", () -> TelemetryConstants.roundTelemetry(shootVoltageRight), null);
+    builder.addDoubleProperty("Shoot Current Left", () -> TelemetryConstants.roundTelemetry(shootCurrentLeft), null);
+    builder.addDoubleProperty("Shoot Current Right", () -> TelemetryConstants.roundTelemetry(shootCurrentRight), null);
     builder.addDoubleProperty("Shoot Reference Left", () -> TelemetryConstants.roundTelemetry(shootReferenceLeft), null);
     builder.addDoubleProperty("Shoot Reference Right", () -> TelemetryConstants.roundTelemetry(shootReferenceRight), null);
     builder.addDoubleProperty("Shoot Error Left", () -> TelemetryConstants.roundTelemetry(shootErrorLeft), null);
     builder.addDoubleProperty("Shoot Error Right", () -> TelemetryConstants.roundTelemetry(shootErrorRight), null);
-    builder.addDoubleProperty("Hood Position", () -> TelemetryConstants.roundTelemetry(hoodPosition.in(Degree)), null);
-    builder.addDoubleProperty("Hood Motor Position", () -> TelemetryConstants.roundTelemetry(hoodMotorPosition.in(Degree)), null);
-    builder.addDoubleProperty("Hood Voltage", () -> TelemetryConstants.roundTelemetry(hoodVoltage.in(Volts)), null);
-    builder.addDoubleProperty("Hood Current", () -> TelemetryConstants.roundTelemetry(hoodCurrent.in(Amps)), null);
+    builder.addDoubleProperty("Hood Position", () -> TelemetryConstants.roundTelemetry(hoodPosition*360), null);
+    builder.addDoubleProperty("Hood Motor Position", () -> TelemetryConstants.roundTelemetry(hoodMotorPosition*360), null);
+    builder.addDoubleProperty("Hood Voltage", () -> TelemetryConstants.roundTelemetry(hoodVoltage), null);
+    builder.addDoubleProperty("Hood Current", () -> TelemetryConstants.roundTelemetry(hoodCurrent), null);
     builder.addDoubleProperty("Hood Reference", () -> TelemetryConstants.roundTelemetry(hoodReference), null);
     builder.addDoubleProperty("Hood Error", () -> TelemetryConstants.roundTelemetry(hoodError*360), null);
 
-        builder.addDoubleProperty("Test Flywheel Goal", () -> testFlywheelGoal.times(60).in(RotationsPerSecond), (val) -> {
-            testFlywheelGoal = RotationsPerSecond.of(val/60);
+        builder.addDoubleProperty("Test Flywheel Goal", () -> testFlywheelGoal*(60), (val) -> {
+            testFlywheelGoal = (val/60);
         });
 
-        builder.addDoubleProperty("Test Hood Goal", () -> testHoodGoal.in(Degree), (val) -> {
-            testHoodGoal = Degrees.of(val);
+        builder.addDoubleProperty("Test Hood Goal", () -> testHoodGoal*360, (val) -> {
+            testHoodGoal = val/360;
         });
 
         builder.addDoubleProperty("Shoot KS", () -> shootMotorConfigR.Slot0.kS, (val) -> {
@@ -330,13 +330,13 @@ public class ShooterRealHardware implements ShooterHardware {
     }
 
     @Override
-    public AngularVelocity getTestFlywheelGoal()
+    public double getTestFlywheelGoal()
     {
         return testFlywheelGoal;
     }
 
     @Override
-    public Angle getTestHoodGoal()
+    public double getTestHoodGoal()
     {
         return testHoodGoal;
     }

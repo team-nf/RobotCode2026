@@ -7,6 +7,7 @@ package frc.robot;
 import com.ctre.phoenix6.Utils;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -106,6 +107,7 @@ public class RobotContainer {
         : stream
     );
     SmartDashboard.putData("Auto Chooser", autoChooser);
+
   }
 
   private void configureBindings() {
@@ -117,12 +119,14 @@ public class RobotContainer {
 
     m_driverController.y()
         .whileTrue(m_swerveDrivetrain.aimToHub()
-            .alongWith(m_swerveDrivetrain.waitForAtAim().andThen(m_theMachine.shootRequest())))
+            .alongWith(m_swerveDrivetrain.waitForAtAim(), m_theMachine.getReadyRequest()).andThen(m_theMachine.shootRequest()))
         .onFalse(m_theMachine.idleDeployedRequest());
 
     m_driverController.rightBumper()
-        .whileTrue(m_theMachine.shootRequest())
-        .onFalse(m_theMachine.zeroRequest());
+        .whileTrue(m_swerveDrivetrain.pathFindToIntakeWall());
+
+    m_driverController.leftBumper()
+        .whileTrue(m_swerveDrivetrain.pathFindToStartPose1());
 
     m_driverController.a()
         .onTrue(m_theMachine.idleRetractedRequest());
@@ -147,7 +151,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("AimAndShoot", 
           m_swerveDrivetrain.aimToHub()
-            .alongWith(m_swerveDrivetrain.waitForAtAim().andThen(m_theMachine.shootRequest()))
+            .alongWith(m_swerveDrivetrain.waitForAtAim(), m_theMachine.getReadyRequest()).andThen(m_theMachine.shootRequest())
             .withTimeout(Seconds.of(5))
             .andThen(m_theMachine.idleRetractedRequest()));
 
@@ -162,7 +166,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("GoToTrench1", m_swerveDrivetrain.pathFindToTrench1());
     NamedCommands.registerCommand("IntakeFromWall", m_theMachine.intakeRequest().andThen(m_swerveDrivetrain.followPathIntakeWall()));
     NamedCommands.registerCommand("IntakeFromTrench1", m_swerveDrivetrain.followPathTrench1());
-
+    NamedCommands.registerCommand("GoToStartPose", m_swerveDrivetrain.pathFindToStartPose1());
     }
 
     
@@ -266,7 +270,11 @@ public class RobotContainer {
 
     if(Robot.isReal())
     {
-      m_localization.addVisionMeasurement();
+      if(DriverStation.isDisabled())
+      {
+        m_localization.disabledPeriodic();
+      }
+      else m_localization.enabledPeriodic();
     }
     //updateTelemetrySettings();
 

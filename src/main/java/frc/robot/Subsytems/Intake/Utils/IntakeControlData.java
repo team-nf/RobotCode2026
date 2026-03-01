@@ -17,13 +17,13 @@ public class IntakeControlData implements Sendable {
     public IntakeControlState prevIntakeControlState = IntakeControlState.CLOSE;
     public IntakePositionState intakePositionState = IntakePositionState.RETRACTED;
 
-    public AngularVelocity intakeGoalVelocity = RotationsPerSecond.of(0);
-    public AngularVelocity intakeVelocity = RotationsPerSecond.of(0);
-    public AngularVelocity intakeError = RotationsPerSecond.of(0);
+    public double intakeGoalVelocity = 0;
+    public double intakeVelocity = 0;
+    public double intakeError = 0;
 
-    public Angle intakeArmAngle = Degrees.of(0);
-    public Angle intakeGoalArmAngle = Degrees.of(0);
-    public Angle intakeArmError = Degrees.of(0);
+    public double intakeArmAngle = 0;
+    public double intakeGoalArmAngle = 0;
+    public double intakeArmError = 0;
 
     @Override
     public void initSendable(SendableBuilder builder) {
@@ -32,11 +32,11 @@ public class IntakeControlData implements Sendable {
         builder.addStringProperty("IntakePrevControlState", () -> prevIntakeControlState.toString(), null);
         builder.addStringProperty("IntakeRollerState", () -> intakeRollerState.toString(), null);
         builder.addStringProperty("IntakePositionState", () -> intakePositionState.toString(), null);
-        builder.addDoubleProperty("IntakeGoalRPM", () -> TelemetryConstants.roundTelemetry(intakeGoalVelocity.in(RotationsPerSecond) * 60), null);
-        builder.addDoubleProperty("IntakeRPM", () -> TelemetryConstants.roundTelemetry(intakeVelocity.in(RotationsPerSecond) * 60), null);
-        builder.addDoubleProperty("IntakeErrorRPM", () -> TelemetryConstants.roundTelemetry(intakeError.in(RotationsPerSecond) * 60), null);
-        builder.addDoubleProperty("IntakeArmAngleDegrees", () -> TelemetryConstants.roundTelemetry(intakeArmAngle.in(Degrees)), null);
-        builder.addDoubleProperty("IntakeGoalArmAngleDegrees", () -> TelemetryConstants.roundTelemetry(intakeGoalArmAngle.in(Degrees)), null);
-        builder.addDoubleProperty("IntakeArmErrorDegrees", () -> TelemetryConstants.roundTelemetry(intakeArmError.in(Degrees)), null);
+        builder.addDoubleProperty("IntakeGoalRPM", () -> TelemetryConstants.roundTelemetry(intakeGoalVelocity * 60), null);
+        builder.addDoubleProperty("IntakeRPM", () -> TelemetryConstants.roundTelemetry(intakeVelocity * 60), null);
+        builder.addDoubleProperty("IntakeErrorRPM", () -> TelemetryConstants.roundTelemetry(intakeError * 60), null);
+        builder.addDoubleProperty("IntakeArmAngleDegrees", () -> TelemetryConstants.roundTelemetry(intakeArmAngle * 360), null);
+        builder.addDoubleProperty("IntakeGoalArmAngleDegrees", () -> TelemetryConstants.roundTelemetry(intakeGoalArmAngle * 360), null);
+        builder.addDoubleProperty("IntakeArmErrorDegrees", () -> TelemetryConstants.roundTelemetry(intakeArmError * 360), null);
     }
 }

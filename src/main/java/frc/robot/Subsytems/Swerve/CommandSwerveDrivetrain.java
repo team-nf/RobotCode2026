@@ -14,6 +14,7 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -22,6 +23,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPoint;
 import com.pathplanner.lib.pathfinding.Pathfinder;
 import com.pathplanner.lib.util.FileVersionException;
 
@@ -30,6 +32,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
@@ -90,6 +93,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
+
+    private boolean isNeutralModeBrake = true;
 
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
@@ -278,12 +283,31 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             swerveData.distanceToHub = Meters.of(PoseConstants.BLUE_HUB_AIM_POSE.getTranslation().getDistance(getPose().getTranslation()));
         }
 
+
+        /* 
+        if (DriverStation.isEnabled() && !isNeutralModeBrake)
+        {
+            configNeutralMode(NeutralModeValue.Brake);
+            isNeutralModeBrake = true;
+        }
+        else if (!DriverStation.isEnabled() && isNeutralModeBrake)
+        {
+            configNeutralMode(NeutralModeValue.Coast);
+            isNeutralModeBrake = false;
+        }*/
+
     }
 
     public void updateSwerveData(){
         
         swerveData.robotPose = getState().Pose;
-        swerveData.field.setRobotPose(swerveData.robotPose);
+
+        Pose2d roundedRobotPose = new Pose2d(
+            TelemetryConstants.roundTelemetry(swerveData.robotPose.getX()), 
+            TelemetryConstants.roundTelemetry(swerveData.robotPose.getY()),
+            new Rotation2d(TelemetryConstants.roundTelemetry(swerveData.robotPose.getRotation().getRadians())));
+
+        swerveData.field.setRobotPose(roundedRobotPose);
 
         swerveData.robotVelocityX = MetersPerSecond.of(getState().Speeds.vxMetersPerSecond);
         swerveData.robotVelocityY = MetersPerSecond.of(getState().Speeds.vyMetersPerSecond);
@@ -505,6 +529,25 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }));
     }
 
+    public Command pathfindToPath(PathPlannerPath path) {
+
+        final PathPlannerPath pathToFollow;
+
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+            pathToFollow = path.flipPath();
+        }
+        else{
+            pathToFollow = path;
+        }
+
+        Pose2d targetPose2d = pathToFollow.getStartingDifferentialPose();
+
+        return AutoBuilder.pathfindToPose(targetPose2d, DriveConstants.PATH_CONSTRAINTS_TO_POSE).deadlineFor(new RunCommand(() -> {
+          updateSwerveErrors(pathToFollow.getStartingDifferentialPose());
+          setSwerveState(SwerveState.PATH_FOLLOWING);
+        }));
+    }
+
     public Command pathfindThenFollowPath(PathPlannerPath path) {
 
         final PathPlannerPath pathToFollow;
@@ -549,17 +592,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public Command pathFindToIntakeWall()
     {
-        Pose2d targetPose = new Pose2d(-1, -1, Rotation2d.fromDegrees(-1));
+        PathPlannerPath path = null;
 
         try {
-            targetPose = PathPlannerPath.fromPathFile("WallIntake").getPathPoses().get(0);
-
+            path = PathPlannerPath.fromPathFile("IntakeWall");
         } catch (FileVersionException | IOException | ParseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
         }
 
-        return goToPose(targetPose);
+        return pathfindToPath(path);
     }
 
     public Command pathFindToTrench1()
@@ -573,6 +615,19 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 e.printStackTrace();
         }
 
+        return goToPose(targetPose);
+    }
+
+    public Command pathFindToStartPose1()
+    {
+        Pose2d targetPose = new Pose2d(-1,-1,new Rotation2d());
+
+        if(DriverStation.getAlliance().get() == Alliance.Red)
+        {
+            targetPose = PoseConstants.START_POSE_RED_1;
+        }
+        else targetPose = PoseConstants.START_POSE_BLUE_1;
+    
         return goToPose(targetPose);
     }
 

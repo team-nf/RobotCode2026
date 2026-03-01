@@ -1,6 +1,6 @@
 package frc.robot.Subsytems.TheMachine.StateRequests;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;   
 import frc.robot.Constants.States.TheMachineStates.TheMachineControlState;
 import frc.robot.Subsytems.TheMachine.TheMachine;
 
@@ -20,4 +20,4 @@ public class TheMachineIntakeToggledRequest extends InstantCommand {
         theMachine.setState(TheMachineControlState.INTAKE);
        }
     }
-}
+}       

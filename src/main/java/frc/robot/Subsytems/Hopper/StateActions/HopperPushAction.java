@@ -20,7 +20,6 @@ public class HopperPushAction extends Command {
 
     @Override
     public void execute() {
-        hopperSubsystem.push(); // Call the push method in HopperSubsystem
     }
 
     @Override

@@ -17,17 +17,17 @@ public interface IntakeHardware extends Sendable {
     public TalonFX getIntakeMotor();
     public TalonFX getIntakeArmMotor();
 
-    public AngularVelocity getIntakeVelocity();
-    public Angle getIntakeArmPosition();
+    public double getIntakeVelocity();
+    public double getIntakeArmPosition();
 
     public void intakeSetPower(double power);
-    public void setIntakeSpeed(AngularVelocity velocity);
+    public void setIntakeSpeed(double velocity);
     public void intakeStop();
     public void testIntake();
 
     // Arm / position control (abstracted)
     public void intakeArmSetPower(double power);
-    public void setIntakeArmPosition(Angle position);
+    public void setIntakeArmPosition(double position);
     public void intakeArmZero();
     public void testArmIntake();
 

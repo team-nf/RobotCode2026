@@ -39,6 +39,7 @@ import frc.robot.Subsytems.TheMachine.StateActions.TheMachineReverseAction;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineShootAction;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineTestAction;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineZeroAction;
+import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineGetReadyRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleDeployedRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleRetractedRequest;
@@ -271,6 +272,10 @@ public class TheMachine {
       return new TheMachineShootRequest(this);
   }
 
+  public Command getReadyRequest(){
+    return new TheMachineGetReadyRequest(this);
+  }
+
   public Command reverseRequest() {
       return new TheMachineReverseRequest(this);
   }
@@ -294,20 +299,20 @@ public class TheMachine {
 
   public void calculateSubsytemPoses() {
 
-    Angle hoodAngle = shooterSubsystem.getHoodAngleInRealLife();
+    double hoodAngle = shooterSubsystem.getHoodAngleInRealLife();
 
     Pose3d hoodPose = TheMachineConstants.HOOD_RETRACTED_POSE
-                            .rotateAround(TheMachineConstants.HOOD_RETRACTED_POSE.getTranslation(),new Rotation3d(0, hoodAngle.in(Radians), 0));
+                            .rotateAround(TheMachineConstants.HOOD_RETRACTED_POSE.getTranslation(),new Rotation3d(0, Math.toRadians(hoodAngle*360), 0));
 
-    Angle intakeArmAngle = intakeSubsystem.getArmAngleInRealLife();
+    double intakeArmAngle = intakeSubsystem.getArmAngleInRealLife();
 
     Pose3d intakePose = TheMachineConstants.INTAKE_DEPLOYED_POSE
-                          .rotateAround(TheMachineConstants.INTAKE_DEPLOYED_POSE.getTranslation(), new Rotation3d(0, -intakeArmAngle.in(Radians), 0));
+                          .rotateAround(TheMachineConstants.INTAKE_DEPLOYED_POSE.getTranslation(), new Rotation3d(0, -Math.toRadians(intakeArmAngle*360), 0));
 
     Distance funnelExtension = Meters.of(0.0);
 
-    if(intakeArmAngle.lt(Degrees.of(30))) funnelExtension = Meters.of(0.3125);
-    else funnelExtension = Meters.of(0.3125).times(Math.cos(intakeArmAngle.minus(Degrees.of(30)).in(Radians)));
+    if(intakeArmAngle < 30) funnelExtension = Meters.of(0.3125);
+    else funnelExtension = Meters.of(0.3125).times(Math.cos(Math.toRadians(intakeArmAngle - 30)));
     
     Pose3d funnelPose = TheMachineConstants.FUNNEL_RETRACTED_POSE
                           .plus(new Transform3d(funnelExtension.in(Meters), 0, 0, new Rotation3d(0, 0, 0)));

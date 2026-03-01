@@ -20,7 +20,6 @@ public class HopperFeedAction extends Command {
 
   @Override
   public void execute() {
-    hopperSubsystem.feed();
   }
 
   @Override

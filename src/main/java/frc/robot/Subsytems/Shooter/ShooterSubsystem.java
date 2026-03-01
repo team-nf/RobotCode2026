@@ -66,30 +66,26 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterData.flywheelVelocityR = shooterHardware.getFlywheelVelocityR();
     shooterData.hoodAngle = shooterHardware.getHoodPosition();
 
-    shooterData.flywheelErrorL = shooterData.flywheelGoalVelocity.minus(shooterData.flywheelVelocityL);
-    shooterData.flywheelErrorR = shooterData.flywheelGoalVelocity.minus(shooterData.flywheelVelocityR);
-    shooterData.hoodError = shooterData.hoodGoalAngle.minus(shooterData.hoodAngle);
+    shooterData.flywheelErrorL = shooterData.flywheelGoalVelocity - (shooterData.flywheelVelocityL);
+    shooterData.flywheelErrorR = shooterData.flywheelGoalVelocity - (shooterData.flywheelVelocityR);
+    shooterData.hoodError = shooterData.hoodGoalAngle - (shooterData.hoodAngle);
 
-    shooterData.flywheelStateL = RotationsPerSecond.of(shooterData.flywheelErrorL.abs(RotationsPerSecond))
-      .lte(ShooterConstants.FLYWHEEL_ALLOWABLE_ERROR)
+    shooterData.flywheelStateL = Math.abs(shooterData.flywheelErrorL) <= (ShooterConstants.FLYWHEEL_ALLOWABLE_ERROR.in(RotationsPerSecond))
         ? FlywheelState.AT_SPEED
         : FlywheelState.REACHING_SPEED;
 
-    shooterData.flywheelStateR = RotationsPerSecond.of(shooterData.flywheelErrorR.abs(RotationsPerSecond))
-      .lte(ShooterConstants.FLYWHEEL_ALLOWABLE_ERROR)
+    shooterData.flywheelStateR = Math.abs(shooterData.flywheelErrorR) <= (ShooterConstants.FLYWHEEL_ALLOWABLE_ERROR.in(RotationsPerSecond))
         ? FlywheelState.AT_SPEED
         : FlywheelState.REACHING_SPEED;
 
-    shooterData.hoodState = Degrees.of(shooterData.hoodError.abs(Degrees))
-      .lte(ShooterConstants.HOOD_ALLOWABLE_ERROR.times(ShooterConstants.HOOD_GEAR_REDUCTION))
+    shooterData.hoodState = Math.abs(shooterData.hoodError) <= (ShooterConstants.HOOD_ALLOWABLE_ERROR.times(ShooterConstants.HOOD_GEAR_REDUCTION).in(Degrees))
       ? HoodState.AT_POSITION
       : HoodState.MOVING_TO_POSITION;
   }
 
   public void zero() {
-    shooterData.flywheelGoalVelocity = RotationsPerSecond.of(0.0);
-    shooterData.hoodGoalAngle = Degrees.of(0.0);
-    updateShooterData();
+    shooterData.flywheelGoalVelocity = (0.0);
+    shooterData.hoodGoalAngle = (0.0);
     shooterHardware.flywheelStop();
     shooterHardware.hoodZero();
   }
@@ -97,7 +93,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public void rest() {
     shooterData.flywheelGoalVelocity = shooterCalculator.calculateRestFlywheelSpeedFromCurrentPose();
     shooterData.hoodGoalAngle = shooterCalculator.calculateRestHoodAngleFromCurrentPose();
-    updateShooterData();
     shooterHardware.setShooter(
       shooterData.flywheelGoalVelocity, 
       shooterData.hoodGoalAngle);
@@ -106,7 +101,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setShooterFromCurrentPose() {
     shooterData.flywheelGoalVelocity = shooterCalculator.calculateFlywheelSpeedFromCurrentPose();
     shooterData.hoodGoalAngle = shooterCalculator.calculateHoodAngleFromCurrentPose();
-    updateShooterData();
     shooterHardware.setShooter(
       shooterData.flywheelGoalVelocity, 
       shooterData.hoodGoalAngle);
@@ -115,7 +109,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public void test() {
     shooterData.flywheelGoalVelocity = shooterHardware.getTestFlywheelGoal();
     shooterData.hoodGoalAngle = shooterHardware.getTestHoodGoal();
-    updateShooterData();
     shooterHardware.testShooter();
   }
 
@@ -167,7 +160,7 @@ public class ShooterSubsystem extends SubsystemBase {
     return shooterData;
   }
 
-  public Angle getHoodAngleInRealLife() {
+  public double getHoodAngleInRealLife() {
     return shooterHardware.getHoodPosition();
   }
 
@@ -219,6 +212,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     stateMachine();
+    updateShooterData();
+
     }
 
   @Override

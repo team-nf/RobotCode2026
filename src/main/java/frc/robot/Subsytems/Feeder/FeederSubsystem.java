@@ -53,34 +53,29 @@ public class FeederSubsystem extends SubsystemBase {
 
   public void updateFeederData() {
     feederData.feederVelocity = feederHardware.getFeederVelocity();
-    feederData.feederError = feederData.feederGoalVelocity.minus(feederData.feederVelocity);
+    feederData.feederError = feederData.feederGoalVelocity - feederData.feederVelocity;
     
-    feederData.feederRollerState = RotationsPerSecond.of(feederData.feederError.abs(RotationsPerSecond))
-    .lte(FeederConstants.FEEDER_ALLOWABLE_ERROR)
+    feederData.feederRollerState = Math.abs(feederData.feederError) <= FeederConstants.FEEDER_ALLOWABLE_ERROR.in(RotationsPerSecond)
         ? frc.robot.Constants.States.FeederStates.FeederRollerState.AT_SPEED
         : frc.robot.Constants.States.FeederStates.FeederRollerState.REACHING_SPEED;
   }
 
   public void zero() {
-    feederData.feederGoalVelocity = RotationsPerSecond.of(0);
-    updateFeederData();
+    feederData.feederGoalVelocity = 0;
     feederHardware.feederStop();
   }
 
   public void feed() {
-    feederData.feederGoalVelocity = FeederConstants.FEEDER_FEEDING_VELOCITY;
-    updateFeederData();
+    feederData.feederGoalVelocity = FeederConstants.FEEDER_FEEDING_VELOCITY.in(RotationsPerSecond);
     feederHardware.setFeederSpeed(feederData.feederGoalVelocity);
   }
 
   public void reverse() {
-    feederData.feederGoalVelocity = FeederConstants.FEEDER_REVERSE_VELOCITY;
-    updateFeederData();
+    feederData.feederGoalVelocity = FeederConstants.FEEDER_REVERSE_VELOCITY.in(RotationsPerSecond);
     feederHardware.setFeederSpeed(feederData.feederGoalVelocity);
   }
 
   public void test() {
-    updateFeederData();
     feederHardware.testFeeder();
   }
 
@@ -158,7 +153,8 @@ public class FeederSubsystem extends SubsystemBase {
     if (TelemetryConstants.SHOULD_FEEDER_CONTROL_COMMUNICATE) {
         SmartDashboard.putData("Feeder Control Data", feederData);
     }
-
+    
+    updateFeederData();
     stateMachine();
   }
 

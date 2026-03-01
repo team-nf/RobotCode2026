@@ -66,7 +66,7 @@ public class IntakeConstants {
     public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(120);
     public static final Angle INTAKE_ARM_START_ANGLE = Degrees.of(120);
     public static final Angle INTAKE_FEED_ANGLE = Degrees.of(60);
-    public static final Angle INTAKE_ARM_BETWEEN_ANGLE = Degrees.of(0);
+    public static final Angle INTAKE_ARM_BETWEEN_ANGLE = Degrees.of(20);
 
     public static final Angle INTAKE_ARM_ALLOWABLE_ERROR = Degrees.of(6);
 
@@ -94,8 +94,8 @@ public class IntakeConstants {
                     .withPeakReverseVoltage(-9))
                 .withCurrentLimits(new CurrentLimitsConfigs()
                     .withSupplyCurrentLimitEnable(true)
-                    .withSupplyCurrentLimit(30)
-                    .withStatorCurrentLimit(30));
+                    .withSupplyCurrentLimit(35)
+                    .withStatorCurrentLimit(35));
 
     public static final PositionVoltage INTAKE_ARM_POSITION_CONTROL = new PositionVoltage(0)
                         .withSlot(0)

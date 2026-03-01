@@ -20,7 +20,6 @@ public class IntakeClosedAction extends Command {
 
   @Override
   public void execute() {
-    intakeSubsystem.close();
   }
 
   @Override

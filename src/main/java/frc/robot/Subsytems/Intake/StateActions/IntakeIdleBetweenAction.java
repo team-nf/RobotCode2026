@@ -15,7 +15,7 @@ public class IntakeIdleBetweenAction extends Command {
 
   @Override
   public void initialize() {
-    intakeSubsystem.idleBetween();
+    
   }
 
   @Override

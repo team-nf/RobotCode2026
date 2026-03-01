@@ -12,10 +12,10 @@ public interface HopperHardware extends Sendable {
 
     public TalonFX getHopperMotor();
 
-    public AngularVelocity getHopperVelocity();
+    public double getHopperVelocity();
 
     public void hopperSetPower(double power);
-    public void setHopperSpeed(AngularVelocity velocity);
+    public void setHopperSpeed(double velocity);
     public void hopperStop();
     public void testHopper();
 

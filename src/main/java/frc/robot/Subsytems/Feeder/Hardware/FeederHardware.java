@@ -14,10 +14,10 @@ public interface FeederHardware extends Sendable{
 
     public TalonFX getFeederMotor();
 
-    public AngularVelocity getFeederVelocity();
+    public double getFeederVelocity();
 
     public void feederSetPower(double power);
-    public void setFeederSpeed(AngularVelocity velocity);
+    public void setFeederSpeed(double velocity);
     public void feederStop();
     
     public void testFeeder();

@@ -20,7 +20,6 @@ public class HopperZeroAction extends Command {
 
   @Override
   public void execute() {
-    hopperSubsystem.zero();
   }
 
   @Override

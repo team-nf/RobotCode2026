@@ -20,7 +20,6 @@ public class HopperReverseAction extends Command {
 
   @Override
   public void execute() {
-    hopperSubsystem.reverse();
   }
 
   @Override

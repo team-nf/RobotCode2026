@@ -20,7 +20,6 @@ public class IntakeFeedAction extends Command {
 
   @Override
   public void execute() {
-    intakeSubsystem.feed();
   }
 
   @Override

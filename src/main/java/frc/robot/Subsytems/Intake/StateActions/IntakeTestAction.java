@@ -20,7 +20,6 @@ public class IntakeTestAction extends Command {
 
   @Override
   public void execute() {
-    intakeSubsystem.test();
   }
 
   @Override
