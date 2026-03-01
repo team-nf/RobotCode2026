@@ -39,6 +39,7 @@ import frc.robot.Subsytems.Swerve.CommandSwerveDrivetrain;
 import frc.robot.Subsytems.TheMachine.TheMachine;
 import frc.robot.Utils.FuelSim;
 import frc.robot.Utils.HopperSim;
+import frc.robot.Utils.Localization;
 import frc.robot.Utils.MatchTracker;
 import frc.robot.Utils.ShooterSim;
 import frc.robot.Utils.SwerveFieldContactSim;
@@ -48,6 +49,7 @@ import static edu.wpi.first.units.Units.*;
 public class RobotContainer {
 
   private CommandSwerveDrivetrain m_swerveDrivetrain;
+  private Localization m_localization;
 
   private ShooterCalculator m_shooterCalculator;
   private ShooterSubsystem m_shooterSubsystem;
@@ -75,6 +77,7 @@ public class RobotContainer {
     m_intakeSubsystem = new IntakeSubsystem();
 
     m_swerveDrivetrain = TunerConstants.createDrivetrain();
+    m_localization = new Localization(m_swerveDrivetrain);
 
     m_shooterCalculator = new ShooterCalculator(m_swerveDrivetrain.swerveDataSupplier());
     m_shooterSubsystem = new ShooterSubsystem(m_shooterCalculator);
@@ -158,7 +161,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("GoToIntakeFromWall", m_swerveDrivetrain.pathFindToIntakeWall());
     NamedCommands.registerCommand("GoToTrench1", m_swerveDrivetrain.pathFindToTrench1());
     NamedCommands.registerCommand("IntakeFromWall", m_theMachine.intakeRequest().andThen(m_swerveDrivetrain.followPathIntakeWall()));
-    NamedCommands.registerCommand("IntakeFromTrench1", m_theMachine.intakeRequest().andThen(m_swerveDrivetrain.followPathTrench1()));
+    NamedCommands.registerCommand("IntakeFromTrench1", m_swerveDrivetrain.followPathTrench1());
 
     }
 
@@ -261,6 +264,10 @@ public class RobotContainer {
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
      }
 
+    if(Robot.isReal())
+    {
+      m_localization.addVisionMeasurement();
+    }
     //updateTelemetrySettings();
 
     }

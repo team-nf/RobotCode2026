@@ -65,7 +65,7 @@ public class IntakeConstants {
     public static final Angle INTAKE_ARM_DEPLOYED_ANGLE = Degrees.of(0);
     public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(120);
     public static final Angle INTAKE_ARM_START_ANGLE = Degrees.of(120);
-    public static final Angle INTAKE_FEED_ANGLE = Degrees.of(42.5);
+    public static final Angle INTAKE_FEED_ANGLE = Degrees.of(60);
     public static final Angle INTAKE_ARM_BETWEEN_ANGLE = Degrees.of(0);
 
     public static final Angle INTAKE_ARM_ALLOWABLE_ERROR = Degrees.of(6);

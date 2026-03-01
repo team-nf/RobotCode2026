@@ -19,7 +19,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 0.5
           }
         },
         {
@@ -32,6 +32,12 @@
           "type": "named",
           "data": {
             "name": "MachineIdleRequest"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MachineIntakeRequest"
           }
         },
         {

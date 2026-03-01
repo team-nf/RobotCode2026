@@ -146,8 +146,8 @@ public class ShooterConstants {
 
     public static final double hoodAngleFormula(double x)
     {
-        double a = 4.35;
-        double b = 9.23;
+        double a = 4.1;
+        double b = 8.23;
 
 
         return a*x + b;
@@ -155,8 +155,8 @@ public class ShooterConstants {
 
     public static final double flywheelRPMFormula(double x)
     {
-        double a = 175;
-        double b = 940.28;
+        double a = 190;
+        double b = 915.28;
 
 
         return a*x + b;

@@ -328,13 +328,19 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
     
 
+
     public double getGyroHeading() {
-        double rawYaw = getHeadingStatusSignalType().getValueAsDouble();
+        double rawYaw = getPigeon2().getYaw().getValueAsDouble();
         double yawWrapped = rawYaw % 360;
         if (yawWrapped < 0){
             yawWrapped += 360;
         }
         return yawWrapped;
+    }
+
+    public double getGyroRate() {
+        return getPigeon2().getAngularVelocityZWorld().getValueAsDouble();
+        //return getState().Speeds.omegaRadiansPerSecond;
     }
 
     public void gyroReset() {

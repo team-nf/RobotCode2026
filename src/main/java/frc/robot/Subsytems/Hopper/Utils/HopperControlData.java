@@ -6,6 +6,7 @@ import frc.robot.Constants.States.HopperStates.HopperControlState;
 import frc.robot.Constants.States.HopperStates.HopperRollerState;
 import edu.wpi.first.units.measure.AngularVelocity;
 import static edu.wpi.first.units.Units.*;
+import frc.robot.Constants.TelemetryConstants;
 
 public class HopperControlData implements Sendable {
 
@@ -23,8 +24,8 @@ public class HopperControlData implements Sendable {
         builder.addStringProperty("HopperControlState", () -> hopperControlState.toString(), null);
         builder.addStringProperty("HopperPrevControlState", () -> prevHopperControlState.toString(), null);
         builder.addStringProperty("HopperRollerState", () -> hopperRollerState.toString(), null);
-        builder.addDoubleProperty("HopperGoalRPM", () -> hopperGoalVelocity.in(RotationsPerSecond)*60, null);
-        builder.addDoubleProperty("HopperRPM", () -> hopperVelocity.in(RotationsPerSecond)*60, null);
-        builder.addDoubleProperty("HopperErrorRPM", () -> hopperError.in(RotationsPerSecond)*60, null);
+        builder.addDoubleProperty("HopperGoalRPM", () -> TelemetryConstants.roundTelemetry(hopperGoalVelocity.in(RotationsPerSecond) * 60), null);
+        builder.addDoubleProperty("HopperRPM", () -> TelemetryConstants.roundTelemetry(hopperVelocity.in(RotationsPerSecond) * 60), null);
+        builder.addDoubleProperty("HopperErrorRPM", () -> TelemetryConstants.roundTelemetry(hopperError.in(RotationsPerSecond) * 60), null);
     }
 }

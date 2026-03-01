@@ -17,7 +17,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilderImpl;
+import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Constants.ShooterConstants;
 
 import static edu.wpi.first.units.Units.*;
@@ -255,24 +255,24 @@ public class ShooterRealHardware implements ShooterHardware {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty("Flywheel Velocity Left", () -> flywheelVelocityLeft.times(60).in(RotationsPerSecond), null);
-        builder.addDoubleProperty("Flywheel Velocity Right", () -> flywheelVelocityRight.times(60).in(RotationsPerSecond), null);
-        builder.addDoubleProperty("Shoot Motor Velocity Left", () -> shootVelocityLeft.times(60).in(RotationsPerSecond), null);
-        builder.addDoubleProperty("Shoot Motor Velocity Right", () -> shootVelocityRight.times(60).in(RotationsPerSecond), null);
-        builder.addDoubleProperty("Shoot Voltage Left", () -> shootVoltageLeft.in(Volts), null);
-        builder.addDoubleProperty("Shoot Voltage Right", () -> shootVoltageRight.in(Volts), null);
-        builder.addDoubleProperty("Shoot Current Left", () -> shootCurrentLeft.in(Amps), null);
-        builder.addDoubleProperty("Shoot Current Right", () -> shootCurrentRight.in(Amps), null);
-        builder.addDoubleProperty("Shoot Reference Left", () -> shootReferenceLeft, null);
-        builder.addDoubleProperty("Shoot Reference Right", () -> shootReferenceRight, null);
-        builder.addDoubleProperty("Shoot Error Left", () -> shootErrorLeft, null);
-        builder.addDoubleProperty("Shoot Error Right", () -> shootErrorRight, null);
-        builder.addDoubleProperty("Hood Position", () -> hoodPosition.in(Degree), null);
-        builder.addDoubleProperty("Hood Motor Position", () -> hoodMotorPosition.in(Degree), null);
-        builder.addDoubleProperty("Hood Voltage", () -> hoodVoltage.in(Volts), null);
-        builder.addDoubleProperty("Hood Current", () -> hoodCurrent.in(Amps), null);
-        builder.addDoubleProperty("Hood Reference", () -> hoodReference, null);
-        builder.addDoubleProperty("Hood Error", () -> hoodError*360, null);
+    builder.addDoubleProperty("Flywheel Velocity Left", () -> TelemetryConstants.roundTelemetry(flywheelVelocityLeft.times(60).in(RotationsPerSecond)), null);
+    builder.addDoubleProperty("Flywheel Velocity Right", () -> TelemetryConstants.roundTelemetry(flywheelVelocityRight.times(60).in(RotationsPerSecond)), null);
+    builder.addDoubleProperty("Shoot Motor Velocity Left", () -> TelemetryConstants.roundTelemetry(shootVelocityLeft.times(60).in(RotationsPerSecond)), null);
+    builder.addDoubleProperty("Shoot Motor Velocity Right", () -> TelemetryConstants.roundTelemetry(shootVelocityRight.times(60).in(RotationsPerSecond)), null);
+    builder.addDoubleProperty("Shoot Voltage Left", () -> TelemetryConstants.roundTelemetry(shootVoltageLeft.in(Volts)), null);
+    builder.addDoubleProperty("Shoot Voltage Right", () -> TelemetryConstants.roundTelemetry(shootVoltageRight.in(Volts)), null);
+    builder.addDoubleProperty("Shoot Current Left", () -> TelemetryConstants.roundTelemetry(shootCurrentLeft.in(Amps)), null);
+    builder.addDoubleProperty("Shoot Current Right", () -> TelemetryConstants.roundTelemetry(shootCurrentRight.in(Amps)), null);
+    builder.addDoubleProperty("Shoot Reference Left", () -> TelemetryConstants.roundTelemetry(shootReferenceLeft), null);
+    builder.addDoubleProperty("Shoot Reference Right", () -> TelemetryConstants.roundTelemetry(shootReferenceRight), null);
+    builder.addDoubleProperty("Shoot Error Left", () -> TelemetryConstants.roundTelemetry(shootErrorLeft), null);
+    builder.addDoubleProperty("Shoot Error Right", () -> TelemetryConstants.roundTelemetry(shootErrorRight), null);
+    builder.addDoubleProperty("Hood Position", () -> TelemetryConstants.roundTelemetry(hoodPosition.in(Degree)), null);
+    builder.addDoubleProperty("Hood Motor Position", () -> TelemetryConstants.roundTelemetry(hoodMotorPosition.in(Degree)), null);
+    builder.addDoubleProperty("Hood Voltage", () -> TelemetryConstants.roundTelemetry(hoodVoltage.in(Volts)), null);
+    builder.addDoubleProperty("Hood Current", () -> TelemetryConstants.roundTelemetry(hoodCurrent.in(Amps)), null);
+    builder.addDoubleProperty("Hood Reference", () -> TelemetryConstants.roundTelemetry(hoodReference), null);
+    builder.addDoubleProperty("Hood Error", () -> TelemetryConstants.roundTelemetry(hoodError*360), null);
 
         builder.addDoubleProperty("Test Flywheel Goal", () -> testFlywheelGoal.times(60).in(RotationsPerSecond), (val) -> {
             testFlywheelGoal = RotationsPerSecond.of(val/60);

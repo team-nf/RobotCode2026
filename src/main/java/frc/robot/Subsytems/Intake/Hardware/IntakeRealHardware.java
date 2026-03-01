@@ -11,6 +11,7 @@ import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.TelemetryConstants;
 
 public class IntakeRealHardware implements IntakeHardware {
 
@@ -180,18 +181,18 @@ public class IntakeRealHardware implements IntakeHardware {
     public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("IntakeHardware");
 
-        builder.addDoubleProperty("Intake Velocity (RPM)", () -> intakeVelocity.times(60).in(RotationsPerSecond), null);
-        builder.addDoubleProperty("Intake Motor Velocity (RPM)", () -> intakeMotorVelocity.times(60).in(RotationsPerSecond), null);
-        builder.addDoubleProperty("Intake Voltage (V)", () -> intakeVoltage.in(Volts), null);
-        builder.addDoubleProperty("Intake Current (A)", () -> intakeCurrent.in(Amps), null);
-        builder.addDoubleProperty("Intake Reference", () -> intakeReference, null);
-        builder.addDoubleProperty("Intake Error", () -> intakeError, null);
-        builder.addDoubleProperty("Intake Arm Position (deg)", () -> intakeArmPosition.in(Degrees), null);
-        builder.addDoubleProperty("Intake Arm Motor Position (deg)", () -> intakeArmMotorPosition.in(Degrees), null);
-        builder.addDoubleProperty("Intake Arm Motor Voltage (V)", () -> intakeArmMotorVoltage.in(Volts), null);
-        builder.addDoubleProperty("Intake Arm Motor Current (A)", () -> intakeArmMotorCurrent.in(Amps), null);
-        builder.addDoubleProperty("Intake Arm Reference", () -> intakeArmReference*360, null);
-        builder.addDoubleProperty("Intake Arm Error", () -> intakeArmError*360, null);
+    builder.addDoubleProperty("Intake Velocity (RPM)", () -> TelemetryConstants.roundTelemetry(intakeVelocity.times(60).in(RotationsPerSecond)), null);
+    builder.addDoubleProperty("Intake Motor Velocity (RPM)", () -> TelemetryConstants.roundTelemetry(intakeMotorVelocity.times(60).in(RotationsPerSecond)), null);
+    builder.addDoubleProperty("Intake Voltage (V)", () -> TelemetryConstants.roundTelemetry(intakeVoltage.in(Volts)), null);
+    builder.addDoubleProperty("Intake Current (A)", () -> TelemetryConstants.roundTelemetry(intakeCurrent.in(Amps)), null);
+    builder.addDoubleProperty("Intake Reference", () -> TelemetryConstants.roundTelemetry(intakeReference), null);
+    builder.addDoubleProperty("Intake Error", () -> TelemetryConstants.roundTelemetry(intakeError), null);
+    builder.addDoubleProperty("Intake Arm Position (deg)", () -> TelemetryConstants.roundTelemetry(intakeArmPosition.in(Degrees)), null);
+    builder.addDoubleProperty("Intake Arm Motor Position (deg)", () -> TelemetryConstants.roundTelemetry(intakeArmMotorPosition.in(Degrees)), null);
+    builder.addDoubleProperty("Intake Arm Motor Voltage (V)", () -> TelemetryConstants.roundTelemetry(intakeArmMotorVoltage.in(Volts)), null);
+    builder.addDoubleProperty("Intake Arm Motor Current (A)", () -> TelemetryConstants.roundTelemetry(intakeArmMotorCurrent.in(Amps)), null);
+    builder.addDoubleProperty("Intake Arm Reference", () -> TelemetryConstants.roundTelemetry(intakeArmReference*360), null);
+    builder.addDoubleProperty("Intake Arm Error", () -> TelemetryConstants.roundTelemetry(intakeArmError*360), null);
 
         builder.addDoubleProperty("Test Intake Goal RPM", () -> testIntakeGoal.times(60).in(RotationsPerSecond),
             (value) -> testIntakeGoal = RotationsPerSecond.of(value / 60.0));

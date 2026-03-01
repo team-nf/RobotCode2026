@@ -10,6 +10,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.States.SwerveStates.SwerveState;
+import frc.robot.Constants.TelemetryConstants;
 
 public class SwerveControlData implements Sendable {
 
@@ -50,14 +51,14 @@ public class SwerveControlData implements Sendable {
 
         builder.addStringProperty("RobotPoseString", () -> robotPose.toString(), null);
 
-        builder.addDoubleProperty("RobotVelocityX", () -> robotVelocityX.in(MetersPerSecond), null);
-        builder.addDoubleProperty("RobotVelocityY", () -> robotVelocityY.in(MetersPerSecond), null);
-        builder.addDoubleProperty("RobotSpeed", () -> robotSpeed.in(MetersPerSecond), null);
-        builder.addDoubleProperty("RobotAngularVelocity", () -> robotAngularVelocity.in(RotationsPerSecond), null);
+    builder.addDoubleProperty("RobotVelocityX", () -> TelemetryConstants.roundTelemetry(robotVelocityX.in(MetersPerSecond)), null);
+    builder.addDoubleProperty("RobotVelocityY", () -> TelemetryConstants.roundTelemetry(robotVelocityY.in(MetersPerSecond)), null);
+    builder.addDoubleProperty("RobotSpeed", () -> TelemetryConstants.roundTelemetry(robotSpeed.in(MetersPerSecond)), null);
+    builder.addDoubleProperty("RobotAngularVelocity", () -> TelemetryConstants.roundTelemetry(robotAngularVelocity.in(RotationsPerSecond)), null);
 
-        builder.addDoubleProperty("RobotXError", () -> robotXError.in(Meters), null);
-        builder.addDoubleProperty("RobotYError", () -> robotYError.in(Meters), null);
-        builder.addDoubleProperty("RobotAngleError", () -> robotAngleError.in(Degrees), null);
+    builder.addDoubleProperty("RobotXError", () -> TelemetryConstants.roundTelemetry(robotXError.in(Meters)), null);
+    builder.addDoubleProperty("RobotYError", () -> TelemetryConstants.roundTelemetry(robotYError.in(Meters)), null);
+    builder.addDoubleProperty("RobotAngleError", () -> TelemetryConstants.roundTelemetry(robotAngleError.in(Degrees)), null);
 
         builder.addBooleanProperty("IsAimed", () -> isAimed, null);
 
@@ -65,7 +66,7 @@ public class SwerveControlData implements Sendable {
         builder.addDoubleProperty("AimingPID_I", () -> aimingPID.getI(), (value) -> aimingPID.setI(value));
         builder.addDoubleProperty("AimingPID_D", () -> aimingPID.getD(), (value) -> aimingPID.setD(value));
 
-        builder.addDoubleProperty("DistanceToHub", () -> distanceToHub.in(Meters), null);
+    builder.addDoubleProperty("DistanceToHub", () -> TelemetryConstants.roundTelemetry(distanceToHub.in(Meters)), null);
     }
 
 }

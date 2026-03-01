@@ -12,6 +12,7 @@ import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.Constants.HopperConstants;
+import frc.robot.Constants.TelemetryConstants;
 
 public class HopperRealHardware implements HopperHardware {
 
@@ -113,12 +114,12 @@ public class HopperRealHardware implements HopperHardware {
     public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("HopperHardware");
 
-        builder.addDoubleProperty("Hopper Velocity (RPM)", () -> hopperVelocity.times(60).in(RotationsPerSecond), null);
-        builder.addDoubleProperty("Hopper Motor Velocity (RPM)", () -> hopperMotorVelocity.times(60).in(RotationsPerSecond), null);
-        builder.addDoubleProperty("Hopper Voltage (V)", () -> hopperVoltage.in(Volts), null);
-        builder.addDoubleProperty("Hopper Current (A)", () -> hopperCurrent.in(Amps), null);
-        builder.addDoubleProperty("Hopper Reference", () -> hopperReference, null);
-        builder.addDoubleProperty("Hopper Error", () -> hopperError, null);
+    builder.addDoubleProperty("Hopper Velocity (RPM)", () -> TelemetryConstants.roundTelemetry(hopperVelocity.times(60).in(RotationsPerSecond)), null);
+    builder.addDoubleProperty("Hopper Motor Velocity (RPM)", () -> TelemetryConstants.roundTelemetry(hopperMotorVelocity.times(60).in(RotationsPerSecond)), null);
+    builder.addDoubleProperty("Hopper Voltage (V)", () -> TelemetryConstants.roundTelemetry(hopperVoltage.in(Volts)), null);
+    builder.addDoubleProperty("Hopper Current (A)", () -> TelemetryConstants.roundTelemetry(hopperCurrent.in(Amps)), null);
+    builder.addDoubleProperty("Hopper Reference", () -> TelemetryConstants.roundTelemetry(hopperReference), null);
+    builder.addDoubleProperty("Hopper Error", () -> TelemetryConstants.roundTelemetry(hopperError), null);
         
         builder.addDoubleProperty("Test Hopper Goal (RPM)", () -> testHopperGoal.times(60).in(RotationsPerSecond),
             (val) -> testHopperGoal = RotationsPerSecond.of(val / 60));

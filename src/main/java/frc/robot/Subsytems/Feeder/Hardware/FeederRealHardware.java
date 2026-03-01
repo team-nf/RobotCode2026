@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.Constants.FeederConstants;
+import frc.robot.Constants.TelemetryConstants;
 
 public class FeederRealHardware implements FeederHardware {
     
@@ -103,12 +104,12 @@ public class FeederRealHardware implements FeederHardware {
     public void initSendable(SendableBuilder builder) {
         builder.setSmartDashboardType("FeederHardware");
 
-        builder.addDoubleProperty("Feeder Velocity (RPM)", () -> feederVelocity.times(60).in(RotationsPerSecond), null);
-        builder.addDoubleProperty("Feeder Motor Velocity (RPM)", () -> feederMotorVelocity.times(60).in(RotationsPerSecond), null);
-        builder.addDoubleProperty("Feeder Voltage (V)", () -> feederVoltage.in(Volts), null);
-        builder.addDoubleProperty("Feeder Current (A)", () -> feederCurrent.in(Amps), null);
-        builder.addDoubleProperty("Feeder Reference", () -> feederReference, null);
-        builder.addDoubleProperty("Feeder Error", () -> feederError, null);
+    builder.addDoubleProperty("Feeder Velocity (RPM)", () -> TelemetryConstants.roundTelemetry(feederVelocity.times(60).in(RotationsPerSecond)), null);
+    builder.addDoubleProperty("Feeder Motor Velocity (RPM)", () -> TelemetryConstants.roundTelemetry(feederMotorVelocity.times(60).in(RotationsPerSecond)), null);
+    builder.addDoubleProperty("Feeder Voltage (V)", () -> TelemetryConstants.roundTelemetry(feederVoltage.in(Volts)), null);
+    builder.addDoubleProperty("Feeder Current (A)", () -> TelemetryConstants.roundTelemetry(feederCurrent.in(Amps)), null);
+    builder.addDoubleProperty("Feeder Reference", () -> TelemetryConstants.roundTelemetry(feederReference), null);
+    builder.addDoubleProperty("Feeder Error", () -> TelemetryConstants.roundTelemetry(feederError), null);
     
         builder.addDoubleProperty("Test Feeder Goal (RPM)", () -> testFeederGoal.times(60).in(RotationsPerSecond),
             (val) -> testFeederGoal = RotationsPerSecond.of(val / 60));
