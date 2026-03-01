@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.PoseConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -47,7 +48,8 @@ public class ShooterCalculator {
         return Degree.of(angle);
     }
 
-    public AngularVelocity calculateFlywheelSpeedFromCurrentPose()
+    
+    public AngularVelocity calculateFlywheelSpeedFromCurrentPoseOld()
     {
         Pose2d robotPose = swerveDataSupplier.get().robotPose;
         Transform3d robotPoseTransform = 
@@ -64,7 +66,7 @@ public class ShooterCalculator {
         Pose3d hubPose =  new Pose3d(hubX, hubY, Dimensions.HUB_HEIGHT.in(Meters), new Rotation3d());
 
 
-        double hoodAngle = calculateHoodAngleFromCurrentPose().in(Radians);
+        double hoodAngle = calculateHoodAngleFromCurrentPoseOld().in(Radians);
         double fuelAngle = Math.PI/2 - hoodAngle;
 
         Pose3d fuelLaunchPose = new Pose3d(
@@ -94,14 +96,14 @@ public class ShooterCalculator {
 
         wheelSpeed = Math.max(ShooterConstants.MIN_FLYWHEEL_SPEED.in(RotationsPerSecond), Math.min(wheelSpeed, ShooterConstants.MAX_FLYWHEEL_SPEED.in(RotationsPerSecond))); // Clamp between min and max wheel speeds
 
-
+        SmartDashboard.putNumber("Distance", horizontalDistance);
 
         return RotationsPerSecond.of(wheelSpeed);
         //return RotationsPerSecond.of(35);
     }
 
 
-    public Angle calculateHoodAngleFromCurrentPose()
+    public Angle calculateHoodAngleFromCurrentPoseOld()
     {
         Pose2d robotPose = swerveDataSupplier.get().robotPose;
         
@@ -120,6 +122,34 @@ public class ShooterCalculator {
         );
 
         double hoodAngle = ShooterConstants.hoodAngleFormula(distance);
+
+        hoodAngle = Math.max(ShooterConstants.MIN_HOOD_ANGLE.in(Degrees), Math.min(hoodAngle, ShooterConstants.MAX_HOOD_ANGLE.in(Degrees))); // Clamp between min and max hood angles
+
+        //System.out.println("Calculated Hood Angle: " + hoodAngle + "Distance: " + distance);
+        //return Degrees.of(hoodAngle);
+        return Degree.of(hoodAngle);
+    }
+
+    public AngularVelocity calculateFlywheelSpeedFromCurrentPose()
+    {
+
+        double wheelSpeed = ShooterConstants.flywheelRPMFormula(swerveDataSupplier.get().distanceToHub.in(Meters));
+
+        wheelSpeed /= 60;
+        wheelSpeed /= ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
+
+        SmartDashboard.putNumber("WheelSpeedCalculated", wheelSpeed);
+
+        wheelSpeed = Math.max(ShooterConstants.MIN_FLYWHEEL_SPEED.in(RotationsPerSecond), Math.min(wheelSpeed, ShooterConstants.MAX_FLYWHEEL_SPEED.in(RotationsPerSecond))); // Clamp between min and max wheel speeds
+
+        return RotationsPerSecond.of(wheelSpeed);
+        //return RotationsPerSecond.of(35);
+    }
+
+
+    public Angle calculateHoodAngleFromCurrentPose()
+    {
+        double hoodAngle = ShooterConstants.hoodAngleFormula(swerveDataSupplier.get().distanceToHub.in(Meters));
 
         hoodAngle = Math.max(ShooterConstants.MIN_HOOD_ANGLE.in(Degrees), Math.min(hoodAngle, ShooterConstants.MAX_HOOD_ANGLE.in(Degrees))); // Clamp between min and max hood angles
 

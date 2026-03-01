@@ -266,8 +266,18 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         if (TelemetryConstants.SHOULD_SWERVE_DATA_COMMUNICATE) {
             SmartDashboard.putData("Swerve Control Data", swerveData);
+        }
+
+        if (TelemetryConstants.SHOULD_SWERVE_FIELD_COMMUNICATE) {
             SmartDashboard.putData("Field", swerveData.field);
         }
+
+        if (DriverStation.getAlliance().get() == Alliance.Red) {
+            swerveData.distanceToHub = Meters.of(PoseConstants.RED_HUB_AIM_POSE.getTranslation().getDistance(getPose().getTranslation()));
+        } else {
+            swerveData.distanceToHub = Meters.of(PoseConstants.BLUE_HUB_AIM_POSE.getTranslation().getDistance(getPose().getTranslation()));
+        }
+
     }
 
     public void updateSwerveData(){

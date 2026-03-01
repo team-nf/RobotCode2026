@@ -33,7 +33,7 @@ public class ShooterConstants {
     public static final int HOOD_MOTOR_ID = 55;
 
     // Shooter Math Constants
-    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.83; // in meters (2 inches)
+    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.8; // in meters (2 inches)
 
     // Configs
     public static final int NUMBER_OF_FLYWHEEL_MOTORS = 2;
@@ -134,7 +134,7 @@ public class ShooterConstants {
     public static final AngularVelocity MIN_FLYWHEEL_SPEED = RotationsPerSecond.of(1000/60); // in RPS
     public static final AngularVelocity MAX_FLYWHEEL_SPEED = RotationsPerSecond.of(3000/60); // in RPS
 
-    public static final double hoodAngleFormula(double x)
+    public static final double hoodAngleFormulaOLD(double x)
     {
         double a = -0.18;
         double b = 2.55;
@@ -143,5 +143,23 @@ public class ShooterConstants {
 
         return a*Math.pow(x, 3) + b*Math.pow(x, 2) + c*x + d;
     } 
+
+    public static final double hoodAngleFormula(double x)
+    {
+        double a = 4.35;
+        double b = 9.23;
+
+
+        return a*x + b;
+    } 
+
+    public static final double flywheelRPMFormula(double x)
+    {
+        double a = 175;
+        double b = 940.28;
+
+
+        return a*x + b;
+    }
 
 }

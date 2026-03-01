@@ -29,6 +29,8 @@ public class SwerveControlData implements Sendable {
     public Distance robotYError = Meters.of(0.0);
     public Angle robotAngleError = Degrees.of(0.0);
 
+    public Distance distanceToHub = Meters.of(1.0);
+
     public double fuelStorage = 0.0;
 
     public PIDController aimingPID = new PIDController(
@@ -62,6 +64,8 @@ public class SwerveControlData implements Sendable {
         builder.addDoubleProperty("AimingPID_P", () -> aimingPID.getP(), (value) -> aimingPID.setP(value));
         builder.addDoubleProperty("AimingPID_I", () -> aimingPID.getI(), (value) -> aimingPID.setI(value));
         builder.addDoubleProperty("AimingPID_D", () -> aimingPID.getD(), (value) -> aimingPID.setD(value));
+
+        builder.addDoubleProperty("DistanceToHub", () -> distanceToHub.in(Meters), null);
     }
 
 }
