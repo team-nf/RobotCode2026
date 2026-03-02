@@ -1,6 +1,7 @@
 package frc.robot.Subsytems.TheMachine.StateActions;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants.States.TheMachineStates.TheMachineControlState;
 import frc.robot.Subsytems.TheMachine.TheMachine;
@@ -12,7 +13,7 @@ public class TheMachineIntakeAction {
         theMachine.shooterRestRequest(),
         theMachine.feederZeroRequest(),
         theMachine.hopperPushRequest(),
-        theMachine.intakeIntakeRequest()
+        new ConditionalCommand(theMachine.intakeIntakeRequest(), theMachine.intakeWithOffsetRequest(), theMachine::isIntakeWithoutOffset)
     ).until(() -> (theMachine.getState() != TheMachineControlState.INTAKE));
   }
 }

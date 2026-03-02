@@ -81,6 +81,10 @@ public class TheMachine {
   //private LEDController frontLed;
   //private LEDController backLed;
 
+  private boolean hasLotsOfFuel = true;
+
+  private boolean intakeWithOffset = false;
+
   public TheMachine(
     ShooterSubsystem shooterSubsystem,
     FeederSubsystem feederSubsystem,
@@ -208,6 +212,10 @@ public class TheMachine {
     return intakeSubsystem.intakeRequest();
   }
 
+  public InstantCommand intakeWithOffsetRequest() {
+    return intakeSubsystem.intakeWithOffsetRequest();
+  }
+
   public InstantCommand intakeFeedRequest() {
     return intakeSubsystem.feedRequest();
   }
@@ -222,6 +230,11 @@ public class TheMachine {
 
   public InstantCommand intakeTestRequest() {
     return intakeSubsystem.testRequest();
+  }
+
+  public InstantCommand intakeChangeOffsetCommand()
+  {
+    return new InstantCommand(() -> changeIntakeMode());
   }
 
   // Wait for Commands
@@ -395,6 +408,21 @@ public class TheMachine {
     leftLed.setMultiple2(0.5,1, 0, 255, 0);
   }
 
+  public boolean isThereLotsOfFuel()
+  {
+    return hasLotsOfFuel;
+  }
+
+  public boolean isIntakeWithoutOffset()
+  {
+    return !intakeWithOffset;
+  }
+
+  public void changeIntakeMode()
+  {
+    intakeWithOffset = !intakeWithOffset;
+  }
+
   public void periodic() {
     stateMachine();
 
@@ -403,11 +431,22 @@ public class TheMachine {
     if (TelemetryConstants.SHOULD_THEMACHINE_DATA_COMMUNICATE)
     {
       SmartDashboard.putData(theMachineData);
+      SmartDashboard.putString("TheMachineControlState", theMachineData.theMachineControlState.toString());
+      SmartDashboard.putString("PreviousTheMachineControlState", theMachineData.previousTheMachineControlState.toString());
     }
 
     if (TelemetryConstants.SHOULD_THEMACHINE_SIM_POSES_COMMUNICATE)
     {
       calculateSubsytemPoses();
+    }
+
+    if(!SmartDashboard.containsKey("Conf/HasLotsOfFuel")) 
+    {
+      SmartDashboard.putBoolean("Conf/HasLotsOfFuel", hasLotsOfFuel);
+    }
+    else
+    {
+      hasLotsOfFuel = SmartDashboard.getBoolean("Conf/HasLotsOfFuel", hasLotsOfFuel);
     }
   }
 }

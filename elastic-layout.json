@@ -638,8 +638,8 @@
           },
           {
             "title": "Test Hood Goal",
-            "x": 1280.0,
-            "y": 0.0,
+            "x": 1536.0,
+            "y": 128.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
@@ -697,8 +697,8 @@
           {
             "title": "Test Flywheel Goal",
             "x": 1408.0,
-            "y": 0.0,
-            "width": 256.0,
+            "y": 128.0,
+            "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -838,7 +838,7 @@
             "title": "Flywheel Velocity Left",
             "x": 896.0,
             "y": 128.0,
-            "width": 384.0,
+            "width": 256.0,
             "height": 384.0,
             "type": "Graph",
             "properties": {
@@ -894,9 +894,9 @@
           },
           {
             "title": "Flywheel Velocity Right",
-            "x": 1280.0,
+            "x": 1152.0,
             "y": 128.0,
-            "width": 384.0,
+            "width": 256.0,
             "height": 384.0,
             "type": "Graph",
             "properties": {
@@ -910,8 +910,8 @@
           },
           {
             "title": "FlywheelGoalRPM",
-            "x": 1152.0,
-            "y": 640.0,
+            "x": 1280.0,
+            "y": 0.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
@@ -924,8 +924,8 @@
           },
           {
             "title": "HoodGoalAngleDegrees",
-            "x": 1280.0,
-            "y": 640.0,
+            "x": 1408.0,
+            "y": 0.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
@@ -938,8 +938,8 @@
           },
           {
             "title": "DistanceToHub",
-            "x": 1408.0,
-            "y": 640.0,
+            "x": 1536.0,
+            "y": 0.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
@@ -2378,6 +2378,46 @@
               "period": 0.06,
               "sort_options": false
             }
+          },
+          {
+            "title": "errors",
+            "x": 1792.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/PathPlanner/errors",
+              "period": 0.06,
+              "data_type": "string[]",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "LL-Left_Enabled",
+            "x": 1664.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/LL-Left_Enabled",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "LL-Right_Enabled",
+            "x": 1792.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/LL-Right_Enabled",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
           }
         ]
       }
@@ -2398,6 +2438,34 @@
               "topic": "/SmartDashboard/Command Scheduler",
               "period": 0.06
             }
+          },
+          {
+            "title": "PreviousTheMachineControlState",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/PreviousTheMachineControlState",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "TheMachineControlState",
+            "x": 512.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/TheMachineControlState",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
           }
         ]
       }
@@ -2405,7 +2473,35 @@
     {
       "name": "TelemetryControl",
       "grid_layout": {
-        "layouts": [],
+        "layouts": [
+          {
+            "title": "PathPlanner",
+            "x": 768.0,
+            "y": 256.0,
+            "width": 512.0,
+            "height": 384.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "vel",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/PathPlanner/vel",
+                  "period": 0.06,
+                  "data_type": "double[]",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          }
+        ],
         "containers": [
           {
             "title": "Settings",
@@ -2600,6 +2696,95 @@
               "topic": "/SmartDashboard/Auto Chooser",
               "period": 0.06,
               "sort_options": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Conf",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "Auto Chooser",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Conf/Auto Chooser",
+              "period": 0.06,
+              "sort_options": false
+            }
+          },
+          {
+            "title": "AutoAimEnabled",
+            "x": 640.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Conf/AutoAimEnabled",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "HasLotsOfFuel",
+            "x": 768.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Conf/HasLotsOfFuel",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "LL-Left_Enabled",
+            "x": 896.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/LL-Left_Enabled",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "LL-Right_Enabled",
+            "x": 1024.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/LL-Right_Enabled",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
             }
           }
         ]

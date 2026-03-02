@@ -12,7 +12,6 @@ public class TheMachineTestAction {
     return new ParallelCommandGroup(
         theMachine.shooterTestRequest(),
         theMachine.waitForShooter()
-        .andThen(new WaitCommand(0.1))
         .andThen(
             theMachine.hopperFeedRequest(),
             theMachine.feederFeedRequest(),

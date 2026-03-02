@@ -131,9 +131,9 @@ public class ShooterConstants {
     public static final MomentOfInertia HOOD_INERTIA = 
         KilogramSquareMeters.of(HOOD_MASS.in(Kilogram) * Math.pow(HOOD_LENGTH.in(Meters), 2) / 3.0);
 
-    public static final AngularVelocity MIN_FLYWHEEL_SPEED = RotationsPerSecond.of(1000/60); // in RPS
+    public static final AngularVelocity MIN_FLYWHEEL_SPEED = RotationsPerSecond.of(500/60); // in RPS
     public static final AngularVelocity MAX_FLYWHEEL_SPEED = RotationsPerSecond.of(3000/60); // in RPS
-    public static final AngularVelocity FLYWHEEL_REST_SPEED = RotationsPerSecond.of(0/60); // in RPS
+    public static final AngularVelocity FLYWHEEL_REST_SPEED = RotationsPerSecond.of(500/60); // in RPS
 
 
     public static final double hoodAngleFormulaOLD(double x)

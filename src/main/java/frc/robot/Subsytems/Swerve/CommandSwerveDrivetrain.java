@@ -61,6 +61,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PoseConstants;
 import frc.robot.Constants.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.Subsytems.Swerve.Commands.SwerveAimToHub;
+import frc.robot.Subsytems.Swerve.Commands.SwerveAimToPass;
 import frc.robot.Subsytems.Swerve.Commands.SwerveGetIntoShootAreaCommand;
 import frc.robot.Subsytems.Swerve.Commands.SwerveTeleopCommand;
 import frc.robot.Subsytems.Swerve.Utils.SwerveControlData;
@@ -94,7 +95,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
 
-    private boolean isNeutralModeBrake = true;
+    private boolean autoAimEnabled = true;
 
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
@@ -249,6 +250,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return m_sysIdRoutineToApply.dynamic(direction);
     }
 
+    public boolean isAutoAimDisabled()
+    {
+        return !autoAimEnabled;
+    }
+
     @Override
     public void periodic() {
         /*
@@ -283,6 +289,19 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             swerveData.distanceToHub = Meters.of(PoseConstants.BLUE_HUB_AIM_POSE.getTranslation().getDistance(getPose().getTranslation()));
         }
 
+        if(!SmartDashboard.containsKey("Conf/AutoAimEnabled"))
+        {
+            SmartDashboard.putBoolean("Conf/AutoAimEnabled", autoAimEnabled);
+        }
+        else
+        {
+            if(DriverStation.isAutonomous())
+            {
+                SmartDashboard.putBoolean("Conf/AutoAimEnabled", true);
+            }
+            
+            autoAimEnabled = SmartDashboard.getBoolean("Conf/AutoAimEnabled", autoAimEnabled);
+        }
 
         /* 
         if (DriverStation.isEnabled() && !isNeutralModeBrake)
@@ -500,6 +519,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public Command aimToHub() {
         return new SwerveAimToHub(this);
+    }
+
+    public Command aimToPass()
+    {
+        return new SwerveAimToPass(this);
     }
 
     public Command getIntoShootArea() {

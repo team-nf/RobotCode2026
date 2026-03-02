@@ -64,6 +64,7 @@ public class States {
                 CLOSE,
                 DEPLOY,
                 INTAKE,
+                INTAKE_WITH_OFFSET,
                 REVERSE,
                 FEED,
                 IDLE_BETWEEN,

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.Robot;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Constants.States.ShooterStates.FlywheelState;
@@ -121,6 +122,12 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isShooterReadyToShoot() {
+
+    if (Robot.isSimulation()) {
+      return shooterData.flywheelStateL == FlywheelState.AT_SPEED
+      && shooterData.hoodState == HoodState.AT_POSITION;
+    }
+
     return shooterData.flywheelStateL == FlywheelState.AT_SPEED
       && shooterData.flywheelStateR == FlywheelState.AT_SPEED
       && shooterData.hoodState == HoodState.AT_POSITION;
@@ -153,8 +160,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public WaitUntilCommand waitForShooterToBeReady() {
     return new WaitUntilCommand(this::isShooterReadyToShoot);
   }
-
-
 
   public ShooterControlData getShooterData() {
     return shooterData;

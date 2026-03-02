@@ -106,7 +106,7 @@ public class RobotContainer {
         ? stream.filter(auto -> auto.getName().startsWith("comp"))
         : stream
     );
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData("Conf/Auto Chooser", autoChooser);
 
   }
 
@@ -118,15 +118,9 @@ public class RobotContainer {
         .onTrue(m_theMachine.reverseRequest());
 
     m_driverController.y()
-        .whileTrue(m_swerveDrivetrain.aimToHub()
+        .whileTrue((m_swerveDrivetrain.aimToHub().unless(m_swerveDrivetrain::isAutoAimDisabled))
             .alongWith(m_swerveDrivetrain.waitForAtAim(), m_theMachine.getReadyRequest()).andThen(m_theMachine.shootRequest()))
         .onFalse(m_theMachine.idleDeployedRequest());
-
-    m_driverController.rightBumper()
-        .whileTrue(m_swerveDrivetrain.pathFindToIntakeWall());
-
-    m_driverController.leftBumper()
-        .whileTrue(m_swerveDrivetrain.pathFindToStartPose1());
 
     m_driverController.a()
         .onTrue(m_theMachine.idleRetractedRequest());
@@ -138,16 +132,24 @@ public class RobotContainer {
         .onTrue(m_theMachine.zeroRequest());
 
     m_driverController.povLeft()
-        .onTrue(m_theMachine.noneRequest());
+        .onTrue(m_theMachine.idleRequest());
 
     m_driverController.povRight()
-        .whileTrue(m_theMachine.testRequest())
-        .onFalse(m_theMachine.idleDeployedRequest());
+        .whileTrue((m_swerveDrivetrain.aimToPass().unless(m_swerveDrivetrain::isAutoAimDisabled))
+            .alongWith(m_swerveDrivetrain.waitForAtAim().andThen(m_theMachine.testRequest())))
+        .onFalse(m_theMachine.previousStateRequest());
 
     m_driverController.povUp()
-          .onTrue(m_swerveDrivetrain.resetToStartPoseCmd());
+          .onTrue(m_theMachine.intakeChangeOffsetCommand());
 
-    m_driverController.povRight().onTrue(m_shooterSubsystem.testRequest()).onFalse(m_shooterSubsystem.zeroRequest());
+    m_driverController.rightBumper() // sağ trench
+        .whileTrue(m_swerveDrivetrain.pathFindToIntakeWall());
+
+    m_driverController.leftBumper() // sol trench
+        .whileTrue(m_swerveDrivetrain.pathFindToStartPose1());
+
+    m_driverController.start()
+        .onTrue(m_swerveDrivetrain.resetToStartPoseCmd());
 
     NamedCommands.registerCommand("AimAndShoot", 
           m_swerveDrivetrain.aimToHub()
@@ -207,50 +209,13 @@ public class RobotContainer {
     shooterSim.setShooterControlDataSupplier(m_shooterSubsystem::getCurrentControlData);
     shooterSim.setRobotPoseSupplier(m_swerveDrivetrain::getPose);
     shooterSim.setChassisSpeedsSupplier(m_swerveDrivetrain::getFieldSpeeds);
-    shooterSim.setShouldShootSupplier(() -> m_shooterSubsystem.isShooterState(ShooterControlState.SHOOT) && m_feederSubsystem.isFeederState(FeederControlState.FEED));
+    shooterSim.setShouldShootSupplier(() -> m_shooterSubsystem.isShooterState(ShooterControlState.SHOOT) || m_shooterSubsystem.isShooterState(ShooterControlState.TEST) && m_feederSubsystem.isFeederState(FeederControlState.FEED));
 
     m_driverController.start().onTrue(matchTracker.startMatchCommand());
 
     FuelSim.BLUE_HUB.setHubActiveSupplier(matchTracker::isBlueHubActive);
     FuelSim.RED_HUB.setHubActiveSupplier(matchTracker::isRedHubActive);
   }
-
-  public void configureTelemetry() {
-      SmartDashboard.putBoolean("Telemetry/Settings", false);
-      SmartDashboard.putBoolean("Telemetry/Feeder Control", TelemetryConstants.SHOULD_FEEDER_CONTROL_COMMUNICATE);
-      SmartDashboard.putBoolean("Telemetry/Feeder Hardware", TelemetryConstants.SHOULD_FEEDER_HARDWARE_COMMUNICATE);
-      SmartDashboard.putBoolean("Telemetry/Shooter Control", TelemetryConstants.SHOULD_SHOOTER_CONTROL_COMMUNICATE);
-      SmartDashboard.putBoolean("Telemetry/Shooter Hardware", TelemetryConstants.SHOULD_SHOOTER_HARDWARE_COMMUNICATE);
-      SmartDashboard.putBoolean("Telemetry/Hopper Control", TelemetryConstants.SHOULD_HOPPER_CONTROL_COMMUNICATE);
-      SmartDashboard.putBoolean("Telemetry/Hopper Hardware", TelemetryConstants.SHOULD_HOPPER_HARDWARE_COMMUNICATE);
-      SmartDashboard.putBoolean("Telemetry/Intake Control", TelemetryConstants.SHOULD_INTAKE_CONTROL_COMMUNICATE);
-      SmartDashboard.putBoolean("Telemetry/Intake Hardware", TelemetryConstants.SHOULD_INTAKE_HARDWARE_COMMUNICATE);
-      SmartDashboard.putBoolean("Telemetry/Swerve Data", TelemetryConstants.SHOULD_SWERVE_DATA_COMMUNICATE);
-      SmartDashboard.putBoolean("Telemetry/Swerve CTRE", TelemetryConstants.SHOULD_SWERVE_CTRE_COMMUNICATE);
-      SmartDashboard.putBoolean("Telemetry/TheMachine Data", TelemetryConstants.SHOULD_THEMACHINE_DATA_COMMUNICATE);
-      SmartDashboard.putBoolean("Telemetry/TheMachine Sim Poses", TelemetryConstants.SHOULD_THEMACHINE_SIM_POSES_COMMUNICATE);
-      SmartDashboard.putBoolean("Telemetry/Scheduler", TelemetryConstants.SHOULD_SCHEDULER_COMMUNICATE);  
-  }
-
-  public void updateTelemetrySettings() {
-    if(SmartDashboard.getBoolean("Telemetry/Settings", false))
-    {
-      TelemetryConstants.SHOULD_FEEDER_CONTROL_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/Feeder Control", TelemetryConstants.SHOULD_FEEDER_CONTROL_COMMUNICATE);
-      TelemetryConstants.SHOULD_FEEDER_HARDWARE_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/Feeder Hardware", TelemetryConstants.SHOULD_FEEDER_HARDWARE_COMMUNICATE);
-      TelemetryConstants.SHOULD_SHOOTER_CONTROL_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/Shooter Control", TelemetryConstants.SHOULD_SHOOTER_CONTROL_COMMUNICATE);
-      TelemetryConstants.SHOULD_SHOOTER_HARDWARE_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/Shooter Hardware", TelemetryConstants.SHOULD_SHOOTER_HARDWARE_COMMUNICATE);
-      TelemetryConstants.SHOULD_HOPPER_CONTROL_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/Hopper Control", TelemetryConstants.SHOULD_HOPPER_CONTROL_COMMUNICATE);
-      TelemetryConstants.SHOULD_HOPPER_HARDWARE_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/Hopper Hardware", TelemetryConstants.SHOULD_HOPPER_HARDWARE_COMMUNICATE);
-      TelemetryConstants.SHOULD_INTAKE_CONTROL_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/Intake Control", TelemetryConstants.SHOULD_INTAKE_CONTROL_COMMUNICATE);
-      TelemetryConstants.SHOULD_INTAKE_HARDWARE_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/Intake Hardware", TelemetryConstants.SHOULD_INTAKE_HARDWARE_COMMUNICATE);
-      TelemetryConstants.SHOULD_SWERVE_DATA_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/Swerve Data", TelemetryConstants.SHOULD_SWERVE_DATA_COMMUNICATE);
-      TelemetryConstants.SHOULD_SWERVE_CTRE_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/Swerve CTRE", TelemetryConstants.SHOULD_SWERVE_CTRE_COMMUNICATE);
-      TelemetryConstants.SHOULD_THEMACHINE_DATA_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/TheMachine Data", TelemetryConstants.SHOULD_THEMACHINE_DATA_COMMUNICATE);
-      TelemetryConstants.SHOULD_THEMACHINE_SIM_POSES_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/TheMachine Sim Poses", TelemetryConstants.SHOULD_THEMACHINE_SIM_POSES_COMMUNICATE);
-      TelemetryConstants.SHOULD_SCHEDULER_COMMUNICATE = SmartDashboard.getBoolean("Telemetry/Scheduler", TelemetryConstants.SHOULD_SCHEDULER_COMMUNICATE);  
-    }
-  }
-
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }

@@ -48,7 +48,7 @@ public class FeederConstants {
 
     public static final AngularVelocity FEEDER_ALLOWABLE_ERROR = RotationsPerSecond.of(1.0); // in RPS
 
-    public static final AngularVelocity FEEDER_FEEDING_VELOCITY = RotationsPerSecond.of(10); // in RPS
+    public static final AngularVelocity FEEDER_FEEDING_VELOCITY = RotationsPerSecond.of(15); // in RPS
     public static final AngularVelocity FEEDER_REVERSE_VELOCITY = RotationsPerSecond.of(-5.0); // in RPS
 
     // Feeder syystem constants

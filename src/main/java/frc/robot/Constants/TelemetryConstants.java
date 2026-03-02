@@ -4,27 +4,30 @@
 
 package frc.robot.Constants;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Robot;
+
 /** Add your docs here. */
 public class TelemetryConstants {
     public static boolean SHOULD_SHOOTER_HARDWARE_COMMUNICATE = true;
     public static boolean SHOULD_SHOOTER_CONTROL_COMMUNICATE = true;
 
     public static boolean SHOULD_FEEDER_HARDWARE_COMMUNICATE = false;
-    public static boolean SHOULD_FEEDER_CONTROL_COMMUNICATE = false;
+    public static boolean SHOULD_FEEDER_CONTROL_COMMUNICATE = true;
 
     public static boolean SHOULD_HOPPER_HARDWARE_COMMUNICATE = false;
-    public static boolean SHOULD_HOPPER_CONTROL_COMMUNICATE = false;
+    public static boolean SHOULD_HOPPER_CONTROL_COMMUNICATE = true;
 
     public static boolean SHOULD_INTAKE_HARDWARE_COMMUNICATE = false;
-    public static boolean SHOULD_INTAKE_CONTROL_COMMUNICATE = false;
+    public static boolean SHOULD_INTAKE_CONTROL_COMMUNICATE = true;
 
     public static boolean SHOULD_SWERVE_DATA_COMMUNICATE = true;
     public static boolean SHOULD_SWERVE_FIELD_COMMUNICATE = true;
     public static boolean SHOULD_SWERVE_CTRE_COMMUNICATE = false;
 
-    public static boolean SHOULD_THEMACHINE_DATA_COMMUNICATE = false;
+    public static boolean SHOULD_THEMACHINE_DATA_COMMUNICATE = true;
 
-    public static boolean SHOULD_THEMACHINE_SIM_POSES_COMMUNICATE = false;
+    public static boolean SHOULD_THEMACHINE_SIM_POSES_COMMUNICATE = Robot.isSimulation();
     public static boolean SHOULD_SCHEDULER_COMMUNICATE = false;
 
     public static final int TELEMETRY_DECIMAL_PLACES = 2; // tweak as needed

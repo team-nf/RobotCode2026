@@ -34,6 +34,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public final Command intakeReverseAction;
   public final Command intakeIdleBetweenAction;
   public final Command intakeTestAction;
+  public final Command intakeWithOffsetAction;
 
   public IntakeSubsystem() {
     if (Utils.isSimulation()) {
@@ -51,6 +52,7 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeReverseAction = new IntakeReverseAction(this);
     intakeIdleBetweenAction = new IntakeIdleBetweenAction(this);
     intakeTestAction = new IntakeTestAction(this);
+    intakeWithOffsetAction = new IntakeWithOffsetAction(this);
   }
 
   public void updateIntakeData() {
@@ -115,8 +117,17 @@ public class IntakeSubsystem extends SubsystemBase {
 
     if(intakeData.intakePositionState == IntakeStates.IntakePositionState.DEPLOYED)
         intakeHardware.setIntakeSpeed(intakeData.intakeGoalVelocity);
-
   }
+
+    public void intakeWithOffset() {
+    intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_INTAKING_VELOCITY.in(RotationsPerSecond);
+    intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_DEPLOYED_WITH_OFFSET_ANGLE.in(Rotations);
+    intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
+
+    if(intakeData.intakePositionState == IntakeStates.IntakePositionState.DEPLOYED)
+        intakeHardware.setIntakeSpeed(intakeData.intakeGoalVelocity);
+  }
+
 
   public void reverse() {
     intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_REVERSE_VELOCITY.in(RotationsPerSecond);
@@ -127,7 +138,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void idleBetween() {
-    intakeData.intakeGoalVelocity = 0;
+    intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_FEEDING_VELOCITY.in(RotationsPerSecond);
     intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_BETWEEN_ANGLE.in(Rotations);
     intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
     intakeHardware.intakeStop();
@@ -177,6 +188,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public InstantCommand idleBetweenRequest() {
     return new IntakeIdleBetweenRequest(this);
+  }
+
+  // Request with explicit arm offset (in rotations)
+  public InstantCommand intakeWithOffsetRequest() {
+    return new IntakeWithOffsetRequest(this);
   }
 
   public IntakeControlData getIntakeData() {
@@ -236,6 +252,11 @@ public class IntakeSubsystem extends SubsystemBase {
       case TEST:
         if(!CommandScheduler.getInstance().isScheduled(intakeTestAction)) {
           CommandScheduler.getInstance().schedule(intakeTestAction);
+        }
+        break;
+      case INTAKE_WITH_OFFSET:
+        if(!CommandScheduler.getInstance().isScheduled(intakeWithOffsetAction)) {
+          CommandScheduler.getInstance().schedule(intakeWithOffsetAction);
         }
         break;
       default:
