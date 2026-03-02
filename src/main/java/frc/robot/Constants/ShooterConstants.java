@@ -148,20 +148,46 @@ public class ShooterConstants {
 
     public static final double hoodAngleFormula(double x)
     {
-        double a = 4.1;
-        double b = 8.23;
+        double a = 0.0523475;
+        double b = -0.693153;
+        double c = 2.97895;
+        double d = -3.31205;
+        double f = -4.36815;
+        double g = 25.40816;
 
+        
+        if (x < 2.25) {
+            return 18;
+        }
+        else
+        {
+            return (((((a * x + b) * x + c) * x + d) * x + f) * x + g);
 
-        return a*x + b;
+        }
     } 
 
     public static final double flywheelRPMFormula(double x)
     {
-        double a = 190;
-        double b = 915.28;
+        double a = -29.72883;
+        double b = 473.27393;
+        double c = -2886.63609;
+        double d = 8444.7507;
+        double f = -11605.2592;
+        double g = 7475.15141;
 
+        if(x < 1.7)
+        {
+            return 1500;
+        }
 
-        return a*x + b;
+        double y = (((((a * x + b) * x + c) * x + d) * x + f) * x + g);
+
+        if(x > 5)
+        {
+            y += 20*(x-5);
+        }
+
+        return y;
     }
 
 }

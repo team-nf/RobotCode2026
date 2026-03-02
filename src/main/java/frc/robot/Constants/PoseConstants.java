@@ -20,5 +20,5 @@ public class PoseConstants {
 
 
     public static final Pose2d BLUE_HUB_AIM_POSE = new Pose2d(4.61, 4.1, new Rotation2d());
-    public static final Pose2d RED_HUB_AIM_POSE = new Pose2d(11.9, 4.1, new Rotation2d());
+    public static final Pose2d RED_HUB_AIM_POSE = new Pose2d(11.75, 4.1, new Rotation2d());
 }

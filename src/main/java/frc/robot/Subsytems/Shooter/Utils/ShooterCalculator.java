@@ -55,9 +55,9 @@ public class ShooterCalculator {
         double wheelSpeed = ShooterConstants.flywheelRPMFormula(swerveDataSupplier.get().distanceToHub.in(Meters));
 
         wheelSpeed /= 60;
-        wheelSpeed /= ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
+        //wheelSpeed /= ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
 
-        SmartDashboard.putNumber("WheelSpeedCalculated", wheelSpeed);
+        //SmartDashboard.putNumber("WheelSpeedCalculated", wheelSpeed);
 
         wheelSpeed = Math.max(ShooterConstants.MIN_FLYWHEEL_SPEED.in(RotationsPerSecond), Math.min(wheelSpeed, ShooterConstants.MAX_FLYWHEEL_SPEED.in(RotationsPerSecond))); // Clamp between min and max wheel speeds
 
