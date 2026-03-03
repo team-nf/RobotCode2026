@@ -7,31 +7,19 @@
         {
           "type": "named",
           "data": {
-            "name": "SetStartPoseMiddle"
+            "name": "SetStartPoseLeft"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "MachineIntakeRequest"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "name": "GoToTrench1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "IntakeFromWall"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "MachineIdleRequest"
+            "name": "AimAndShoot"
           }
         },
         {
@@ -50,6 +38,12 @@
           "type": "named",
           "data": {
             "name": "AimAndShoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
           }
         },
         {

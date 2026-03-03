@@ -45,11 +45,11 @@ public class TheMachineShootAction {
         .andThen(theMachine.intakeIdleBetweenRequest())
         .andThen(new WaitCommand(1))
         .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(0.75)))
+        .andThen(new WaitCommand(0.5)))
         .andThen(theMachine.intakeIdleBetweenRequest())
         .andThen(new WaitCommand(1))
         .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(1));
+        .andThen(new WaitCommand(0.5));
 
     return new ConditionalCommand
         (commandWithShake, commandToRunWithLessFuel, theMachine::isThereLotsOfFuel)

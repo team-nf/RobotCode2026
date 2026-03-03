@@ -25,12 +25,6 @@
         {
           "type": "named",
           "data": {
-            "name": "IntakeFromWall"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "MachineIdleRequest"
           }
         },

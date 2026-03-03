@@ -614,7 +614,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public void setStartPoseInitial()
     {
-        m_localization = new Localization(this);
+        if(!Robot.isReal()) m_localization = new Localization(this);
 
         startPoseChooser.addOption("RIGHT", "RIGHT");
         startPoseChooser.setDefaultOption("MIDDLE", "MIDDLE");
@@ -668,16 +668,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public Command pathFindToTrench1()
     {
-        Pose2d targetPose = new Pose2d(-1, -1, Rotation2d.fromDegrees(-1));
+        PathPlannerPath path = null;
 
         try {
-            targetPose = PathPlannerPath.fromPathFile("TrenchIntake1").getPathPoses().get(0);
+            path = PathPlannerPath.fromPathFile("TrenchIntake1");
         } catch (FileVersionException | IOException | ParseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
         }
 
-        return goToPose(targetPose);
+        return pathfindToPath(path);
     }
 
     public Command pathFindToStartPose1()
