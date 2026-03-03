@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Constants.States.IntakeStates;
+import frc.robot.Constants.States.IntakeStates.IntakeControlState;
 import frc.robot.Constants.States.IntakeStates.IntakePositionState;
 import frc.robot.Subsytems.Intake.Hardware.IntakeHardware;
 import frc.robot.Subsytems.Intake.Hardware.IntakeRealHardware;
@@ -279,6 +280,9 @@ public class IntakeSubsystem extends SubsystemBase {
     if (TelemetryConstants.SHOULD_INTAKE_CONTROL_COMMUNICATE) {
         SmartDashboard.putData("Intake Control Data", intakeData);
     }
+
+    SmartDashboard.putBoolean("Conf/isIntakeIntake", isIntakeState(IntakeControlState.INTAKE));
+    SmartDashboard.putBoolean("Conf/isIntakeIntakeW_Offset", isIntakeState(IntakeControlState.INTAKE_WITH_OFFSET));
 
     stateMachine();
     updateIntakeData();

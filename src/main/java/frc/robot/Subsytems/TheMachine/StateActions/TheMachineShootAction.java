@@ -35,8 +35,24 @@ public class TheMachineShootAction {
         .andThen(theMachine.intakeFeedRequest())
         .andThen(new WaitCommand(3)));
 
+    Command commandWithShake = new ParallelCommandGroup(
+        theMachine.shooterShootRequest(),
+        theMachine.waitForShooter()
+        .andThen(new WaitCommand(0.1))
+        .andThen(
+            theMachine.hopperFeedRequest(),
+            theMachine.feederFeedRequest())
+        .andThen(theMachine.intakeIdleBetweenRequest())
+        .andThen(new WaitCommand(1))
+        .andThen(theMachine.intakeFeedRequest())
+        .andThen(new WaitCommand(0.75)))
+        .andThen(theMachine.intakeIdleBetweenRequest())
+        .andThen(new WaitCommand(1))
+        .andThen(theMachine.intakeFeedRequest())
+        .andThen(new WaitCommand(1));
+
     return new ConditionalCommand
-        (commandToRunWithManyFuel, commandToRunWithLessFuel, theMachine::isThereLotsOfFuel)
+        (commandWithShake, commandToRunWithLessFuel, theMachine::isThereLotsOfFuel)
       .until(() -> (theMachine.getState() != TheMachineControlState.SHOOT));
   }
 }

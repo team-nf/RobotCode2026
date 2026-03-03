@@ -32,6 +32,10 @@ public class ShooterCalculator {
 
     public ShooterCalculator(Supplier<SwerveControlData> swerveDataSupplier) {
         this.swerveDataSupplier = swerveDataSupplier;
+
+        SmartDashboard.putNumber("ManualFlywheelRpm", 0);
+        SmartDashboard.putNumber("ManualHoodAngle", 0);
+        SmartDashboard.putBoolean("UseManualShooterValues", false);
     }
 
     public double calculateFlywheelSpeed(double distanceToTargetMeters, double launchAngleDegrees, double initialHeightMeters, double targetHeightMeters) {
@@ -54,10 +58,17 @@ public class ShooterCalculator {
 
         double wheelSpeed = ShooterConstants.flywheelRPMFormula(swerveDataSupplier.get().distanceToHub.in(Meters));
 
-        wheelSpeed /= 60;
         //wheelSpeed /= ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
 
         //SmartDashboard.putNumber("WheelSpeedCalculated", wheelSpeed);
+
+
+        if(SmartDashboard.getBoolean("UseManualShooterValues", false))
+        {
+            wheelSpeed = SmartDashboard.getNumber("ManualFlywheelRpm", wheelSpeed);
+        }
+
+        wheelSpeed /= 60;
 
         wheelSpeed = Math.max(ShooterConstants.MIN_FLYWHEEL_SPEED.in(RotationsPerSecond), Math.min(wheelSpeed, ShooterConstants.MAX_FLYWHEEL_SPEED.in(RotationsPerSecond))); // Clamp between min and max wheel speeds
 
@@ -69,6 +80,12 @@ public class ShooterCalculator {
     public double calculateHoodAngleFromCurrentPose()
     {
         double hoodAngle = ShooterConstants.hoodAngleFormula(swerveDataSupplier.get().distanceToHub.in(Meters));
+
+        
+        if(SmartDashboard.getBoolean("UseManualShooterValues", false))
+        {
+            hoodAngle = SmartDashboard.getNumber("ManualHoodAngle", hoodAngle);
+        }
 
         hoodAngle = Math.max(ShooterConstants.MIN_HOOD_ANGLE.in(Degrees), Math.min(hoodAngle, ShooterConstants.MAX_HOOD_ANGLE.in(Degrees))); // Clamp between min and max hood angles
 

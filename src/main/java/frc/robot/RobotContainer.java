@@ -41,7 +41,7 @@ import frc.robot.Subsytems.TheMachine.TheMachine;
 import frc.robot.Utils.FuelSim;
 import frc.robot.Utils.HopperSim;
 import frc.robot.Utils.Localization;
-import frc.robot.Utils.MatchTracker;
+import frc.robot.Utils.MatchTrackerSim;
 import frc.robot.Utils.ShooterSim;
 import frc.robot.Utils.SwerveFieldContactSim;
 
@@ -176,7 +176,7 @@ public class RobotContainer {
     FuelSim fuelSim = FuelSim.getInstance();
     HopperSim hopperSim = HopperSim.getInstance();
     ShooterSim shooterSim = ShooterSim.getInstance();
-    MatchTracker matchTracker = MatchTracker.getInstance();
+    MatchTrackerSim matchTracker = MatchTrackerSim.getInstance();
 
     SwerveFieldContactSim.getInstance().setSwerveDrivetrain(m_swerveDrivetrain);
     SwerveFieldContactSim.getInstance().setIntakeDeployedSupplier(() -> m_intakeSubsystem.isIntakeDeployed());

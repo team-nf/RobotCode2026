@@ -35,8 +35,8 @@ public class Localization {
         // Switch to internal IMU with external assist when enabled
         //LimelightHelpers.SetIMUAssistAlpha("limelight-right", 0.001);  // Adjust correction strength
 
-        SmartDashboard.putBoolean("LL-Left_Enabled", true);
-        SmartDashboard.putBoolean("LL-Right_Enabled", true);
+        SmartDashboard.putBoolean("Conf/LL-Left_Enabled", true);
+        SmartDashboard.putBoolean("Conf/LL-Right_Enabled", true);
 
     }
 
@@ -170,7 +170,7 @@ public class Localization {
 
     if(!doRejectUpdate)
     {
-        if(!doRejectLeft && SmartDashboard.getBoolean("LL-Left_Enabled", false))
+        if(!doRejectLeft && SmartDashboard.getBoolean("Conf/LL-Left_Enabled", false))
         {
             drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.6,.6,9999999));
 
@@ -180,7 +180,7 @@ public class Localization {
             );
         }
 
-        if(!doRejectRight && SmartDashboard.getBoolean("LL-Right_Enabled", false))
+        if(!doRejectRight && SmartDashboard.getBoolean("Conf/LL-Right_Enabled", false))
         {
             drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.6,.6,9999999));
             drivetrain.addVisionMeasurement(

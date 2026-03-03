@@ -2418,6 +2418,23 @@
               "period": 0.06,
               "data_type": "boolean"
             }
+          },
+          {
+            "title": "IsAimed",
+            "x": 1664.0,
+            "y": 128.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Swerve Control Data/IsAimed",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
           }
         ]
       }
@@ -2708,9 +2725,9 @@
         "containers": [
           {
             "title": "Auto Chooser",
-            "x": 512.0,
-            "y": 0.0,
-            "width": 128.0,
+            "x": 1280.0,
+            "y": 256.0,
+            "width": 256.0,
             "height": 128.0,
             "type": "ComboBox Chooser",
             "properties": {
@@ -2720,48 +2737,196 @@
             }
           },
           {
-            "title": "AutoAimEnabled",
-            "x": 640.0,
+            "title": "Field",
+            "x": 0.0,
             "y": 0.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Boolean Box",
+            "width": 1152.0,
+            "height": 512.0,
+            "type": "Field",
             "properties": {
-              "topic": "/SmartDashboard/Conf/AutoAimEnabled",
+              "topic": "/SmartDashboard/Field",
               "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
             }
           },
           {
-            "title": "HasLotsOfFuel",
-            "x": 768.0,
+            "title": "TheMachineControlState",
+            "x": 256.0,
+            "y": 640.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/TheMachineControlState",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
+            "title": "ManualFlywheelRpm",
+            "x": 1408.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/ManualFlywheelRpm",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "ManualHoodAngle",
+            "x": 1280.0,
             "y": 0.0,
             "width": 128.0,
             "height": 128.0,
-            "type": "Boolean Box",
+            "type": "Text Display",
             "properties": {
-              "topic": "/SmartDashboard/Conf/HasLotsOfFuel",
+              "topic": "/SmartDashboard/ManualHoodAngle",
               "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "UseManualShooterValues",
+            "x": 1152.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Toggle Button",
+            "properties": {
+              "topic": "/SmartDashboard/UseManualShooterValues",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "StartPoseChooser",
+            "x": 1152.0,
+            "y": 256.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/Conf/StartPoseChooser",
+              "period": 0.06,
+              "sort_options": false
             }
           },
           {
             "title": "LL-Left_Enabled",
-            "x": 896.0,
+            "x": 1408.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Button",
+            "properties": {
+              "topic": "/SmartDashboard/Conf/LL-Left_Enabled",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "LL-Right_Enabled",
+            "x": 1664.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Button",
+            "properties": {
+              "topic": "/SmartDashboard/Conf/LL-Right_Enabled",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "AutoAimEnabled",
+            "x": 1152.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Button",
+            "properties": {
+              "topic": "/SmartDashboard/Conf/AutoAimEnabled",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "HasLotsOfFuel",
+            "x": 1664.0,
             "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Toggle Switch",
+            "properties": {
+              "topic": "/SmartDashboard/Conf/HasLotsOfFuel",
+              "period": 0.06,
+              "data_type": "boolean"
+            }
+          },
+          {
+            "title": "FlywheelState-L",
+            "x": 0.0,
+            "y": 640.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter Control Data/FlywheelState-L",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "FlywheelState-R",
+            "x": 128.0,
+            "y": 640.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter Control Data/FlywheelState-R",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "HoodState",
+            "x": 256.0,
+            "y": 512.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter Control Data/HoodState",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "isAimed",
+            "x": 384.0,
+            "y": 512.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Boolean Box",
             "properties": {
-              "topic": "/SmartDashboard/LL-Left_Enabled",
+              "topic": "/SmartDashboard/Conf/isAimed",
               "period": 0.06,
               "data_type": "boolean",
               "true_color": 4283215696,
@@ -2771,18 +2936,98 @@
             }
           },
           {
-            "title": "LL-Right_Enabled",
-            "x": 1024.0,
-            "y": 0.0,
+            "title": "isIntakeIntake",
+            "x": 128.0,
+            "y": 512.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Boolean Box",
             "properties": {
-              "topic": "/SmartDashboard/LL-Right_Enabled",
+              "topic": "/SmartDashboard/Conf/isIntakeIntake",
               "period": 0.06,
               "data_type": "boolean",
               "true_color": 4283215696,
               "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "isIntakeIntakeW_Offset",
+            "x": 0.0,
+            "y": 512.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Conf/isIntakeIntakeW_Offset",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "ActivePhaseDuration",
+            "x": 1152.0,
+            "y": 384.0,
+            "width": 384.0,
+            "height": 384.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Phase/ActivePhaseDuration",
+              "period": 0.06,
+              "data_type": "double"
+            }
+          },
+          {
+            "title": "GameTime",
+            "x": 512.0,
+            "y": 512.0,
+            "width": 640.0,
+            "height": 256.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/SmartDashboard/Phase/GameTime",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 20,
+              "yellow_start_time": 30
+            }
+          },
+          {
+            "title": "IsBlueHubActive",
+            "x": 1536.0,
+            "y": 256.0,
+            "width": 384.0,
+            "height": 256.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Phase/IsBlueHubActive",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4282188031,
+              "false_color": 4278190080,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "IsRedHubActive",
+            "x": 1536.0,
+            "y": 512.0,
+            "width": 384.0,
+            "height": 256.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Phase/IsRedHubActive",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4294901764,
+              "false_color": 4278190080,
               "true_icon": "None",
               "false_icon": "None"
             }

@@ -43,6 +43,7 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
@@ -96,6 +97,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
 
     private boolean autoAimEnabled = true;
+
+    private final SendableChooser<Integer> startPoseChooser = new SendableChooser<>();
+    private Pose2d initialStartPose2d = new Pose2d(0, 0, new Rotation2d());
 
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
@@ -180,7 +184,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
         configureAutoBuilder();
 
-        setStartPose1();
+        setStartPoseInitial();
     }
 
 
@@ -215,7 +219,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
 
-        setStartPose1();
+        setStartPoseInitial();
     }
 
     /**
@@ -281,6 +285,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         if (TelemetryConstants.SHOULD_SWERVE_FIELD_COMMUNICATE) {
             SmartDashboard.putData("Field", swerveData.field);
+            SmartDashboard.putBoolean("Conf/isAimed", swerveData.isAimed);
         }
 
         if (DriverStation.getAlliance().get() == Alliance.Red) {
@@ -589,13 +594,38 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }));
     }
 
+    public Pose2d getInitialStartPose()
+    {
+        return initialStartPose2d;
+    }
+
+    public void setStartPoseInitial()
+    {
+
+        startPoseChooser.setDefaultOption("RIGHT", 3);
+        startPoseChooser.addOption("MIDDLE", 2);
+        startPoseChooser.addOption("LEFT", 1);
+    
+        SmartDashboard.putData("Conf/StartPoseChooser", startPoseChooser);
+
+
+        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+            initialStartPose2d = PoseConstants.START_POSE_RED_RIGHT;
+            resetPose(PoseConstants.START_POSE_RED_RIGHT);
+        }
+        else{
+            initialStartPose2d = PoseConstants.START_POSE_BLUE_RIGHT;
+            resetPose(PoseConstants.START_POSE_BLUE_RIGHT);
+        }
+    }
+
     public void setStartPose1()
     {
         if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
-            resetPose(PoseConstants.START_POSE_RED_1);
+            resetPose(PoseConstants.START_POSE_RED_RIGHT);
         }
         else{
-            resetPose(PoseConstants.START_POSE_BLUE_1);
+            resetPose(PoseConstants.START_POSE_BLUE_RIGHT);
         }
     }
 
@@ -648,9 +678,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         if(DriverStation.getAlliance().get() == Alliance.Red)
         {
-            targetPose = PoseConstants.START_POSE_RED_1;
+            targetPose = PoseConstants.START_POSE_RED_RIGHT;
         }
-        else targetPose = PoseConstants.START_POSE_BLUE_1;
+        else targetPose = PoseConstants.START_POSE_BLUE_RIGHT;
     
         return goToPose(targetPose);
     }

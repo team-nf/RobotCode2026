@@ -28,6 +28,8 @@ public class SwerveFieldContactSim {
 
     public void setSwerveDrivetrain(CommandSwerveDrivetrain swerveDrivetrain) {
         this.m_swerveDrivetrain = swerveDrivetrain;
+        currentSimPose = m_swerveDrivetrain.getInitialStartPose();
+        prevSimPose = m_swerveDrivetrain.getInitialStartPose();
     }
 
     public void setIntakeDeployedSupplier(Supplier<Boolean> isIntakeDeployed) {
@@ -41,15 +43,11 @@ public class SwerveFieldContactSim {
         return instance;
     }
 
-    private Pose2d currentSimPose = PoseConstants.START_POSE_BLUE_1;
-    private Pose2d prevSimPose = PoseConstants.START_POSE_BLUE_1;
+    private Pose2d currentSimPose;
+    private Pose2d prevSimPose;
 
 
     private SwerveFieldContactSim() {
-        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-            currentSimPose = PoseConstants.START_POSE_RED_1;
-            prevSimPose = PoseConstants.START_POSE_RED_1;
-        }
     } 
 
     public CommandSwerveDrivetrain getSwerveDrivetrain() {
@@ -275,8 +273,8 @@ public class SwerveFieldContactSim {
     }
 
     public void reset() {
-        currentSimPose = PoseConstants.START_POSE_BLUE_1;
-        prevSimPose = PoseConstants.START_POSE_BLUE_1;
+        currentSimPose = m_swerveDrivetrain.getInitialStartPose();
+        prevSimPose = m_swerveDrivetrain.getInitialStartPose();
         m_swerveDrivetrain.resetPose(currentSimPose);
     }
 

@@ -53,6 +53,7 @@ import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineTestRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineZeroRequest;
 import frc.robot.Subsytems.TheMachine.Utils.LEDController;
 import frc.robot.Subsytems.TheMachine.Utils.TheMachineControlData;
+import frc.robot.Utils.MatchTracker;
 
 public class TheMachine {
   /** Creates a new TheMachine. */
@@ -84,6 +85,8 @@ public class TheMachine {
   private boolean hasLotsOfFuel = true;
 
   private boolean intakeWithOffset = false;
+
+  private MatchTracker matchTracker;
 
   public TheMachine(
     ShooterSubsystem shooterSubsystem,
@@ -119,6 +122,8 @@ public class TheMachine {
     //rightLed = new LEDController(1, 31);
     //frontLed = new LEDController(2,31);
     //backLed = new LEDController(3,31);
+
+    matchTracker = new MatchTracker();
   }
 
   public TheMachineControlState getState() {
@@ -425,7 +430,7 @@ public class TheMachine {
 
   public void periodic() {
     stateMachine();
-
+    matchTracker.updateMatchTracker();
     //updateLeds();
     
     if (TelemetryConstants.SHOULD_THEMACHINE_DATA_COMMUNICATE)
