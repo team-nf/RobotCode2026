@@ -43,6 +43,7 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Notifier;
@@ -267,13 +268,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     {
     if (TelemetryConstants.SHOULD_SWERVE_DATA_COMMUNICATE) {
             SmartDashboard.putData("Swerve Control Data", swerveData);
-            SmartDashboard.putString("Conf/InitialStartPose2d", initialStartPose2d.toString());
         }
 
+        /* 
         if (TelemetryConstants.SHOULD_SWERVE_FIELD_COMMUNICATE) {
             SmartDashboard.putData("Field", swerveData.field);
-            SmartDashboard.putBoolean("Conf/isAimed", swerveData.isAimed);
-        }
+        }*/
 
         if (DriverStation.getAlliance().get() == Alliance.Red) {
             swerveData.distanceToHub = Meters.of(PoseConstants.RED_HUB_AIM_POSE.getTranslation().getDistance(getPose().getTranslation()));
@@ -312,6 +312,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         visionPeriodic();
     }
 
+    private Field2d confField2d = new Field2d();
+
     @Override
     public void periodic() {
         /*
@@ -332,6 +334,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             });
         }
 
+        confField2d.setRobotPose(getPose());
+        SmartDashboard.putData("Conf/Field", confField2d);
+        SmartDashboard.putBoolean("Conf/isAimed", swerveData.isAimed);
+        SmartDashboard.putString("Conf/InitialStartPose2d", initialStartPose2d.toString());
+        SmartDashboard.putBoolean("Conf/IsRobotInNeutral", isRobotInNeutralZone());
+
         
     }
 
@@ -344,7 +352,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             TelemetryConstants.roundTelemetry(swerveData.robotPose.getY()),
             new Rotation2d(TelemetryConstants.roundTelemetry(swerveData.robotPose.getRotation().getRadians())));
 
-        swerveData.field.setRobotPose(roundedRobotPose);
+        //swerveData.field.setRobotPose(roundedRobotPose);
 
         swerveData.robotVelocityX = MetersPerSecond.of(getState().Speeds.vxMetersPerSecond);
         swerveData.robotVelocityY = MetersPerSecond.of(getState().Speeds.vyMetersPerSecond);
@@ -792,12 +800,28 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         });
      }
 
+     public boolean isRobotInNeutralZone()
+     {
+        double robotX = getPose().getX();
+
+        return 5 < robotX && robotX < 11;
+     }
+
      public Command moveToShoot8()
      {
-        if(DriverStation.getAlliance().get()==Alliance.Blue)
-            return goToPose(getState().Pose.plus(new Transform2d(new Translation2d(-0.3,0), new Rotation2d())));
-        else
-            return goToPose(getState().Pose.plus(new Transform2d(new Translation2d(0.3,0), new Rotation2d())));
 
+        Pose2d pose = getPose();
+
+        if(DriverStation.getAlliance().get()==Alliance.Blue)
+        {
+            Pose2d startPose = PoseConstants.START_POSE_BLUE_MIDDLE;
+            pose = new Pose2d(startPose.getX()-0.75, startPose.getY(), startPose.getRotation());
+        }
+        else
+        {
+            Pose2d startPose = PoseConstants.START_POSE_RED_MIDDLE;
+            pose = new Pose2d(startPose.getX()+0.75, startPose.getY(), startPose.getRotation());
+        }
+        return goToPose(pose);
      }
 }

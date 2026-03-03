@@ -18,14 +18,7 @@ public class TheMachineTestAction {
                     theMachine.hopperReverseRequest()
                       .andThen(new WaitCommand(0.1))
                       .andThen(theMachine.hopperFeedRequest()))
-        .andThen(theMachine.intakeIdleBetweenRequest())
-        .andThen(new WaitCommand(1))
-        .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(0.5)))
-        .andThen(theMachine.intakeIdleBetweenRequest())
-        .andThen(new WaitCommand(1))
-        .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(0.5));
+        .andThen(theMachine.intakeIntakeRequest()));
 
     return commandWithShake.until(() -> (theMachine.getState() != TheMachineControlState.TEST));
   }

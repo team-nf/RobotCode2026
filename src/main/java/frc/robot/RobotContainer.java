@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Dimensions;
@@ -106,6 +107,7 @@ public class RobotContainer {
         ? stream.filter(auto -> auto.getName().startsWith("comp"))
         : stream
     );
+
     SmartDashboard.putData("Conf/Auto Chooser", autoChooser);
 
   }
@@ -118,9 +120,15 @@ public class RobotContainer {
         .onTrue(m_theMachine.reverseRequest());
 
     m_driverController.y()
-        .whileTrue(
-            (m_swerveDrivetrain.aimToHub().unless(m_swerveDrivetrain::isAutoAimDisabled))
-            .alongWith(m_swerveDrivetrain.waitForAtAim(), m_theMachine.getReadyRequest()).andThen(m_theMachine.shootRequest()))
+        .whileTrue( 
+          new ConditionalCommand(
+              m_theMachine.testRequest()
+              ,
+              (m_swerveDrivetrain.aimToHub().unless(m_swerveDrivetrain::isAutoAimDisabled))
+                .alongWith(m_swerveDrivetrain.waitForAtAim(), m_theMachine.getReadyRequest()).andThen(m_theMachine.shootRequest())
+              ,
+              m_swerveDrivetrain::isRobotInNeutralZone
+            ))
         .onFalse(m_theMachine.idleDeployedRequest());
 
     m_driverController.a()
@@ -135,10 +143,16 @@ public class RobotContainer {
     m_driverController.povLeft()
         .onTrue(m_theMachine.idleRequest());
 
-    m_driverController.povRight()
+    m_driverController.leftBumper()
         .whileTrue((m_swerveDrivetrain.aimToPass().unless(m_swerveDrivetrain::isAutoAimDisabled))
             .alongWith(m_swerveDrivetrain.waitForAtAim().andThen(m_theMachine.testRequest())))
         .onFalse(m_theMachine.idleDeployedRequest());
+
+    m_driverController.rightBumper()
+      .whileTrue(
+              (m_swerveDrivetrain.aimToHub().unless(m_swerveDrivetrain::isAutoAimDisabled))
+              .alongWith(m_swerveDrivetrain.waitForAtAim(), m_theMachine.getReadyRequest()).andThen(m_theMachine.shootRequest()))
+          .onFalse(m_theMachine.idleDeployedRequest());
 
     m_driverController.povUp()
           .onTrue(m_theMachine.intakeChangeOffsetCommand());
