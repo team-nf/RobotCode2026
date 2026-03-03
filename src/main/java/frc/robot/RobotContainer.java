@@ -50,7 +50,6 @@ import static edu.wpi.first.units.Units.*;
 public class RobotContainer {
 
   private CommandSwerveDrivetrain m_swerveDrivetrain;
-  private Localization m_localization;
 
   private ShooterCalculator m_shooterCalculator;
   private ShooterSubsystem m_shooterSubsystem;
@@ -78,7 +77,6 @@ public class RobotContainer {
     m_intakeSubsystem = new IntakeSubsystem();
 
     m_swerveDrivetrain = TunerConstants.createDrivetrain();
-    m_localization = new Localization(m_swerveDrivetrain);
 
     m_shooterCalculator = new ShooterCalculator(m_swerveDrivetrain.swerveDataSupplier());
     m_shooterSubsystem = new ShooterSubsystem(m_shooterCalculator);
@@ -151,6 +149,13 @@ public class RobotContainer {
     m_driverController.start()
         .onTrue(m_swerveDrivetrain.resetToStartPoseCmd());
 
+    m_driverController.start()
+        .onTrue(m_swerveDrivetrain.resetPoseWithMT1Command());
+
+    m_driverController.back()
+        .onTrue(m_theMachine.noneRequest());
+     
+
     NamedCommands.registerCommand("AimAndShoot", 
           m_swerveDrivetrain.aimToHub()
             .alongWith(m_swerveDrivetrain.waitForAtAim(), m_theMachine.getReadyRequest()).andThen(m_theMachine.shootRequest())
@@ -162,7 +167,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("MachineIdleRetractedRequest", m_theMachine.idleRetractedRequest());
     NamedCommands.registerCommand("MachineIdleRequest", m_theMachine.idleRequest());
 
-    NamedCommands.registerCommand("SetStartPose1", m_swerveDrivetrain.setStartPose1Command());
+    NamedCommands.registerCommand("SetStartPoseLeft", m_swerveDrivetrain.setStartPoseLeftCommand());
+    NamedCommands.registerCommand("SetStartPoseMiddle", m_swerveDrivetrain.setStartPoseMiddleCommand());
+    NamedCommands.registerCommand("SetStartPoseRight", m_swerveDrivetrain.setStartPoseRightCommand());
 
     NamedCommands.registerCommand("GoToIntakeFromWall", m_swerveDrivetrain.pathFindToIntakeWall());
     NamedCommands.registerCommand("GoToTrench1", m_swerveDrivetrain.pathFindToTrench1());
@@ -225,22 +232,19 @@ public class RobotContainer {
 
     if(DriverStation.isEnabled())
     {
-      m_theMachine.periodic();
+      m_theMachine.stateMachine();
     }
+
+    m_swerveDrivetrain.updateOfRobotPeriodic();
+
+    m_theMachine.periodic();
 
     if (TelemetryConstants.SHOULD_SCHEDULER_COMMUNICATE) {
         // Telemetry for the Command Scheduler
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
      }
 
-    if(Robot.isReal())
-    {
-      if(DriverStation.isDisabled())
-      {
-        m_localization.disabledPeriodic();
-      }
-      else m_localization.enabledPeriodic();
-    }
+
     //updateTelemetrySettings();
 
     }

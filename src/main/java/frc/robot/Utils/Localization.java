@@ -135,10 +135,6 @@ public class Localization {
     // Get the pose estimate
     LimelightHelpers.PoseEstimate limelightMeasurementLeft = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-left");
     LimelightHelpers.PoseEstimate limelightMeasurementRight = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-right");
-
-    // Add it to your pose estimator
-    drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, 9999999));
-
     
     boolean doRejectUpdate = false;
     boolean doRejectLeft = false;
@@ -217,6 +213,18 @@ public class Localization {
         LimelightHelpers.SetIMUMode("limelight-right", 2);
     }
 
+    public void setImuMode0()
+    {
+        double robotYaw = drivetrain.getGyroHeading();
+
+
+        LimelightHelpers.SetRobotOrientation("limelight-left", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
+        LimelightHelpers.SetIMUMode("limelight-left", 0);
+  
+        
+        LimelightHelpers.SetRobotOrientation("limelight-right", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
+        LimelightHelpers.SetIMUMode("limelight-right", 0);
+    }
 
     public boolean hasAnEstimate() {
         return (currentPoseEstimateFinal != null);
@@ -255,10 +263,28 @@ public class Localization {
     {   
         if(!isLLReady && isMode1Set)
         {
-            setImuMode2();
+            //setImuMode2();
+            setImuMode0();
             isLLReady = true;
         }
 
         if(isLLReady) addVisionMeasurement();
+    }
+
+    public void resetWithMT1()
+    {
+        double robotYaw = drivetrain.getGyroHeading();
+        LimelightHelpers.SetRobotOrientation("limelight-right", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
+        setImuMode1();
+
+        LimelightHelpers.PoseEstimate limelightMeasurementRight = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-right");
+
+        if(limelightMeasurementRight != null && limelightMeasurementRight.tagCount > 0)
+        {
+            if (limelightMeasurementRight.avgTagDist < 2.0) {
+                drivetrain.resetPose(limelightMeasurementRight.pose);
+            }
+        }
+
     }
 }

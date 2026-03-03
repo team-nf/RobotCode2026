@@ -29,13 +29,13 @@ public class FeederConstants {
                 .withKD(FEEDER_KD))
 
             .withVoltage(new VoltageConfigs()
-                .withPeakForwardVoltage(8)
-                .withPeakReverseVoltage(-8))
+                .withPeakForwardVoltage(9)
+                .withPeakReverseVoltage(-9))
 
             .withCurrentLimits(new CurrentLimitsConfigs()
                 .withSupplyCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(20)
-                .withStatorCurrentLimit(20))
+                .withSupplyCurrentLimit(30)
+                .withStatorCurrentLimit(30))
                 
             .withMotorOutput(new MotorOutputConfigs()
                 .withInverted(InvertedValue.Clockwise_Positive));

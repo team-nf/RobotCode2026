@@ -57,6 +57,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Constants.States.SwerveStates.SwerveState;
+import frc.robot.Robot;
 import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PoseConstants;
@@ -66,6 +67,7 @@ import frc.robot.Subsytems.Swerve.Commands.SwerveAimToPass;
 import frc.robot.Subsytems.Swerve.Commands.SwerveGetIntoShootAreaCommand;
 import frc.robot.Subsytems.Swerve.Commands.SwerveTeleopCommand;
 import frc.robot.Subsytems.Swerve.Utils.SwerveControlData;
+import frc.robot.Utils.Localization;
 import frc.robot.Utils.SwerveFieldContactSim;
 
 /**
@@ -89,6 +91,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     private SwerveControlData swerveData = new SwerveControlData();
 
+    private Localization m_localization;
+
 
     private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
     /* Swerve requests to apply during SysId characterization */
@@ -98,7 +102,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     private boolean autoAimEnabled = true;
 
-    private final SendableChooser<Integer> startPoseChooser = new SendableChooser<>();
+    private final SendableChooser<String> startPoseChooser = new SendableChooser<>();
     private Pose2d initialStartPose2d = new Pose2d(0, 0, new Rotation2d());
 
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
@@ -259,28 +263,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return !autoAimEnabled;
     }
 
-    @Override
-    public void periodic() {
-        /*
-         * Periodically try to apply the operator perspective.
-         * If we haven't applied the operator perspective before, then we should apply it regardless of DS state.
-         * This allows us to correct the perspective in case the robot code restarts mid-match.
-         * Otherwise, only check and apply the operator perspective if the DS is disabled.
-         * This ensures driving behavior doesn't change until an explicit disable event occurs during testing.
-         */
-        if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
-            DriverStation.getAlliance().ifPresent(allianceColor -> {
-                setOperatorPerspectiveForward(
-                    allianceColor == Alliance.Red
-                        ? kRedAlliancePerspectiveRotation
-                        : kBlueAlliancePerspectiveRotation
-                );
-                m_hasAppliedOperatorPerspective = true;
-            });
-        }
-
-        if (TelemetryConstants.SHOULD_SWERVE_DATA_COMMUNICATE) {
+    public void updateOfRobotPeriodic()
+    {
+    if (TelemetryConstants.SHOULD_SWERVE_DATA_COMMUNICATE) {
             SmartDashboard.putData("Swerve Control Data", swerveData);
+            SmartDashboard.putString("Conf/InitialStartPose2d", initialStartPose2d.toString());
         }
 
         if (TelemetryConstants.SHOULD_SWERVE_FIELD_COMMUNICATE) {
@@ -308,6 +295,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             autoAimEnabled = SmartDashboard.getBoolean("Conf/AutoAimEnabled", autoAimEnabled);
         }
 
+
         /* 
         if (DriverStation.isEnabled() && !isNeutralModeBrake)
         {
@@ -320,6 +308,31 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             isNeutralModeBrake = false;
         }*/
 
+        updateStartConditions();
+        visionPeriodic();
+    }
+
+    @Override
+    public void periodic() {
+        /*
+         * Periodically try to apply the operator perspective.
+         * If we haven't applied the operator perspective before, then we should apply it regardless of DS state.
+         * This allows us to correct the perspective in case the robot code restarts mid-match.
+         * Otherwise, only check and apply the operator perspective if the DS is disabled.
+         * This ensures driving behavior doesn't change until an explicit disable event occurs during testing.
+         */
+        if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
+            DriverStation.getAlliance().ifPresent(allianceColor -> {
+                setOperatorPerspectiveForward(
+                    allianceColor == Alliance.Red
+                        ? kRedAlliancePerspectiveRotation
+                        : kBlueAlliancePerspectiveRotation
+                );
+                m_hasAppliedOperatorPerspective = true;
+            });
+        }
+
+        
     }
 
     public void updateSwerveData(){
@@ -601,37 +614,32 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public void setStartPoseInitial()
     {
+        m_localization = new Localization(this);
 
-        startPoseChooser.setDefaultOption("RIGHT", 3);
-        startPoseChooser.addOption("MIDDLE", 2);
-        startPoseChooser.addOption("LEFT", 1);
+        startPoseChooser.addOption("RIGHT", "RIGHT");
+        startPoseChooser.setDefaultOption("MIDDLE", "MIDDLE");
+        startPoseChooser.addOption("LEFT", "LEFT");
     
         SmartDashboard.putData("Conf/StartPoseChooser", startPoseChooser);
 
-
         if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
-            initialStartPose2d = PoseConstants.START_POSE_RED_RIGHT;
-            resetPose(PoseConstants.START_POSE_RED_RIGHT);
+            initialStartPose2d = PoseConstants.START_POSE_RED_MIDDLE;
+            resetPose(initialStartPose2d);
         }
         else{
-            initialStartPose2d = PoseConstants.START_POSE_BLUE_RIGHT;
-            resetPose(PoseConstants.START_POSE_BLUE_RIGHT);
+            initialStartPose2d = PoseConstants.START_POSE_BLUE_MIDDLE;
+            resetPose(initialStartPose2d);
         }
     }
 
-    public void setStartPose1()
+    public void setStartPose()
     {
-        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
-            resetPose(PoseConstants.START_POSE_RED_RIGHT);
-        }
-        else{
-            resetPose(PoseConstants.START_POSE_BLUE_RIGHT);
-        }
+        resetPose(initialStartPose2d);
     }
 
     public InstantCommand resetToStartPoseCmd()
     {
-        return new InstantCommand(() -> setStartPose1());
+        return new InstantCommand(() -> setStartPose());
     }
 
     public void setIsAimed(boolean isAimed)
@@ -685,9 +693,37 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return goToPose(targetPose);
     }
 
-    public InstantCommand setStartPose1Command()
+    public InstantCommand setStartPoseLeftCommand()
     {
-        return new InstantCommand(() -> setStartPose1());
+        return new InstantCommand(() -> {
+            if(DriverStation.getAlliance().get() == Alliance.Red)
+            {
+                resetPose(PoseConstants.START_POSE_RED_LEFT);
+            }
+            else resetPose(PoseConstants.START_POSE_BLUE_LEFT);
+        });
+    }
+    
+    public InstantCommand setStartPoseMiddleCommand()
+    {
+        return new InstantCommand(() -> {
+            if(DriverStation.getAlliance().get() == Alliance.Red)
+            {
+                resetPose(PoseConstants.START_POSE_RED_MIDDLE);
+            }
+            else resetPose(PoseConstants.START_POSE_BLUE_MIDDLE);
+        });
+    }
+
+    public InstantCommand setStartPoseRightCommand()
+    {
+        return new InstantCommand(() -> {
+            if(DriverStation.getAlliance().get() == Alliance.Red)
+            {
+                resetPose(PoseConstants.START_POSE_RED_RIGHT);
+            }
+            else resetPose(PoseConstants.START_POSE_BLUE_RIGHT);
+        });
     }
 
     public Command followPathIntakeWall()
@@ -716,5 +752,70 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
 
         return pathfindThenFollowPath(path);
+     }
+
+     public void visionPeriodic()
+     {
+        if(Robot.isReal())
+        {
+            if(DriverStation.isDisabled())
+            {
+                m_localization.disabledPeriodic();
+            }
+             else
+             {
+                m_localization.enabledPeriodic();
+             }
+        }
+     }
+
+
+     public void updateStartConditions()
+     {
+        if(DriverStation.isDisabled())
+        {
+            String selectedStartPose = startPoseChooser.getSelected();
+            Pose2d selectedPose = new Pose2d();
+            if (DriverStation.getAlliance().get() == Alliance.Red) {
+                switch (selectedStartPose) {
+                    case "LEFT":
+                        selectedPose = PoseConstants.START_POSE_RED_LEFT;
+                        break;
+                    case "MIDDLE":
+                        selectedPose = PoseConstants.START_POSE_RED_MIDDLE;
+                        break;
+                    case "RIGHT":
+                        selectedPose = PoseConstants.START_POSE_RED_RIGHT;
+                        break;
+                }
+            } else {
+                switch (selectedStartPose) {
+                    case "LEFT":
+                        selectedPose = PoseConstants.START_POSE_BLUE_LEFT;
+                        break;
+                    case "MIDDLE":
+                        selectedPose = PoseConstants.START_POSE_BLUE_MIDDLE;
+                        break;
+                    case "RIGHT":
+                        selectedPose = PoseConstants.START_POSE_BLUE_RIGHT;
+                        break;
+                }
+                
+            }
+
+            if(selectedPose != initialStartPose2d)
+            {
+                initialStartPose2d = selectedPose;
+                resetPose(initialStartPose2d);
+            }
+        }
+     }
+
+     public InstantCommand resetPoseWithMT1Command()
+     {
+         return new InstantCommand(() -> 
+        {
+            m_localization.resetWithMT1();
+        });
      }
 }

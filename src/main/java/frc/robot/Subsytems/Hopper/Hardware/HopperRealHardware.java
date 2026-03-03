@@ -56,6 +56,15 @@ public class HopperRealHardware implements HopperHardware {
         if (!status.isOK()) {
             System.out.println("Could not apply configs, error code: " + status.toString());
         }
+
+        status = StatusCode.StatusCodeNotInitialized;
+        for (int i = 0; i < 5; ++i) {
+            status = hopperMotor2.getConfigurator().apply(hopperMotorConfig);
+            if (status.isOK()) break;
+        }
+        if (!status.isOK()) {
+            System.out.println("Could not apply configs, error code: " + status.toString());
+        }
     }
 
     @Override

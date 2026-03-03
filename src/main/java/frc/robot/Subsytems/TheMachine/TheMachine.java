@@ -429,7 +429,6 @@ public class TheMachine {
   }
 
   public void periodic() {
-    stateMachine();
     matchTracker.updateMatchTracker();
     //updateLeds();
     

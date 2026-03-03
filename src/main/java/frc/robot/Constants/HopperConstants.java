@@ -30,13 +30,13 @@ public class HopperConstants {
                 .withKD(HOPPER_KD))
 
             .withVoltage(new VoltageConfigs()
-                .withPeakForwardVoltage(8)
-                .withPeakReverseVoltage(-8))
+                .withPeakForwardVoltage(9)
+                .withPeakReverseVoltage(-9))
 
             .withCurrentLimits(new CurrentLimitsConfigs()
                 .withSupplyCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(30)
-                .withStatorCurrentLimit(30))
+                .withSupplyCurrentLimit(37.5)
+                .withStatorCurrentLimit(37.5))
                 
             .withMotorOutput(new MotorOutputConfigs()
                 .withInverted(InvertedValue.Clockwise_Positive));
