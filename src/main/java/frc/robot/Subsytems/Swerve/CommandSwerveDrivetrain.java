@@ -614,20 +614,20 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public void setStartPoseInitial()
     {
-        if(!Robot.isReal()) m_localization = new Localization(this);
+        if(Robot.isReal()) m_localization = new Localization(this);
 
         startPoseChooser.addOption("RIGHT", "RIGHT");
-        startPoseChooser.setDefaultOption("MIDDLE", "MIDDLE");
-        startPoseChooser.addOption("LEFT", "LEFT");
+        startPoseChooser.addOption("MIDDLE", "MIDDLE");
+        startPoseChooser.setDefaultOption("LEFT", "LEFT");
     
         SmartDashboard.putData("Conf/StartPoseChooser", startPoseChooser);
 
         if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
-            initialStartPose2d = PoseConstants.START_POSE_RED_MIDDLE;
+            initialStartPose2d = PoseConstants.START_POSE_RED_LEFT;
             resetPose(initialStartPose2d);
         }
         else{
-            initialStartPose2d = PoseConstants.START_POSE_BLUE_MIDDLE;
+            initialStartPose2d = PoseConstants.START_POSE_BLUE_LEFT;
             resetPose(initialStartPose2d);
         }
     }
@@ -652,12 +652,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return new WaitUntilCommand(() -> {return swerveData.isAimed;});
     }
 
-    public Command pathFindToIntakeWall()
+
+    public Command pathFindToTrench1()
     {
         PathPlannerPath path = null;
 
         try {
-            path = PathPlannerPath.fromPathFile("IntakeWall");
+            path = PathPlannerPath.fromPathFile("TrenchIntake1");
         } catch (FileVersionException | IOException | ParseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -666,12 +667,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return pathfindToPath(path);
     }
 
-    public Command pathFindToTrench1()
+    public Command pathFindToTrench2_2()
     {
         PathPlannerPath path = null;
 
         try {
-            path = PathPlannerPath.fromPathFile("TrenchIntake1");
+            path = PathPlannerPath.fromPathFile("TrenchIntake2.2");
         } catch (FileVersionException | IOException | ParseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -725,34 +726,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             else resetPose(PoseConstants.START_POSE_BLUE_RIGHT);
         });
     }
-
-    public Command followPathIntakeWall()
-    {
-        PathPlannerPath path = null;
-
-        try {
-            path = PathPlannerPath.fromPathFile("IntakeWall");
-        } catch (FileVersionException | IOException | ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        }
-
-        return pathfindThenFollowPath(path);
-    }
-
-     public Command followPathTrench1()
-    {
-        PathPlannerPath path = null;
-
-        try {
-            path = PathPlannerPath.fromPathFile("TrenchIntake1");
-        } catch (FileVersionException | IOException | ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        }
-
-        return pathfindThenFollowPath(path);
-     }
 
      public void visionPeriodic()
      {
@@ -817,5 +790,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         {
             m_localization.resetWithMT1();
         });
+     }
+
+     public Command moveToShoot8()
+     {
+        if(DriverStation.getAlliance().get()==Alliance.Blue)
+            return goToPose(getState().Pose.plus(new Transform2d(new Translation2d(-0.3,0), new Rotation2d())));
+        else
+            return goToPose(getState().Pose.plus(new Transform2d(new Translation2d(0.3,0), new Rotation2d())));
+
      }
 }

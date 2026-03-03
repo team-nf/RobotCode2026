@@ -13,25 +13,13 @@
         {
           "type": "named",
           "data": {
-            "name": "GoToTrench1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AimAndShoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "MachineIntakeRequest"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "IntakeFromTrench1"
+            "pathName": "TrenchIntake2.1"
           }
         },
         {
@@ -43,13 +31,25 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 1.25
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "MachineIdleRequest"
+            "name": "MachineIdleRetractedRequest"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GoToTrench2_2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "TrenchIntake2.2"
           }
         }
       ]

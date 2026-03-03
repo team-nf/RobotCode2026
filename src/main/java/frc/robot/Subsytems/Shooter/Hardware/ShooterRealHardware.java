@@ -65,8 +65,8 @@ public class ShooterRealHardware implements ShooterHardware {
     private double hoodReference = 0.0;
     private double hoodError = 0.0;
 
-    private double testFlywheelGoal= 28;
-    private double testHoodGoal = 0.1;
+    private double testFlywheelGoal= 32;
+    private double testHoodGoal = 8/360;
 
     public ShooterRealHardware() {
         firstShootMotor = new TalonFX(ShooterConstants.FIRST_SHOOTER_MOTOR_ID);
@@ -87,8 +87,6 @@ public class ShooterRealHardware implements ShooterHardware {
         shootVelocityControlR = ShooterConstants.SHOOTER_VELOCITY_CONTROL.clone();
 
         hoodPositionControl = ShooterConstants.HOOD_POSITION_CONTROL.clone();
-
-        if(!Utils.isSimulation()) hoodMotor.setPosition(ShooterConstants.MIN_HOOD_ANGLE.times(ShooterConstants.HOOD_GEAR_REDUCTION));
     }
 
     @Override
@@ -198,8 +196,14 @@ public class ShooterRealHardware implements ShooterHardware {
     @Override
     public void setHoodAngle(double hoodAngle) {
         // Set hood position in rotations
+
+        if(hoodAngle > ShooterConstants.MAX_HOOD_ANGLE.in(Rotations))
+        {
+            hoodAngle = ShooterConstants.MAX_HOOD_ANGLE.in(Rotations);
+        }
+
         hoodMotor.setControl(
-            hoodPositionControl.withPosition(hoodAngle*(ShooterConstants.HOOD_GEAR_REDUCTION))
+            hoodPositionControl.withPosition(-hoodAngle*(ShooterConstants.HOOD_GEAR_REDUCTION))
         );
     }
 
@@ -255,6 +259,7 @@ public class ShooterRealHardware implements ShooterHardware {
 
     @Override
     public void initSendable(SendableBuilder builder) {
+        
     builder.addDoubleProperty("Flywheel Velocity Left", () -> TelemetryConstants.roundTelemetry(flywheelVelocityLeft*60), null);
     builder.addDoubleProperty("Flywheel Velocity Right", () -> TelemetryConstants.roundTelemetry(flywheelVelocityRight*60), null);
     builder.addDoubleProperty("Shoot Motor Velocity Left", () -> TelemetryConstants.roundTelemetry(shootVelocityLeft*(60)), null);
@@ -273,7 +278,7 @@ public class ShooterRealHardware implements ShooterHardware {
     builder.addDoubleProperty("Hood Current", () -> TelemetryConstants.roundTelemetry(hoodCurrent), null);
     builder.addDoubleProperty("Hood Reference", () -> TelemetryConstants.roundTelemetry(hoodReference), null);
     builder.addDoubleProperty("Hood Error", () -> TelemetryConstants.roundTelemetry(hoodError*360), null);
-
+/*
         builder.addDoubleProperty("Test Flywheel Goal", () -> testFlywheelGoal*(60), (val) -> {
             testFlywheelGoal = (val/60);
         });
@@ -326,7 +331,7 @@ public class ShooterRealHardware implements ShooterHardware {
         builder.addDoubleProperty("Hood KG", () -> hoodMotorConfig.Slot0.kG, (val) -> {
             hoodMotorConfig.Slot0.kG = val;
             updateMotorConfigs();
-        });
+        });*/
     }
 
     @Override

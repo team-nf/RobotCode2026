@@ -47,6 +47,8 @@ import frc.robot.Utils.SwerveFieldContactSim;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.jar.Attributes.Name;
+
 public class RobotContainer {
 
   private CommandSwerveDrivetrain m_swerveDrivetrain;
@@ -116,7 +118,8 @@ public class RobotContainer {
         .onTrue(m_theMachine.reverseRequest());
 
     m_driverController.y()
-        .whileTrue((m_swerveDrivetrain.aimToHub().unless(m_swerveDrivetrain::isAutoAimDisabled))
+        .whileTrue(
+            (m_swerveDrivetrain.aimToHub().unless(m_swerveDrivetrain::isAutoAimDisabled))
             .alongWith(m_swerveDrivetrain.waitForAtAim(), m_theMachine.getReadyRequest()).andThen(m_theMachine.shootRequest()))
         .onFalse(m_theMachine.idleDeployedRequest());
 
@@ -135,16 +138,10 @@ public class RobotContainer {
     m_driverController.povRight()
         .whileTrue((m_swerveDrivetrain.aimToPass().unless(m_swerveDrivetrain::isAutoAimDisabled))
             .alongWith(m_swerveDrivetrain.waitForAtAim().andThen(m_theMachine.testRequest())))
-        .onFalse(m_theMachine.previousStateRequest());
+        .onFalse(m_theMachine.idleDeployedRequest());
 
     m_driverController.povUp()
           .onTrue(m_theMachine.intakeChangeOffsetCommand());
-
-    m_driverController.rightBumper() // sağ trench
-        .whileTrue(m_swerveDrivetrain.pathFindToIntakeWall());
-
-    m_driverController.leftBumper() // sol trench
-        .whileTrue(m_swerveDrivetrain.pathFindToStartPose1());
 
     m_driverController.start()
         .onTrue(m_swerveDrivetrain.resetToStartPoseCmd());
@@ -171,11 +168,13 @@ public class RobotContainer {
     NamedCommands.registerCommand("SetStartPoseMiddle", m_swerveDrivetrain.setStartPoseMiddleCommand());
     NamedCommands.registerCommand("SetStartPoseRight", m_swerveDrivetrain.setStartPoseRightCommand());
 
-    NamedCommands.registerCommand("GoToIntakeFromWall", m_swerveDrivetrain.pathFindToIntakeWall());
     NamedCommands.registerCommand("GoToTrench1", m_swerveDrivetrain.pathFindToTrench1());
-    NamedCommands.registerCommand("IntakeFromWall", m_theMachine.intakeRequest().andThen(m_swerveDrivetrain.followPathIntakeWall()));
-    NamedCommands.registerCommand("IntakeFromTrench1", m_swerveDrivetrain.followPathTrench1());
+    NamedCommands.registerCommand("GoToTrench2.2", m_swerveDrivetrain.pathFindToTrench2_2());
     NamedCommands.registerCommand("GoToStartPose", m_swerveDrivetrain.pathFindToStartPose1());
+
+
+    NamedCommands.registerCommand("MoveToShoot8", m_swerveDrivetrain.moveToShoot8());
+      
     }
 
     
@@ -202,8 +201,7 @@ public class RobotContainer {
             Dimensions.BUMPER_LENGTH.div(2).plus(Dimensions.HOPPER_EXTENSION_LENGTH).in(Meters),
             -Dimensions.BUMPER_WIDTH.div(2).in(Meters),
             Dimensions.BUMPER_WIDTH.div(2).in(Meters),
-            () -> m_intakeSubsystem.isIntakeDeployed() 
-                        && m_intakeSubsystem.isIntakeState(IntakeControlState.INTAKE) 
+            () -> m_intakeSubsystem.isIntakeState(IntakeControlState.INTAKE) 
                         && hopperSim.isHopperAbleToIntake(),
             hopperSim::addFuelToHopper);
 

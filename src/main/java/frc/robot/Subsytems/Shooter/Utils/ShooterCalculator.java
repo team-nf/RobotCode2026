@@ -33,8 +33,8 @@ public class ShooterCalculator {
     public ShooterCalculator(Supplier<SwerveControlData> swerveDataSupplier) {
         this.swerveDataSupplier = swerveDataSupplier;
 
-        SmartDashboard.putNumber("ManualFlywheelRpm", 0);
-        SmartDashboard.putNumber("ManualHoodAngle", 0);
+        SmartDashboard.putNumber("ManualFlywheelRpm", 500);
+        SmartDashboard.putNumber("ManualHoodAngle", 18);
         SmartDashboard.putBoolean("UseManualShooterValues", false);
     }
 
@@ -63,10 +63,10 @@ public class ShooterCalculator {
         //SmartDashboard.putNumber("WheelSpeedCalculated", wheelSpeed);
 
 
-        if(SmartDashboard.getBoolean("UseManualShooterValues", false))
-        {
-            wheelSpeed = SmartDashboard.getNumber("ManualFlywheelRpm", wheelSpeed);
-        }
+        //if(SmartDashboard.getBoolean("UseManualShooterValues", false))
+        //{
+          //  wheelSpeed = SmartDashboard.getNumber("ManualFlywheelRpm", wheelSpeed);
+        //}
 
         wheelSpeed /= 60;
 
@@ -82,16 +82,16 @@ public class ShooterCalculator {
         double hoodAngle = ShooterConstants.hoodAngleFormula(swerveDataSupplier.get().distanceToHub.in(Meters));
 
         
-        if(SmartDashboard.getBoolean("UseManualShooterValues", false))
-        {
-            hoodAngle = SmartDashboard.getNumber("ManualHoodAngle", hoodAngle);
-        }
+       // if(SmartDashboard.getBoolean("UseManualShooterValues", false))
+        //{
+         //   hoodAngle = SmartDashboard.getNumber("ManualHoodAngle", hoodAngle);
+        //}
 
         hoodAngle = Math.max(ShooterConstants.MIN_HOOD_ANGLE.in(Degrees), Math.min(hoodAngle, ShooterConstants.MAX_HOOD_ANGLE.in(Degrees))); // Clamp between min and max hood angles
 
         //System.out.println("Calculated Hood Angle: " + hoodAngle + "Distance: " + distance);
         //return Degrees.of(hoodAngle);
-        return hoodAngle/360;
+        return (hoodAngle-18)/360;
     }
 
         public double calculateRestFlywheelSpeedFromCurrentPose()
@@ -105,6 +105,6 @@ public class ShooterCalculator {
     {
         // Placeholder implementation
         // Replace with actual logic to calculate hood angle based on robot's current pose
-        return ShooterConstants.MIN_HOOD_ANGLE.in(Rotations);
+        return ShooterConstants.MIN_HOOD_ANGLE.in(Rotations);//.div((3.0))
     }
 }

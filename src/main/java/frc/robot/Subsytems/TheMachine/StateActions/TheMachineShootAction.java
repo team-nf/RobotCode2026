@@ -13,35 +13,15 @@ public class TheMachineShootAction {
 
   public static Command get(TheMachine theMachine) {
 
-    Command commandToRunWithLessFuel = new ParallelCommandGroup(
-        theMachine.shooterShootRequest(),
-        theMachine.waitForShooter()
-        .andThen(new WaitCommand(0.1))
-        .andThen(
-            theMachine.hopperFeedRequest(),
-            theMachine.feederFeedRequest())
-        .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(3)));
-
-      Command commandToRunWithManyFuel = new ParallelCommandGroup(
-        theMachine.shooterShootRequest(),
-        theMachine.waitForShooter()
-        .andThen(new WaitCommand(0.1))
-        .andThen(
-            theMachine.hopperFeedRequest(),
-            theMachine.feederFeedRequest())
-        .andThen(theMachine.intakeIdleBetweenRequest())
-        .andThen(new WaitCommand(3))
-        .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(3)));
-
     Command commandWithShake = new ParallelCommandGroup(
         theMachine.shooterShootRequest(),
         theMachine.waitForShooter()
         .andThen(new WaitCommand(0.1))
         .andThen(
-            theMachine.hopperFeedRequest(),
-            theMachine.feederFeedRequest())
+            theMachine.feederFeedRequest(),
+                    theMachine.hopperReverseRequest()
+                      .andThen(new WaitCommand(0.1))
+                      .andThen(theMachine.hopperFeedRequest()))
         .andThen(theMachine.intakeIdleBetweenRequest())
         .andThen(new WaitCommand(1))
         .andThen(theMachine.intakeFeedRequest())
@@ -51,8 +31,45 @@ public class TheMachineShootAction {
         .andThen(theMachine.intakeFeedRequest())
         .andThen(new WaitCommand(0.5));
 
-    return new ConditionalCommand
-        (commandWithShake, commandToRunWithLessFuel, theMachine::isThereLotsOfFuel)
-      .until(() -> (theMachine.getState() != TheMachineControlState.SHOOT));
+      Command commandWithShakeHeavyDuty = new ParallelCommandGroup(
+        theMachine.shooterShootRequest(),
+        theMachine.waitForShooter()
+        .andThen(new WaitCommand(0.1))
+        .andThen(
+            theMachine.feederFeedRequest(),
+                    theMachine.hopperReverseRequest()
+                      .andThen(new WaitCommand(0.1))
+                      .andThen(theMachine.hopperFeedRequest()))
+        .andThen(theMachine.intakeIdleBetweenRequest())
+        .andThen(new WaitCommand(1))
+        .andThen(theMachine.intakeFeedRequest())
+        .andThen(new WaitCommand(0.5)))
+        .andThen(theMachine.intakeIdleBetweenRequest())
+        .andThen(new WaitCommand(1))
+        .andThen(theMachine.intakeFeedRequest())
+        .andThen(new WaitCommand(0.5));
+
+      Command passCommand = new ParallelCommandGroup(
+        theMachine.shooterTestRequest(),
+        (new WaitCommand(0.2))
+        .andThen(
+            theMachine.feederFeedRequest(),
+                    theMachine.hopperReverseRequest()
+                      .andThen(new WaitCommand(0.1))
+                      .andThen(theMachine.hopperFeedRequest()))
+        .andThen(theMachine.intakeIdleBetweenRequest())
+        .andThen(new WaitCommand(1))
+        .andThen(theMachine.intakeFeedRequest())
+        .andThen(new WaitCommand(0.5)))
+        .andThen(theMachine.intakeIdleBetweenRequest())
+        .andThen(new WaitCommand(1))
+        .andThen(theMachine.intakeFeedRequest())
+        .andThen(new WaitCommand(0.5));
+
+    return commandWithShake.until(() -> (theMachine.getState() != TheMachineControlState.SHOOT));
+
+    /*return new ConditionalCommand
+        (commandWithShake, commandWithShake, theMachine::isThereLotsOfFuel)
+      .until(() -> (theMachine.getState() != TheMachineControlState.SHOOT));*/
   }
 }

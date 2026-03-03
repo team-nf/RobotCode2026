@@ -20,6 +20,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.AngularMomentumUnit;
 import edu.wpi.first.units.measure.*;
@@ -33,12 +34,12 @@ public class ShooterConstants {
     public static final int HOOD_MOTOR_ID = 55;
 
     // Shooter Math Constants
-    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.8; // in meters (2 inches)
+    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.85; // in meters (2 inches)
 
     // Configs
     public static final int NUMBER_OF_FLYWHEEL_MOTORS = 2;
 
-    public static final AngularVelocity FLYWHEEL_ALLOWABLE_ERROR = RotationsPerSecond.of(1); // Allowable error in radians per second
+    public static final AngularVelocity FLYWHEEL_ALLOWABLE_ERROR = RotationsPerSecond.of(1.5); // Allowable error in radians per second
     public static final Angle HOOD_ALLOWABLE_ERROR = Degrees.of(1); // Allowable error in radians
 
     public static final double SHOOTER_KS = 0.15;
@@ -50,7 +51,6 @@ public class ShooterConstants {
 
 
     public static final MotorOutputConfigs SHOOTER_MOTOR_OUTPUT_CONFIGS = new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive);
-
     public static final Slot0Configs SHOOTER_PID_CONFIGS = new Slot0Configs()
         .withKS(SHOOTER_KS)
         .withKV(SHOOTER_KV)
@@ -80,9 +80,9 @@ public class ShooterConstants {
     public static final double HOOD_KS = 0.0;
     public static final double HOOD_KV = 0.0;
     public static final double HOOD_KP = 8.0;
-    public static final double HOOD_KI = 2;
+    public static final double HOOD_KI = 0.0;
     public static final double HOOD_KD = 0.2;
-    public static final double HOOD_KG = 0.21;
+    public static final double HOOD_KG = 0.0;
 
     public static final Slot0Configs HOOD_PID_CONFIGS = new Slot0Configs()
         .withKS(HOOD_KS)
@@ -93,10 +93,25 @@ public class ShooterConstants {
         .withKG(HOOD_KG)
         .withGravityType(GravityTypeValue.Arm_Cosine);
 
+    
+    public static final CurrentLimitsConfigs HOOD_CURRENT_LIMITS = new CurrentLimitsConfigs()
+        .withSupplyCurrentLimitEnable(true)
+        .withSupplyCurrentLimit(38)
+        .withStatorCurrentLimit(38);
+        
+    public static final VoltageConfigs HOOD_VOLTAGE_CONFIGS = new VoltageConfigs()
+        .withPeakForwardVoltage(10)
+        .withPeakReverseVoltage(-10);
+
+
+    public static final MotorOutputConfigs HOOD_MOTOR_OUTPUT_CONFIGS = new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive)
+        .withNeutralMode(NeutralModeValue.Coast);
+
     public static final TalonFXConfiguration HOOD_CONFIG = new TalonFXConfiguration()
             .withSlot0(HOOD_PID_CONFIGS)
-            .withVoltage(SHOOTER_VOLTAGE_CONFIGS)
-            .withCurrentLimits(SHOOTER_CURRENT_LIMITS);
+            .withVoltage(HOOD_VOLTAGE_CONFIGS)
+            .withCurrentLimits(HOOD_CURRENT_LIMITS)
+            .withMotorOutput(HOOD_MOTOR_OUTPUT_CONFIGS);
 
     public static final PositionVoltage HOOD_POSITION_CONTROL = new PositionVoltage(0)
                                                                     .withSlot(0)
@@ -119,8 +134,8 @@ public class ShooterConstants {
                 KilogramSquareMeters.of(2*0.5*ROLLER_MASS.in(Kilogram)*Math.pow(ROLLER_RADIUS.in(Meters), 2));
     public static final MomentOfInertia TOTAL_MOMENT_OF_INERTIA = FLYWHEEL_MOMENT_OF_INERTIA.plus(HOOD_MOMENT_OF_INERTIA);
 
-    public static final Angle MIN_HOOD_ANGLE = Degrees.of(18);
-    public static final Angle MAX_HOOD_ANGLE = Degrees.of(40);
+    public static final Angle MIN_HOOD_ANGLE = Degrees.of(0);
+    public static final Angle MAX_HOOD_ANGLE = Degrees.of(8);
 
     public static final Angle MIN_HOOD_MOTOR_ANGLE = MIN_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);
     public static final Angle MAX_HOOD_MOTOR_ANGLE = MAX_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);
@@ -177,10 +192,10 @@ public class ShooterConstants {
 
         if(x < 1.7)
         {
-            return 1500;
+            return 1500/0.78;
         }
 
-        double y = (((((a * x + b) * x + c) * x + d) * x + f) * x + g);
+        double y = (((((a * x + b) * x + c) * x + d) * x + f) * x + g)/0.78;
 
         if(x > 5)
         {

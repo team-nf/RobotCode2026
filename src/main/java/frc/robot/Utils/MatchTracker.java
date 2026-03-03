@@ -17,6 +17,7 @@ public class MatchTracker {
 
     private boolean isBlueHubActive = false;
     private boolean isRedHubActive = false;
+    private String firstPhaseStatus = "";
 
     private double activePhaseDuration = 0;
     private double matchTime = 0;
@@ -28,6 +29,7 @@ public class MatchTracker {
             isBlueHubActive = false;
             isRedHubActive = false;
             activePhaseDuration = 0;
+            firstPhaseStatus = "Empty";
             publishStatus();
             return;
         
@@ -38,6 +40,7 @@ public class MatchTracker {
             isBlueHubActive = true;
             isRedHubActive = true;
             activePhaseDuration = 0;
+            firstPhaseStatus = "Auto";
             publishStatus();
             return;
         }
@@ -47,6 +50,7 @@ public class MatchTracker {
             isBlueHubActive = false;
             isRedHubActive = false;
             activePhaseDuration = 0;
+            firstPhaseStatus = "NotTeleop";
             publishStatus();
             return;
         }
@@ -59,6 +63,7 @@ public class MatchTracker {
             isBlueHubActive = true;
             isRedHubActive = true;
             activePhaseDuration = 0;
+            firstPhaseStatus = "Empty";
             publishStatus();
             return;
         }
@@ -70,10 +75,13 @@ public class MatchTracker {
             // If we have invalid game data, assume hub is active.
             isBlueHubActive = true;
             isRedHubActive = true;
+            firstPhaseStatus = "InvalidData";
             publishStatus();
             return;
             }
         }
+
+        firstPhaseStatus = (redInactiveFirst ? "BlueFirst" : "RedFirst");
 
         if (matchTime > 130) {
             // Transition shift, hub is active.
@@ -126,6 +134,7 @@ public class MatchTracker {
         SmartDashboard.putBoolean("Phase/IsRedHubActive", isRedHubActive);
         SmartDashboard.putNumber("Phase/ActivePhaseDuration", activePhaseDuration);
         SmartDashboard.putNumber("Phase/GameTime", matchTime);
+        SmartDashboard.putString("Phase/Status", firstPhaseStatus);
     }
 
 }

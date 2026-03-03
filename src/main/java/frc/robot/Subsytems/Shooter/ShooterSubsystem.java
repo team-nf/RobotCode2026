@@ -5,6 +5,7 @@
 package frc.robot.Subsytems.Shooter;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 
@@ -45,6 +46,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public final Command shooterShootAction;
   public final Command shooterTestAction;
 
+  private boolean isHoodZeroed = false;
+
   public ShooterSubsystem(ShooterCalculator shooterCalculator) 
   {
     if (Utils.isSimulation()) {
@@ -60,6 +63,8 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterRestAction = new ShooterRestAction(this);
     shooterShootAction = new ShooterShootAction(this);
     shooterTestAction = new ShooterTestAction(this);
+
+    shooterHardware.getHoodMotor().setPosition(0);
   }
 
   public void updateShooterData() {
@@ -86,7 +91,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void zero() {
     shooterData.flywheelGoalVelocity = (0.0);
-    shooterData.hoodGoalAngle = (0.0);
+    shooterData.hoodGoalAngle = ShooterConstants.MIN_HOOD_ANGLE.in(Rotations);
     shooterHardware.flywheelStop();
     shooterHardware.hoodZero();
   }
@@ -216,6 +221,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putData("Shooter Control Data", shooterData);
     }
 
+    SmartDashboard.putNumber("Conf/HoodAngle", shooterHardware.getHoodPosition()*360);
+
     stateMachine();
     updateShooterData();
 
@@ -227,5 +234,12 @@ public class ShooterSubsystem extends SubsystemBase {
     if (Utils.isSimulation()) {
         shooterHardware.update();
     }
+  }
+
+  public Command resetHoodCommand() {
+    return new InstantCommand(() -> {
+      shooterHardware.setHoodAngle(-ShooterConstants.MAX_HOOD_ANGLE.in(Rotations));
+    }
+  );
   }
 }
