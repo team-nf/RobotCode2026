@@ -12,17 +12,15 @@ public class TheMachineTestAction {
     Command commandWithShake = new ParallelCommandGroup(
         theMachine.shooterTestRequest(),
         theMachine.waitForShooter()
-        .andThen(new WaitCommand(0.2))
         .andThen(
             theMachine.feederFeedRequest(),
                     theMachine.hopperReverseRequest()
-                      .andThen(new WaitCommand(0.1))
+                      .andThen(new WaitCommand(0.2))
                       .andThen(theMachine.hopperFeedRequest()))
         .andThen(theMachine.intakeIntakeRequest())
         .andThen(new WaitCommand(3))
         .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(0.2)))
-        .andThen(theMachine.intakeIntakeRequest());
+        .andThen(new WaitCommand(1)));
 
     return commandWithShake.until(() -> (theMachine.getState() != TheMachineControlState.TEST));
   }

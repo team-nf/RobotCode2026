@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.HopperConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Constants.States.HopperStates;
 import frc.robot.Subsytems.Hopper.Hardware.HopperHardware;
@@ -63,9 +64,32 @@ public class HopperSubsystem extends SubsystemBase {
     hopperHardware.hopperStop();
   }
 
+  private int i = 0;
+
   public void feed() {
     hopperData.hopperGoalVelocity = HopperConstants.HOPPER_FEEDING_VELOCITY.in(RotationsPerSecond);
     hopperHardware.setHopperSpeed(hopperData.hopperGoalVelocity);
+
+          if(Math.abs(hopperHardware.getHopperVelocity()) < 2)
+        i=0;
+      else i ++;
+        
+             // intakeHardware.setIntakeSpeed(IntakeConstants.INTAKE_INTAKING_VELOCITY.in(RotationsPerSecond));
+
+      
+      if (i < 10)
+        hopperHardware.setHopperSpeed(hopperData.hopperGoalVelocity);
+      else
+      {
+        hopperHardware.setHopperSpeed(HopperConstants.HOPPER_REVERSE_VELOCITY.in(RotationsPerSecond));
+        i ++;
+      }
+
+      if(i>20)
+      {
+        i = 0;
+      }
+        
   }
 
   public void push() {

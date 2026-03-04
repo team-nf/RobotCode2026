@@ -127,16 +127,21 @@ public class IntakeSubsystem extends SubsystemBase {
         i=0;
       else i ++;
         
-              intakeHardware.setIntakeSpeed(IntakeConstants.INTAKE_INTAKING_VELOCITY.in(RotationsPerSecond));
+             // intakeHardware.setIntakeSpeed(IntakeConstants.INTAKE_INTAKING_VELOCITY.in(RotationsPerSecond));
 
-      /* 
+      
       if (i < 10)
         intakeHardware.setIntakeSpeed(IntakeConstants.INTAKE_INTAKING_VELOCITY.in(RotationsPerSecond));
       else
       {
         intakeHardware.setIntakeSpeed(IntakeConstants.INTAKE_REVERSE_FAILSAFE_VELOCITY.in(RotationsPerSecond));
+      }
+
+      if(i>18)
+      {
         i = 0;
-      }*/
+      }
+        
         
     }
   }
