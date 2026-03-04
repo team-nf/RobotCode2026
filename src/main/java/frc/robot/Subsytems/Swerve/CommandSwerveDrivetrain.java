@@ -853,4 +853,34 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         return pathfindThenFollowPath(path);
      }
+
+     
+     public Command followTrench3_1()
+     {
+        PathPlannerPath path = null;
+
+        try {
+            path = PathPlannerPath.fromPathFile("TrenchIntake3_1");
+        } catch (FileVersionException | IOException | ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+
+        return followPath(path);
+     }
+
+     
+     public Command followTrench3_2()
+     {
+        PathPlannerPath path = null;
+
+        try {
+            path = PathPlannerPath.fromPathFile("TrenchIntake3_2");
+        } catch (FileVersionException | IOException | ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+
+        return pathfindThenFollowPath(path);
+     }
 }

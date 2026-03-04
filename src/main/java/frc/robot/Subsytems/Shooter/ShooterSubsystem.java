@@ -113,10 +113,11 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void test() {
-    shooterData.flywheelGoalVelocity = shooterHardware.getTestFlywheelGoal();
+    shooterData.flywheelGoalVelocity = shooterCalculator.calculatePassSpeedFromCurrentPose();
     shooterData.hoodGoalAngle = shooterHardware.getTestHoodGoal();
-    shooterHardware.testShooter();
-  }
+    shooterHardware.setShooter(
+      shooterData.flywheelGoalVelocity, 
+      shooterData.hoodGoalAngle);  }
 
   public boolean isShooterState(ShooterControlState state) {
     return shooterData.shooterControlState == state;

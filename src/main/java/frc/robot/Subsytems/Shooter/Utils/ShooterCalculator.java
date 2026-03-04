@@ -75,6 +75,32 @@ public class ShooterCalculator {
         //return RotationsPerSecond.of(35);
     }
 
+        public double calculatePassSpeedFromCurrentPose()
+    {
+
+        double x = 4-Math.abs(8-swerveDataSupplier.get().robotPose.getX());
+        double wheelSpeed = ShooterConstants.flywheelRPMFormula(x) + 300;
+
+        //wheelSpeed /= ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
+
+        //SmartDashboard.putNumber("WheelSpeedCalculated", wheelSpeed);
+
+
+        //if(SmartDashboard.getBoolean("UseManualShooterValues", false))
+        //{
+          //  wheelSpeed = SmartDashboard.getNumber("ManualFlywheelRpm", wheelSpeed);
+        //}
+        SmartDashboard.putNumber("Conf/CalcRPM", wheelSpeed);
+
+        wheelSpeed /= 60;
+
+
+
+        wheelSpeed = Math.max(ShooterConstants.MIN_FLYWHEEL_SPEED.in(RotationsPerSecond), Math.min(wheelSpeed, ShooterConstants.MAX_FLYWHEEL_SPEED.in(RotationsPerSecond))); // Clamp between min and max wheel speeds
+
+        return wheelSpeed;
+        //return RotationsPerSecond.of(35);
+    }
 
     public double calculateHoodAngleFromCurrentPose()
     {

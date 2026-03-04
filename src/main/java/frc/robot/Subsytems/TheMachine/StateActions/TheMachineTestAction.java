@@ -14,9 +14,10 @@ public class TheMachineTestAction {
         theMachine.waitForShooter()
         .andThen(
             theMachine.feederFeedRequest(),
-                    theMachine.hopperReverseRequest()
-                      .andThen(new WaitCommand(0.2))
-                      .andThen(theMachine.hopperFeedRequest()))
+                    (theMachine.hopperReverseRequest()
+                      .andThen(new WaitCommand(0.2))).unless(theMachine::checkHopperPrevFeed),
+
+                      (theMachine.hopperFeedRequest()))
         .andThen(theMachine.intakeIntakeRequest())
         .andThen(new WaitCommand(3))
         .andThen(theMachine.intakeFeedRequest())

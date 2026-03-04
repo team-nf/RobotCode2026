@@ -43,7 +43,7 @@ public class ShooterConstants {
     public static final Angle HOOD_ALLOWABLE_ERROR = Degrees.of(1); // Allowable error in radians
 
     public static final double SHOOTER_KS = 0.15;
-    public static final double SHOOTER_KV = 0.1195;    
+    public static final double SHOOTER_KV = 0.1195;
     public static final double SHOOTER_KP = 0.0525;
     public static final double SHOOTER_KI = 0.0;
     public static final double SHOOTER_KD = 0.001;
@@ -135,7 +135,7 @@ public class ShooterConstants {
     public static final MomentOfInertia TOTAL_MOMENT_OF_INERTIA = FLYWHEEL_MOMENT_OF_INERTIA.plus(HOOD_MOMENT_OF_INERTIA);
 
     public static final Angle MIN_HOOD_ANGLE = Degrees.of(0);
-    public static final Angle MAX_HOOD_ANGLE = Degrees.of(8);
+    public static final Angle MAX_HOOD_ANGLE = Degrees.of(20);
 
     public static final Angle MIN_HOOD_MOTOR_ANGLE = MIN_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);
     public static final Angle MAX_HOOD_MOTOR_ANGLE = MAX_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);

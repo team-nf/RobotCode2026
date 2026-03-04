@@ -65,8 +65,8 @@ public class ShooterRealHardware implements ShooterHardware {
     private double hoodReference = 0.0;
     private double hoodError = 0.0;
 
-    private double testFlywheelGoal= 32;
-    private double testHoodGoal = 8/360;
+    private double testFlywheelGoal= 35;
+    private double testHoodGoal = 20/360;
 
     public ShooterRealHardware() {
         firstShootMotor = new TalonFX(ShooterConstants.FIRST_SHOOTER_MOTOR_ID);

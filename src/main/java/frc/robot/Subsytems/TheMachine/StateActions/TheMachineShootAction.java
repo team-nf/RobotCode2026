@@ -18,11 +18,12 @@ public class TheMachineShootAction {
         theMachine.waitForShooter()
         .andThen(
             theMachine.feederFeedRequest(),
-                    theMachine.hopperReverseRequest()
-                      .andThen(new WaitCommand(0.2))
-                      .andThen(theMachine.hopperFeedRequest()))
+                    (theMachine.hopperReverseRequest()
+                      .andThen(new WaitCommand(0.2))).unless(theMachine::checkHopperPrevFeed),
+
+                      (theMachine.hopperFeedRequest()))
         .andThen(theMachine.intakeIdleBetweenRequest())
-        .andThen(new WaitCommand(1.5))
+        .andThen(new WaitCommand(0.75))
         .andThen(theMachine.intakeFeedRequest())
         .andThen(new WaitCommand(3)));
 

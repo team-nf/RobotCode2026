@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Constants.TheMachineConstants;
+import frc.robot.Constants.States.HopperStates.HopperControlState;
 import frc.robot.Constants.States.TheMachineStates.TheMachineControlState;
 import frc.robot.Subsytems.Feeder.FeederSubsystem;
 import frc.robot.Subsytems.Hopper.HopperSubsystem;
@@ -314,6 +315,11 @@ public class TheMachine {
 
   private StructPublisher<Pose3d> intakePosePublisher = NetworkTableInstance.getDefault()
   .getStructTopic("Sim/IntakePose", Pose3d.struct).publish();
+
+  public boolean checkHopperPrevFeed()
+  {
+    return hopperSubsystem.isPrevHopperState(HopperControlState.FEED);
+  }
 
   public void calculateSubsytemPoses() {
 
