@@ -334,10 +334,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             });
         }
 
-        confField2d.setRobotPose(getPose());
+
+        confField2d.setRobotPose(new Pose2d( TelemetryConstants.roundTelemetry(getPose().getX()),  TelemetryConstants.roundTelemetry(getPose().getY()), getPose().getRotation()));
         SmartDashboard.putData("Conf/Field", confField2d);
         SmartDashboard.putBoolean("Conf/isAimed", swerveData.isAimed);
-        SmartDashboard.putString("Conf/InitialStartPose2d", initialStartPose2d.toString());
+        //SmartDashboard.putString("Conf/InitialStartPose2d", initialStartPose2d.toString());
         SmartDashboard.putBoolean("Conf/IsRobotInNeutral", isRobotInNeutralZone());
 
         

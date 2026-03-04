@@ -15,13 +15,13 @@ public class TheMachineTestAction {
         .andThen(
             theMachine.feederFeedRequest(),
                     (theMachine.hopperReverseRequest()
-                      .andThen(new WaitCommand(0.2))).unless(theMachine::checkHopperPrevFeed),
+                      .andThen(new WaitCommand(0.5))),
 
                       (theMachine.hopperFeedRequest()))
-        .andThen(theMachine.intakeIntakeRequest())
-        .andThen(new WaitCommand(3))
+        .andThen(theMachine.intakeIdleBetweenRequest())
+        .andThen(new WaitCommand(0.75))
         .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(1)));
+        .andThen(new WaitCommand(1.5)));
 
     return commandWithShake.until(() -> (theMachine.getState() != TheMachineControlState.TEST));
   }

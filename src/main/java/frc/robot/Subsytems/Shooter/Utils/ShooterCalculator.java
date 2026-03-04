@@ -63,7 +63,7 @@ public class ShooterCalculator {
         //{
           //  wheelSpeed = SmartDashboard.getNumber("ManualFlywheelRpm", wheelSpeed);
         //}
-        SmartDashboard.putNumber("Conf/CalcRPM", wheelSpeed);
+        //SmartDashboard.putNumber("Conf/CalcRPM", wheelSpeed);
 
         wheelSpeed /= 60;
 
@@ -90,7 +90,7 @@ public class ShooterCalculator {
         //{
           //  wheelSpeed = SmartDashboard.getNumber("ManualFlywheelRpm", wheelSpeed);
         //}
-        SmartDashboard.putNumber("Conf/CalcRPM", wheelSpeed);
+       // SmartDashboard.putNumber("Conf/CalcRPM", wheelSpeed);
 
         wheelSpeed /= 60;
 
@@ -106,7 +106,7 @@ public class ShooterCalculator {
     {
         double hoodAngle = ShooterConstants.hoodAngleFormula(swerveDataSupplier.get().distanceToHub.in(Meters));
 
-        SmartDashboard.putNumber("Conf/CalcHoodAngle", hoodAngle);
+        //SmartDashboard.putNumber("Conf/CalcHoodAngle", hoodAngle);
 
        // if(SmartDashboard.getBoolean("UseManualShooterValues", false))
         //{

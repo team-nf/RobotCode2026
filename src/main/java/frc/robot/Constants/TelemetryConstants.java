@@ -10,7 +10,7 @@ import frc.robot.Robot;
 /** Add your docs here. */
 public class TelemetryConstants {
     public static boolean SHOULD_SHOOTER_HARDWARE_COMMUNICATE = false;
-    public static boolean SHOULD_SHOOTER_CONTROL_COMMUNICATE = true;
+    public static boolean SHOULD_SHOOTER_CONTROL_COMMUNICATE = false;
 
     public static boolean SHOULD_FEEDER_HARDWARE_COMMUNICATE = false;
     public static boolean SHOULD_FEEDER_CONTROL_COMMUNICATE = false;
@@ -19,7 +19,8 @@ public class TelemetryConstants {
     public static boolean SHOULD_HOPPER_CONTROL_COMMUNICATE = false;
 
     public static boolean SHOULD_INTAKE_HARDWARE_COMMUNICATE = false;
-    public static boolean SHOULD_INTAKE_CONTROL_COMMUNICATE = false;
+    public static boolean SHOULD_INTAKE_CONTROL_COMMUNICATE = false
+    ;
 
     public static boolean SHOULD_SWERVE_DATA_COMMUNICATE = false;
     public static boolean SHOULD_SWERVE_FIELD_COMMUNICATE = false;

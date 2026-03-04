@@ -222,7 +222,7 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putData("Shooter Control Data", shooterData);
     }
 
-    SmartDashboard.putNumber("Conf/HoodAngle", shooterHardware.getHoodPosition()*360);
+    SmartDashboard.putNumber("Conf/HoodAngle", TelemetryConstants.roundTelemetry(shooterHardware.getHoodPosition()*360));
 
     stateMachine();
     updateShooterData();

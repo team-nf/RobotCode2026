@@ -19,9 +19,9 @@ import javax.security.auth.login.FailedLoginException;
 public class IntakeConstants {
     public static final int INTAKE_MOTOR_ID = 59;
 
-    public static final double INTAKE_KS = 0.0;
+    public static final double INTAKE_KS = 0.5;
     public static final double INTAKE_KV = 0.0;
-    public static final double INTAKE_KP = 1.5;
+    public static final double INTAKE_KP = 10;
     public static final double INTAKE_KI = 0.0;
     public static final double INTAKE_KD = 0.005;
 
