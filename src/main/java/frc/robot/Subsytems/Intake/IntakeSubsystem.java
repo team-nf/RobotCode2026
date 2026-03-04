@@ -109,7 +109,11 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeData.intakeGoalVelocity = 0;
     intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
     intakeHardware.intakeStop();
+
   }
+
+      private int i = 0;
+
 
   public void intake() {
     intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE.in(Rotations);
@@ -120,9 +124,20 @@ public class IntakeSubsystem extends SubsystemBase {
     if(intakeData.intakePositionState == IntakeStates.IntakePositionState.DEPLOYED)
     {
       if(intakeHardware.getIntakeVelocity() != 0)
-        intakeHardware.setIntakeSpeed(intakeData.intakeGoalVelocity);
+        i=0;
+      else i ++;
+        
+              intakeHardware.setIntakeSpeed(IntakeConstants.INTAKE_INTAKING_VELOCITY.in(RotationsPerSecond));
+
+      /* 
+      if (i < 10)
+        intakeHardware.setIntakeSpeed(IntakeConstants.INTAKE_INTAKING_VELOCITY.in(RotationsPerSecond));
       else
+      {
         intakeHardware.setIntakeSpeed(IntakeConstants.INTAKE_REVERSE_FAILSAFE_VELOCITY.in(RotationsPerSecond));
+        i = 0;
+      }*/
+        
     }
   }
 

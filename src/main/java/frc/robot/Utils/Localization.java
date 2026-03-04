@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.States.SwerveStates.SwerveState;
 import frc.robot.Subsytems.Swerve.CommandSwerveDrivetrain;
 import frc.robot.Utils.LimelightHelpers;
 import frc.robot.Utils.LimelightHelpers.PoseEstimate;
@@ -59,6 +60,9 @@ public class Localization {
     {
         doRejectUpdate = true;
     }
+
+
+    if(drivetrain.swerveDataSupplier().get().swerveControlState == SwerveState.AIMING) doRejectUpdate = true;
 
     if(limelightMeasurementLeft != null)
     {
@@ -115,6 +119,9 @@ public class Localization {
     boolean doRejectUpdate = false;
     boolean doRejectLeft = false;
     boolean doRejectRight = false;
+
+    if(drivetrain.swerveDataSupplier().get().swerveControlState == SwerveState.AIMING) doRejectUpdate = true;
+
     
     if(Math.abs(drivetrain.getGyroRate()) > 360)
     {
