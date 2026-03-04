@@ -34,7 +34,8 @@ public class ShooterConstants {
     public static final int HOOD_MOTOR_ID = 55;
 
     // Shooter Math Constants
-    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.83; // in meters (2 inches)
+    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.85; // in meters (2 inches)
+    public static final double SHOOTER_VELOCITY_SIM_TRANSFER_COEFFICIENT = 0.62; // in meters (2 inches)
 
     // Configs
     public static final int NUMBER_OF_FLYWHEEL_MOTORS = 2;
@@ -122,7 +123,7 @@ public class ShooterConstants {
     public static final double FLYWHEEL_GEAR_REDUCTION = 1.25;
     public static final double HOOD_GEAR_REDUCTION = 324.0/20.0*26/18*56/8;
 
-    private static final Mass FLYWHEEL_MASS = Kilogram.of(0.65); 
+    private static final Mass FLYWHEEL_MASS = Kilogram.of(0.4); 
     public static final Distance FLYWHEEL_RADIUS = Meters.of(0.05); // Radius of the flywheel in meters
     private static final Mass ROLLER_MASS = Kilogram.of(15*60/1000); // Mass of the hood in kg
     private static final Distance ROLLER_RADIUS = Meters.of(0.0175); // Radius of the hood in meters
@@ -136,6 +137,8 @@ public class ShooterConstants {
 
     public static final Angle MIN_HOOD_ANGLE = Degrees.of(0);
     public static final Angle MAX_HOOD_ANGLE = Degrees.of(20);
+    public static final Angle PASS_HOOD_ANGLE = Degrees.of(10);
+
 
     public static final Angle MIN_HOOD_MOTOR_ANGLE = MIN_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);
     public static final Angle MAX_HOOD_MOTOR_ANGLE = MAX_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);
@@ -147,62 +150,7 @@ public class ShooterConstants {
         KilogramSquareMeters.of(HOOD_MASS.in(Kilogram) * Math.pow(HOOD_LENGTH.in(Meters), 2) / 3.0);
 
     public static final AngularVelocity MIN_FLYWHEEL_SPEED = RotationsPerSecond.of(500/60); // in RPS
-    public static final AngularVelocity MAX_FLYWHEEL_SPEED = RotationsPerSecond.of(3000/60); // in RPS
+    public static final AngularVelocity MAX_FLYWHEEL_SPEED = RotationsPerSecond.of(3750/60); // in RPS
     public static final AngularVelocity FLYWHEEL_REST_SPEED = RotationsPerSecond.of(0/60); // in RPS
-
-
-    public static final double hoodAngleFormulaOLD(double x)
-    {
-        double a = -0.18;
-        double b = 2.55;
-        double c = -5.59;
-        double d = 20.11;
-
-        return a*Math.pow(x, 3) + b*Math.pow(x, 2) + c*x + d;
-    } 
-
-    public static final double hoodAngleFormula(double x)
-    {
-        double a = 0.0523475;
-        double b = -0.693153;
-        double c = 2.97895;
-        double d = -3.31205;
-        double f = -4.36815;
-        double g = 25.40816;
-
-        
-        if (x < 2.25) {
-            return 18;
-        }
-        else
-        {
-            return (((((a * x + b) * x + c) * x + d) * x + f) * x + g);
-
-        }
-    } 
-
-    public static final double flywheelRPMFormula(double x)
-    {
-        double a = -29.72883;
-        double b = 473.27393;
-        double c = -2886.63609;
-        double d = 8444.7507;
-        double f = -11605.2592;
-        double g = 7475.15141;
-
-        if(x < 1.7)
-        {
-            return 1500/0.78;
-        }
-
-        double y = (((((a * x + b) * x + c) * x + d) * x + f) * x + g)/0.78;
-
-        if(x > 5)
-        {
-            y += 20*(x-5);
-        }
-
-        return y;
-    }
 
 }

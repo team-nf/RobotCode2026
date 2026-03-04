@@ -276,9 +276,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }*/
 
         if (DriverStation.getAlliance().get() == Alliance.Red) {
-            swerveData.distanceToHub = Meters.of(PoseConstants.RED_HUB_AIM_POSE.getTranslation().getDistance(getPose().getTranslation()));
+            swerveData.distanceToHub = (PoseConstants.RED_HUB_AIM_POSE.getTranslation().getDistance(getPose().getTranslation()));
+            swerveData.xDistanceToHub = (Math.abs(PoseConstants.RED_HUB_AIM_POSE.getTranslation().getX() - getPose().getTranslation().getX()));
         } else {
-            swerveData.distanceToHub = Meters.of(PoseConstants.BLUE_HUB_AIM_POSE.getTranslation().getDistance(getPose().getTranslation()));
+            swerveData.distanceToHub = (PoseConstants.BLUE_HUB_AIM_POSE.getTranslation().getDistance(getPose().getTranslation()));
+            swerveData.xDistanceToHub = (Math.abs(PoseConstants.BLUE_HUB_AIM_POSE.getTranslation().getX() - getPose().getTranslation().getX()));
         }
 
         if(!SmartDashboard.containsKey("Conf/AutoAimEnabled"))

@@ -70,26 +70,18 @@ public class SwerveAimToPass extends Command {
   public void execute() {
     Pose2d robotPose = swerveDrivetrain.getPose();
 
+    double goalAngle;
+
     if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
     {
-      if(robotPose.getY() > 4)
-      {
-        passAimPose = PoseConstants.BLUE_PASS_1;
-      }
-      else passAimPose = PoseConstants.BLUE_PASS_2;
+      goalAngle = Math.toRadians(180);
     }
     else
     {
-      if(robotPose.getY() > 4)
-      {
-        passAimPose = PoseConstants.RED_PASS_1;
-      }
-      else passAimPose = PoseConstants.RED_PASS_2;
+       goalAngle = Math.toRadians(0);
     }
 
-    double robotAngleToHub = Math.atan2(passAimPose.getY() - robotPose.getY(), passAimPose.getX() - robotPose.getX());
-
-    double angleError = robotAngleToHub - robotPose.getRotation().getRadians();
+    double angleError = goalAngle - robotPose.getRotation().getRadians();
 
     // Normalize angle error to the range [-pi, pi]
     angleError = Math.atan2(Math.sin(angleError), Math.cos(angleError));
@@ -114,7 +106,7 @@ public class SwerveAimToPass extends Command {
     }
     averageError = errorSum / prevErrors.length;
 
-    swerveDrivetrain.setIsAimed(averageError < DriveConstants.AIMING_TOLERANCE_RADIANS);
+    swerveDrivetrain.setIsAimed(averageError < DriveConstants.AIMING_TOLERANCE_RADIANS*3);
   }
 
   // Called once the command ends or is interrupted.

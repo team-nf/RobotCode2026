@@ -32,6 +32,7 @@ import frc.robot.Subsytems.Intake.IntakeSubsystem;
 import frc.robot.Subsytems.Shooter.ShooterSubsystem;
 import frc.robot.Subsytems.Swerve.Utils.SwerveControlData;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineGetReadyAction;
+import frc.robot.Subsytems.TheMachine.StateActions.TheMachineGetReadyActionPas;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineIdleAction;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineIdleDeployedAction;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineIdleRetractedAction;
@@ -41,6 +42,7 @@ import frc.robot.Subsytems.TheMachine.StateActions.TheMachineShootAction;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineTestAction;
 import frc.robot.Subsytems.TheMachine.StateActions.TheMachineZeroAction;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineGetReadyRequest;
+import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineGetReadyRequestPas;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleDeployedRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleRequest;
 import frc.robot.Subsytems.TheMachine.StateRequests.TheMachineIdleRetractedRequest;
@@ -77,6 +79,7 @@ public class TheMachine {
   private Command theMachineTestAction;
   private Command theMachineIdleAction;
   private Command theMachineGetReadyAction;
+  private Command theMachineGetReadyActionPas;
 
   private LEDController leftLed;
   //private LEDController rightLed;
@@ -118,6 +121,7 @@ public class TheMachine {
     theMachineTestAction = TheMachineTestAction.get(this);
     theMachineIdleAction = TheMachineIdleAction.get(this);
     theMachineGetReadyAction = TheMachineGetReadyAction.get(this);
+    theMachineGetReadyActionPas = TheMachineGetReadyActionPas.get(this);
 
     leftLed = new LEDController(0, 30);
     //rightLed = new LEDController(1, 31);
@@ -295,6 +299,10 @@ public class TheMachine {
     return new TheMachineGetReadyRequest(this);
   }
 
+  public Command getReadyRequestPas(){
+    return new TheMachineGetReadyRequestPas(this);
+  }
+
   public Command reverseRequest() {
       return new TheMachineReverseRequest(this);
   }
@@ -398,6 +406,11 @@ public class TheMachine {
       case GET_READY:
         if (!CommandScheduler.getInstance().isScheduled(theMachineGetReadyAction)) {
           CommandScheduler.getInstance().schedule(theMachineGetReadyAction);
+        }
+        break;
+      case GET_READY_PAS:
+        if (!CommandScheduler.getInstance().isScheduled(theMachineGetReadyActionPas)) {
+          CommandScheduler.getInstance().schedule(theMachineGetReadyActionPas);
         }
         break;
       default:

@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.PoseConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Subsytems.Swerve.Utils.SwerveControlData;
 import pabeles.concurrency.IntOperatorTask.Min;
 
@@ -52,7 +53,7 @@ public class ShooterCalculator {
     public double calculateFlywheelSpeedFromCurrentPose()
     {
 
-        double wheelSpeed = ShooterConstants.flywheelRPMFormula(swerveDataSupplier.get().distanceToHub.in(Meters));
+        double wheelSpeed = flywheelRPMFormula(swerveDataSupplier.get().distanceToHub);
 
         //wheelSpeed /= ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
 
@@ -63,7 +64,7 @@ public class ShooterCalculator {
         //{
           //  wheelSpeed = SmartDashboard.getNumber("ManualFlywheelRpm", wheelSpeed);
         //}
-        //SmartDashboard.putNumber("Conf/CalcRPM", wheelSpeed);
+        SmartDashboard.putNumber("Conf/CalcRPM", TelemetryConstants.roundTelemetry(wheelSpeed));
 
         wheelSpeed /= 60;
 
@@ -77,9 +78,7 @@ public class ShooterCalculator {
 
         public double calculatePassSpeedFromCurrentPose()
     {
-
-        double x = 4-Math.abs(8-swerveDataSupplier.get().robotPose.getX());
-        double wheelSpeed = ShooterConstants.flywheelRPMFormula(x) + 300;
+        double wheelSpeed = pasRPMFormula(swerveDataSupplier.get().xDistanceToHub);
 
         //wheelSpeed /= ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
 
@@ -90,7 +89,7 @@ public class ShooterCalculator {
         //{
           //  wheelSpeed = SmartDashboard.getNumber("ManualFlywheelRpm", wheelSpeed);
         //}
-       // SmartDashboard.putNumber("Conf/CalcRPM", wheelSpeed);
+        SmartDashboard.putNumber("Conf/CalcPassRPM", TelemetryConstants.roundTelemetry(wheelSpeed));
 
         wheelSpeed /= 60;
 
@@ -104,7 +103,7 @@ public class ShooterCalculator {
 
     public double calculateHoodAngleFromCurrentPose()
     {
-        double hoodAngle = ShooterConstants.hoodAngleFormula(swerveDataSupplier.get().distanceToHub.in(Meters));
+        double hoodAngle = hoodAngleFormula(swerveDataSupplier.get().distanceToHub);
 
         //SmartDashboard.putNumber("Conf/CalcHoodAngle", hoodAngle);
 
@@ -133,4 +132,74 @@ public class ShooterCalculator {
         // Replace with actual logic to calculate hood angle based on robot's current pose
         return ShooterConstants.MIN_HOOD_ANGLE.in(Rotations);//.div((3.0))
     }
+
+
+    
+    public double hoodAngleFormulaOLD(double x)
+    {
+        double a = -0.18;
+        double b = 2.55;
+        double c = -5.59;
+        double d = 20.11;
+
+        return a*Math.pow(x, 3) + b*Math.pow(x, 2) + c*x + d;
+    } 
+
+    public double hoodAngleFormula(double x)
+    {
+        double a = 0.0523475;
+        double b = -0.693153;
+        double c = 2.97895;
+        double d = -3.31205;
+        double f = -4.6815;
+        double g = 25.40816;
+
+        
+        if (x < 2.25) {
+            return 18;
+        }
+        else
+        {
+            return (((((a * x + b) * x + c) * x + d) * x + f) * x + g);
+
+        }
+    } 
+
+     public static final double flywheelRPMFormula(double x)
+    {
+        double a = -29.72883;
+        double b = 473.27393;
+        double c = -2886.63609;
+        double d = 8444.7507;
+        double f = -11605.2592;
+        double g = 7475.15141;
+
+        if(x < 1.7)
+        {
+            return 1500;
+        }
+
+        double y = (((((a * x + b) * x + c) * x + d) * x + f) * x + g);
+
+        if(x > 5)
+        {
+            y = 2631;
+            y += 20*(x-5);
+        }
+
+        return y/0.81;
+    }
+
+
+    
+    public static final double pasRPMFormula(double x)
+    {
+        double a = 300;
+        double b = 1500;
+
+        double y = a*x + b;
+
+        return y;
+    }
+
 }

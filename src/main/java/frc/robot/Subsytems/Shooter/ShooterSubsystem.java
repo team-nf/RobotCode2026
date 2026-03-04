@@ -114,7 +114,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void test() {
     shooterData.flywheelGoalVelocity = shooterCalculator.calculatePassSpeedFromCurrentPose();
-    shooterData.hoodGoalAngle = shooterHardware.getTestHoodGoal();
+    shooterData.hoodGoalAngle = ShooterConstants.PASS_HOOD_ANGLE.in(Rotations);
     shooterHardware.setShooter(
       shooterData.flywheelGoalVelocity, 
       shooterData.hoodGoalAngle);  }

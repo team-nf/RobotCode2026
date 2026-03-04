@@ -120,7 +120,7 @@ public class Localization {
     boolean doRejectLeft = false;
     boolean doRejectRight = false;
 
-    if(drivetrain.swerveDataSupplier().get().swerveControlState == SwerveState.AIMING) doRejectUpdate = true;
+    //if(drivetrain.swerveDataSupplier().get().swerveControlState == SwerveState.AIMING) doRejectUpdate = true;
 
     
     if(Math.abs(drivetrain.getGyroRate()) > 360)

@@ -23,45 +23,10 @@ public class TheMachineShootAction {
 
                       (theMachine.hopperFeedRequest()))
         .andThen(theMachine.intakeIdleBetweenRequest())
-        .andThen(new WaitCommand(0.75))
+        .andThen(new WaitCommand(0.4))
         .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(1.5)));
+        .andThen(new WaitCommand(2.5)));
         
-
-      Command commandWithShakeHeavyDuty = new ParallelCommandGroup(
-        theMachine.shooterShootRequest(),
-        theMachine.waitForShooter()
-        .andThen(new WaitCommand(0.1))
-        .andThen(
-            theMachine.feederFeedRequest(),
-                    theMachine.hopperReverseRequest()
-                      .andThen(new WaitCommand(0.1))
-                      .andThen(theMachine.hopperFeedRequest()))
-        .andThen(theMachine.intakeIdleBetweenRequest())
-        .andThen(new WaitCommand(1))
-        .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(0.5)))
-        .andThen(theMachine.intakeIdleBetweenRequest())
-        .andThen(new WaitCommand(1))
-        .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(0.5));
-
-      Command passCommand = new ParallelCommandGroup(
-        theMachine.shooterTestRequest(),
-        (new WaitCommand(0.2))
-        .andThen(
-            theMachine.feederFeedRequest(),
-                    theMachine.hopperReverseRequest()
-                      .andThen(new WaitCommand(0.1))
-                      .andThen(theMachine.hopperFeedRequest()))
-        .andThen(theMachine.intakeIdleBetweenRequest())
-        .andThen(new WaitCommand(1))
-        .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(0.5)))
-        .andThen(theMachine.intakeIdleBetweenRequest())
-        .andThen(new WaitCommand(1))
-        .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(0.5));
 
     return commandWithShake.until(() -> (theMachine.getState() != TheMachineControlState.SHOOT));
 

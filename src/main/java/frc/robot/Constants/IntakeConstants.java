@@ -39,8 +39,8 @@ public class IntakeConstants {
 
             .withCurrentLimits(new CurrentLimitsConfigs()
                 .withSupplyCurrentLimitEnable(true)
-                .withSupplyCurrentLimit(30)
-                .withStatorCurrentLimit(30))
+                .withSupplyCurrentLimit(39)
+                .withStatorCurrentLimit(39))
                 
             .withMotorOutput(new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive))    ;
 
@@ -52,7 +52,7 @@ public class IntakeConstants {
 
     public static final AngularVelocity INTAKE_ALLOWABLE_ERROR = RotationsPerSecond.of(1.0); // in RPS
 
-    public static final AngularVelocity INTAKE_INTAKING_VELOCITY = RotationsPerSecond.of(25); // in RPS
+    public static final AngularVelocity INTAKE_INTAKING_VELOCITY = RotationsPerSecond.of(31); // in RPS
     public static final AngularVelocity INTAKE_FEEDING_VELOCITY = RotationsPerSecond.of(20); // in RPS
     public static final AngularVelocity INTAKE_REVERSE_VELOCITY = RotationsPerSecond.of(-15.0); // in RPS
     public static final AngularVelocity INTAKE_REVERSE_FAILSAFE_VELOCITY = RotationsPerSecond.of(-5.0); // in RPS
@@ -68,7 +68,7 @@ public class IntakeConstants {
     public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(120);
     public static final Angle INTAKE_ARM_START_ANGLE = Degrees.of(120);
     public static final Angle INTAKE_FEED_ANGLE = Degrees.of(60);
-    public static final Angle INTAKE_ARM_BETWEEN_ANGLE = Degrees.of(20);
+    public static final Angle INTAKE_ARM_BETWEEN_ANGLE = Degrees.of(17.5);
     
     public static final Angle INTAKE_ARM_ALLOWABLE_ERROR = Degrees.of(10);
 

@@ -29,6 +29,7 @@ import frc.robot.Constants.PoseConstants;
 import frc.robot.Constants.TunerConstants;
 import frc.robot.Constants.States.FeederStates.FeederControlState;
 import frc.robot.Constants.States.IntakeStates.IntakeControlState;
+import frc.robot.Constants.States.ShooterStates.FlywheelState;
 import frc.robot.Constants.States.ShooterStates.ShooterControlState;
 import frc.robot.Constants.States.TheMachineStates.TheMachineControlState;
 import frc.robot.Constants.TelemetryConstants;
@@ -145,7 +146,7 @@ public class RobotContainer {
 
     m_driverController.leftBumper()
         .whileTrue((m_swerveDrivetrain.aimToPass().unless(m_swerveDrivetrain::isAutoAimDisabled))
-            .alongWith(m_swerveDrivetrain.waitForAtAim().andThen(m_theMachine.testRequest())))
+            .alongWith(m_swerveDrivetrain.waitForAtAim(), m_theMachine.getReadyRequestPas()).andThen(m_theMachine.testRequest()))
         .onFalse(m_theMachine.idleDeployedRequest());
 
     m_driverController.rightBumper()
@@ -234,7 +235,8 @@ public class RobotContainer {
     shooterSim.setShooterControlDataSupplier(m_shooterSubsystem::getCurrentControlData);
     shooterSim.setRobotPoseSupplier(m_swerveDrivetrain::getPose);
     shooterSim.setChassisSpeedsSupplier(m_swerveDrivetrain::getFieldSpeeds);
-    shooterSim.setShouldShootSupplier(() -> m_shooterSubsystem.isShooterState(ShooterControlState.SHOOT) || m_shooterSubsystem.isShooterState(ShooterControlState.TEST) && m_feederSubsystem.isFeederState(FeederControlState.FEED));
+    shooterSim.setShouldShootSupplier(() -> (m_shooterSubsystem.isShooterState(ShooterControlState.SHOOT) || m_shooterSubsystem.isShooterState(ShooterControlState.TEST))
+               && m_shooterSubsystem.shooterData.flywheelStateL == FlywheelState.AT_SPEED && m_feederSubsystem.isFeederState(FeederControlState.FEED));
 
     m_driverController.start().onTrue(matchTracker.startMatchCommand());
 

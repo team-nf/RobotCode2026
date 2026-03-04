@@ -72,7 +72,7 @@ public class ShooterSim {
                     new Rotation3d(robotPoseSupplier.get().getRotation()));
 
             double launchAngle = Math.PI / 2 - Math.toRadians((controlData.hoodAngle)*360+18);
-            double fuelVelocity = controlData.flywheelVelocityL * 2 * Math.PI * ShooterConstants.FLYWHEEL_RADIUS.in(Meters) * ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
+            double fuelVelocity = controlData.flywheelVelocityL * 2 * Math.PI * ShooterConstants.FLYWHEEL_RADIUS.in(Meters) * ShooterConstants.SHOOTER_VELOCITY_SIM_TRANSFER_COEFFICIENT;
 
             Pose3d leftFuelShootPose = new Pose3d(
                 Dimensions.LEFT_SHOOTER_POSE.getX() + Dimensions.FUEL_SHOOTER_OFFSET.in(Meters) * Math.cos(controlData.hoodAngle*2*Math.PI),

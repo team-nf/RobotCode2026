@@ -51,7 +51,7 @@ public class HopperConstants {
 
     public static final AngularVelocity HOPPER_FEEDING_VELOCITY = RotationsPerSecond.of(30); // in RPS 20
     public static final AngularVelocity HOPPER_PUSHING_VELOCITY = RotationsPerSecond.of(0.1); // in RPS
-    public static final AngularVelocity HOPPER_REVERSE_VELOCITY = RotationsPerSecond.of(-15.0); // in RPS -10
+    public static final AngularVelocity HOPPER_REVERSE_VELOCITY = RotationsPerSecond.of(-20.0); // in RPS -10
 
     // Hopper physical constants (defaults - adjust if needed)
     public static final Mass ROLLER_MASS = Kilograms.of(0.25); // kg

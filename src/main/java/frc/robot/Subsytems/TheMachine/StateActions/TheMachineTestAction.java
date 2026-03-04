@@ -19,9 +19,9 @@ public class TheMachineTestAction {
 
                       (theMachine.hopperFeedRequest()))
         .andThen(theMachine.intakeIdleBetweenRequest())
-        .andThen(new WaitCommand(0.75))
+        .andThen(new WaitCommand(0.4))
         .andThen(theMachine.intakeFeedRequest())
-        .andThen(new WaitCommand(1.5)));
+        .andThen(new WaitCommand(2.5)));
 
     return commandWithShake.until(() -> (theMachine.getState() != TheMachineControlState.TEST));
   }

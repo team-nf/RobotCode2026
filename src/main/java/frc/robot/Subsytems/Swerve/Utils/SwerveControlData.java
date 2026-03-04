@@ -30,7 +30,9 @@ public class SwerveControlData implements Sendable {
     public Distance robotYError = Meters.of(0.0);
     public Angle robotAngleError = Degrees.of(0.0);
 
-    public Distance distanceToHub = Meters.of(1.0);
+    public double distanceToHub = 1.0;
+    public double xDistanceToHub = 1.0;
+
 
     public double fuelStorage = 0.0;
 
@@ -66,7 +68,8 @@ public class SwerveControlData implements Sendable {
         builder.addDoubleProperty("AimingPID_I", () -> aimingPID.getI(), (value) -> aimingPID.setI(value));
         builder.addDoubleProperty("AimingPID_D", () -> aimingPID.getD(), (value) -> aimingPID.setD(value));
 
-    builder.addDoubleProperty("DistanceToHub", () -> TelemetryConstants.roundTelemetry(distanceToHub.in(Meters)), null);
+    builder.addDoubleProperty("DistanceToHub", () -> TelemetryConstants.roundTelemetry(distanceToHub), null);
+    builder.addDoubleProperty("XDistanceToHub", () -> TelemetryConstants.roundTelemetry(xDistanceToHub), null);
     }
 
 }

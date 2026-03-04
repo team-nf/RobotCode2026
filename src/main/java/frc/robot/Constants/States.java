@@ -103,7 +103,8 @@ public class States {
                 TEST,
                 NONE,
                 IDLE,
-                GET_READY
+                GET_READY,
+                GET_READY_PAS
             }
     }
 
