@@ -186,6 +186,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("GoToTrench2.2", m_swerveDrivetrain.pathFindToTrench2_2());
     NamedCommands.registerCommand("GoToStartPose", m_swerveDrivetrain.pathFindToStartPose1());
 
+    NamedCommands.registerCommand("FollowTrenchIntake2_1", m_swerveDrivetrain.followTrench2_1());
+
+    NamedCommands.registerCommand("FollowTrenchIntake2_2", m_swerveDrivetrain.followTrench2_2());
+
 
     NamedCommands.registerCommand("MoveToShoot8", m_swerveDrivetrain.moveToShoot8());
       

@@ -55,7 +55,7 @@ public class IntakeConstants {
     public static final AngularVelocity INTAKE_INTAKING_VELOCITY = RotationsPerSecond.of(25); // in RPS
     public static final AngularVelocity INTAKE_FEEDING_VELOCITY = RotationsPerSecond.of(20); // in RPS
     public static final AngularVelocity INTAKE_REVERSE_VELOCITY = RotationsPerSecond.of(-15.0); // in RPS
-    public static final AngularVelocity INTAKE_REVERSE_FAILSAFE_VELOCITY = RotationsPerSecond.of(-1.0); // in RPS
+    public static final AngularVelocity INTAKE_REVERSE_FAILSAFE_VELOCITY = RotationsPerSecond.of(-3.0); // in RPS
 
 
     // Optional arm motor constants (defaults provided). If you use a dedicated arm motor,

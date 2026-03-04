@@ -203,7 +203,7 @@ public class ShooterRealHardware implements ShooterHardware {
         }
 
         hoodMotor.setControl(
-            hoodPositionControl.withPosition(-hoodAngle*(ShooterConstants.HOOD_GEAR_REDUCTION))
+            hoodPositionControl.withPosition(hoodAngle*(ShooterConstants.HOOD_GEAR_REDUCTION))
         );
     }
 

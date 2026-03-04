@@ -680,7 +680,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         PathPlannerPath path = null;
 
         try {
-            path = PathPlannerPath.fromPathFile("TrenchIntake2.2");
+            path = PathPlannerPath.fromPathFile("TrenchIntake2_2");
         } catch (FileVersionException | IOException | ParseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -810,18 +810,47 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      public Command moveToShoot8()
      {
 
-        Pose2d pose = getPose();
+        Pose2d pose = null;
 
         if(DriverStation.getAlliance().get()==Alliance.Blue)
         {
             Pose2d startPose = PoseConstants.START_POSE_BLUE_MIDDLE;
-            pose = new Pose2d(startPose.getX()-0.75, startPose.getY(), startPose.getRotation());
+            pose = new Pose2d(startPose.getX()-0.75, startPose.getY(), new Rotation2d(0));
         }
         else
         {
             Pose2d startPose = PoseConstants.START_POSE_RED_MIDDLE;
-            pose = new Pose2d(startPose.getX()+0.75, startPose.getY(), startPose.getRotation());
+            pose = new Pose2d(startPose.getX()+0.75, startPose.getY(), new Rotation2d(180));
         }
         return goToPose(pose);
+     }
+
+     public Command followTrench2_1()
+     {
+        PathPlannerPath path = null;
+
+        try {
+            path = PathPlannerPath.fromPathFile("TrenchIntake2_1");
+        } catch (FileVersionException | IOException | ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+
+        return followPath(path);
+     }
+
+     
+     public Command followTrench2_2()
+     {
+        PathPlannerPath path = null;
+
+        try {
+            path = PathPlannerPath.fromPathFile("TrenchIntake2_2");
+        } catch (FileVersionException | IOException | ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+
+        return pathfindThenFollowPath(path);
      }
 }

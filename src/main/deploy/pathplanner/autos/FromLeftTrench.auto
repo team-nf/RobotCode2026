@@ -17,9 +17,9 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "TrenchIntake2.1"
+            "name": "FollowTrenchIntake2_1"
           }
         },
         {
@@ -43,13 +43,7 @@
         {
           "type": "named",
           "data": {
-            "name": "GoToTrench2_2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "TrenchIntake2.2"
+            "name": "FollowTrenchIntake2_2"
           }
         }
       ]

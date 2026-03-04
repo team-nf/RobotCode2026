@@ -128,8 +128,7 @@ public class Localization {
                 doRejectLeft = true;
             }
 
-        if(limelightMeasurementLeft.avgTagDist > 3.5 ||
-                        limelightMeasurementLeft.rawFiducials[0].ta < 0.03)
+        if(limelightMeasurementLeft.avgTagDist > 3.5)
             {
                 doRejectLeft = true;
             }
@@ -142,8 +141,7 @@ public class Localization {
         {
             doRejectRight = true;
         }
-        if(limelightMeasurementLeft.avgTagDist > 3.5 ||
-                        limelightMeasurementLeft.rawFiducials[0].ta < 0.03)
+        if(limelightMeasurementLeft.avgTagDist > 3.5)
             {
                 doRejectLeft = true;
             }
