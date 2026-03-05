@@ -64,7 +64,7 @@ public class ShooterCalculator {
         //{
           //  wheelSpeed = SmartDashboard.getNumber("ManualFlywheelRpm", wheelSpeed);
         //}
-        SmartDashboard.putNumber("Conf/CalcRPM", TelemetryConstants.roundTelemetry(wheelSpeed));
+        //SmartDashboard.putNumber("Conf/CalcRPM", TelemetryConstants.roundTelemetry(wheelSpeed));
 
         wheelSpeed /= 60;
 
@@ -89,7 +89,7 @@ public class ShooterCalculator {
         //{
           //  wheelSpeed = SmartDashboard.getNumber("ManualFlywheelRpm", wheelSpeed);
         //}
-        SmartDashboard.putNumber("Conf/CalcPassRPM", TelemetryConstants.roundTelemetry(wheelSpeed));
+        //SmartDashboard.putNumber("Conf/CalcPassRPM", TelemetryConstants.roundTelemetry(wheelSpeed));
 
         wheelSpeed /= 60;
 

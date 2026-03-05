@@ -131,30 +131,30 @@ public class RobotContainer {
               ,
               m_swerveDrivetrain::isRobotInNeutralZone
             ))
-        .onFalse(m_theMachine.idleDeployedRequest());
+        .onFalse(m_theMachine.intakeRequest());
 
     m_driverController.a()
         .onTrue(m_theMachine.idleRetractedRequest());
 
     m_driverController.x()
-        .onTrue(m_theMachine.intakeToggledRequest());
+        .onTrue(m_theMachine.intakeRequest());
 
     m_driverController.povDown()
         .onTrue(m_theMachine.zeroRequest());
 
     m_driverController.povLeft()
-        .onTrue(m_theMachine.idleRequest());
+        .onTrue(m_theMachine.idleDeployedRequest());
 
     m_driverController.leftBumper()
         .whileTrue((m_swerveDrivetrain.aimToPass().unless(m_swerveDrivetrain::isAutoAimDisabled))
             .alongWith(m_swerveDrivetrain.waitForAtAim(), m_theMachine.getReadyRequestPas()).andThen(m_theMachine.testRequest()))
-        .onFalse(m_theMachine.idleDeployedRequest());
+        .onFalse(m_theMachine.intakeRequest());
 
     m_driverController.rightBumper()
       .whileTrue(
               (m_swerveDrivetrain.aimToHub().unless(m_swerveDrivetrain::isAutoAimDisabled))
               .alongWith(m_swerveDrivetrain.waitForAtAim(), m_theMachine.getReadyRequest()).andThen(m_theMachine.shootRequest()))
-          .onFalse(m_theMachine.idleDeployedRequest());
+          .onFalse(m_theMachine.intakeRequest());
 
     m_driverController.povUp()
           .onTrue(m_theMachine.intakeChangeOffsetCommand());
