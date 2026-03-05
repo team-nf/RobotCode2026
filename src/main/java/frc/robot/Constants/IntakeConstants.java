@@ -65,7 +65,7 @@ public class IntakeConstants {
     // choose to fallback to using the intake motor instead.
 
     public static final Angle INTAKE_ARM_DEPLOYED_ANGLE = Degrees.of(0);
-    public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(120);
+    public static final Angle INTAKE_ARM_RETRACTED_ANGLE = Degrees.of(110);
     public static final Angle INTAKE_ARM_START_ANGLE = Degrees.of(120);
     public static final Angle INTAKE_FEED_ANGLE = Degrees.of(60);
     public static final Angle INTAKE_ARM_BETWEEN_ANGLE = Degrees.of(17.5);
@@ -76,9 +76,9 @@ public class IntakeConstants {
 
 
     public static final double INTAKE_ARM_KS = 0.0;
-    public static final double INTAKE_ARM_KV = 3;
-    public static final double INTAKE_ARM_KP = 3;
-    public static final double INTAKE_ARM_KI = 1;
+    public static final double INTAKE_ARM_KV = 0.5;
+    public static final double INTAKE_ARM_KP = 2;
+    public static final double INTAKE_ARM_KI = 0;
     public static final double INTAKE_ARM_KD = 0.3;
     public static final double INTAKE_ARM_KG = 0;
 
@@ -99,8 +99,8 @@ public class IntakeConstants {
                     .withPeakReverseVoltage(-9))
                 .withCurrentLimits(new CurrentLimitsConfigs()
                     .withSupplyCurrentLimitEnable(true)
-                    .withSupplyCurrentLimit(35)
-                    .withStatorCurrentLimit(35));
+                    .withSupplyCurrentLimit(39)
+                    .withStatorCurrentLimit(39));
 
     public static final PositionVoltage INTAKE_ARM_POSITION_CONTROL = new PositionVoltage(0)
                         .withSlot(0)

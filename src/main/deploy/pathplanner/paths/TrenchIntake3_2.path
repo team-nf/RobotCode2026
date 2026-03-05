@@ -3,28 +3,28 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8831663685152056,
-        "y": 0.938
+        "x": 3.0948279952550424,
+        "y": 2.071447212336892
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.1331663685152056,
-        "y": 0.9379999999999997
+        "x": 2.5353499406880196,
+        "y": 2.0391696322657173
       },
       "isLocked": false,
       "linkedName": "TrenchIntake3_1End"
     },
     {
       "anchor": {
-        "x": 3.743112701252236,
+        "x": 3.22393831553974,
         "y": 0.53
       },
       "prevControl": {
-        "x": 3.493112701252236,
+        "x": 2.97393831553974,
         "y": 0.53
       },
       "nextControl": {
-        "x": 3.993112701252236,
+        "x": 3.47393831553974,
         "y": 0.53
       },
       "isLocked": false,
@@ -110,10 +110,10 @@
     },
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.0,
+      "minWaypointRelativePos": 1.3138357705286872,
       "maxWaypointRelativePos": 1.6271186440677967,
       "constraints": {
-        "maxVelocity": 1.0,
+        "maxVelocity": 2.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -152,7 +152,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 60.56216620654242
+    "rotation": 53.42696902148067
   },
   "useDefaultConstraints": true
 }
