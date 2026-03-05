@@ -28,6 +28,7 @@ import frc.robot.Constants.HopperConstants;
 import frc.robot.Constants.PoseConstants;
 import frc.robot.Constants.TunerConstants;
 import frc.robot.Constants.States.FeederStates.FeederControlState;
+import frc.robot.Constants.States.HopperStates.HopperControlState;
 import frc.robot.Constants.States.IntakeStates.IntakeControlState;
 import frc.robot.Constants.States.ShooterStates.FlywheelState;
 import frc.robot.Constants.States.ShooterStates.ShooterControlState;
@@ -236,7 +237,9 @@ public class RobotContainer {
     shooterSim.setRobotPoseSupplier(m_swerveDrivetrain::getPose);
     shooterSim.setChassisSpeedsSupplier(m_swerveDrivetrain::getFieldSpeeds);
     shooterSim.setShouldShootSupplier(() -> (m_shooterSubsystem.isShooterState(ShooterControlState.SHOOT) || m_shooterSubsystem.isShooterState(ShooterControlState.TEST))
-               && m_shooterSubsystem.shooterData.flywheelStateL == FlywheelState.AT_SPEED && m_feederSubsystem.isFeederState(FeederControlState.FEED));
+               && m_shooterSubsystem.shooterData.flywheelStateL == FlywheelState.AT_SPEED 
+               && m_feederSubsystem.isFeederState(FeederControlState.FEED)
+               && m_hopperSubsystem.isHopperState(HopperControlState.FEED));
 
     m_driverController.start().onTrue(matchTracker.startMatchCommand());
 

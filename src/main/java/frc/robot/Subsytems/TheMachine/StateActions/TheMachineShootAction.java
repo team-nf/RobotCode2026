@@ -23,7 +23,7 @@ public class TheMachineShootAction {
 
                       (theMachine.hopperFeedRequest()))
         .andThen(theMachine.intakeIdleBetweenRequest())
-        .andThen(new WaitCommand(0.4))
+        .andThen(new WaitCommand(0.2))
         .andThen(theMachine.intakeFeedRequest())
         .andThen(new WaitCommand(2.5)));
         

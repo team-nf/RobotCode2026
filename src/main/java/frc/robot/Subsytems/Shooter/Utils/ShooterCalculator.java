@@ -194,7 +194,7 @@ public class ShooterCalculator {
     
     public static final double pasRPMFormula(double x)
     {
-        double a = 300;
+        double a = 350;
         double b = 1500;
 
         double y = a*x + b;

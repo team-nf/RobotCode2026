@@ -151,6 +151,6 @@ public class ShooterConstants {
 
     public static final AngularVelocity MIN_FLYWHEEL_SPEED = RotationsPerSecond.of(500/60); // in RPS
     public static final AngularVelocity MAX_FLYWHEEL_SPEED = RotationsPerSecond.of(3750/60); // in RPS
-    public static final AngularVelocity FLYWHEEL_REST_SPEED = RotationsPerSecond.of(0/60); // in RPS
+    public static final AngularVelocity FLYWHEEL_REST_SPEED = RotationsPerSecond.of(750/60); // in RPS
 
 }

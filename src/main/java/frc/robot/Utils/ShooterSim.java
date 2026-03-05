@@ -50,7 +50,7 @@ public class ShooterSim {
         this.shouldShootSupplier = supplier;
     }
 
-    private double fuelPerSecondLimit = 9.0; // Default limit
+    private double fuelPerSecondLimit = 6.0; // Default limit
     private double lastShootTime = 0;
     private int fuelShotCount = 0;
 
