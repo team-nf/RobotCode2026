@@ -21,8 +21,8 @@ public class IntakeConstants {
 
     public static final double INTAKE_KS = 0.5;
     public static final double INTAKE_KV = 0.0;
-    public static final double INTAKE_KP = 10;
-    public static final double INTAKE_KI = 0.0;
+    public static final double INTAKE_KP = 5;
+    public static final double INTAKE_KI = 1;
     public static final double INTAKE_KD = 0.005;
 
     public static final TalonFXConfiguration INTAKE_MOTOR_CONFIG = new TalonFXConfiguration()
@@ -53,7 +53,7 @@ public class IntakeConstants {
     public static final AngularVelocity INTAKE_ALLOWABLE_ERROR = RotationsPerSecond.of(1.0); // in RPS
 
     public static final AngularVelocity INTAKE_INTAKING_VELOCITY = RotationsPerSecond.of(31); // in RPS
-    public static final AngularVelocity INTAKE_FEEDING_VELOCITY = RotationsPerSecond.of(20); // in RPS
+    public static final AngularVelocity INTAKE_FEEDING_VELOCITY = RotationsPerSecond.of(30); // in RPS
     public static final AngularVelocity INTAKE_REVERSE_VELOCITY = RotationsPerSecond.of(-15.0); // in RPS
     public static final AngularVelocity INTAKE_REVERSE_FAILSAFE_VELOCITY = RotationsPerSecond.of(-5.0); // in RPS
 

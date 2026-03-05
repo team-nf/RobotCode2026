@@ -149,7 +149,7 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeData.intakeGoalVelocity = IntakeConstants.INTAKE_FEEDING_VELOCITY.in(RotationsPerSecond);
     intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_BETWEEN_ANGLE.in(Rotations);
     intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
-    intakeHardware.intakeStop();
+    intakeHardware.setIntakeSpeed(intakeData.intakeGoalVelocity);
   }
 
   public void test() {

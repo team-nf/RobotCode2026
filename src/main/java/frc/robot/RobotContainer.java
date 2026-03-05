@@ -157,7 +157,7 @@ public class RobotContainer {
           .onFalse(m_theMachine.intakeRequest());
 
     m_driverController.povUp()
-          .onTrue(m_theMachine.intakeChangeOffsetCommand());
+          .onTrue(m_theMachine.idleRequest());
 
     m_driverController.start()
         .onTrue(m_swerveDrivetrain.resetToStartPoseCmd());
