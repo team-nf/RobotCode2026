@@ -63,7 +63,7 @@ public class Localization {
     }
 
 
-    if(drivetrain.swerveDataSupplier().get().swerveControlState == SwerveState.AIMING) doRejectUpdate = true;
+    //if(drivetrain.swerveDataSupplier().get().swerveControlState == SwerveState.AIMING) doRejectUpdate = true;
 
     if(limelightMeasurementLeft != null)
     {

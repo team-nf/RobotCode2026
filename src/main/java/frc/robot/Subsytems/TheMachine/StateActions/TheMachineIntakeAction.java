@@ -11,8 +11,8 @@ public class TheMachineIntakeAction {
   public static Command get(TheMachine theMachine) {
     return new ParallelCommandGroup(
         theMachine.shooterRestRequest(),
-        theMachine.feederZeroRequest(),
-        theMachine.hopperPushRequest(),
+        theMachine.feederReverseRequest(),
+        theMachine.hopperZeroRequest(),
         new ConditionalCommand(theMachine.intakeIntakeRequest(), theMachine.intakeWithOffsetRequest(), theMachine::isIntakeWithoutOffset)
     ).until(() -> (theMachine.getState() != TheMachineControlState.INTAKE));
   }

@@ -10,7 +10,7 @@ public class TheMachineIdleDeployedAction {
   public static Command get(TheMachine theMachine) {
     return new ParallelCommandGroup(
         theMachine.shooterRestRequest(),
-        theMachine.feederZeroRequest(),
+        theMachine.feederReverseRequest(),
         theMachine.hopperZeroRequest(),
         theMachine.intakeDeployRequest()
     ).until(() -> (theMachine.getState() != TheMachineControlState.IDLE_DEPLOYED));

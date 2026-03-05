@@ -16,7 +16,7 @@ public class TheMachineIdleAction {
   public static Command get(TheMachine theMachine) {
     return new ParallelCommandGroup(
         theMachine.shooterRestRequest(),
-        theMachine.feederZeroRequest(),
+        theMachine.feederReverseRequest(),
         theMachine.hopperZeroRequest(),
         theMachine.intakeIdleBetweenRequest()
     ).until(() -> theMachine.getState() != TheMachineControlState.IDLE);
