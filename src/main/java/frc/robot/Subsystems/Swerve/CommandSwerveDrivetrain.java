@@ -659,6 +659,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         swerveData.isAimed = isAimed;
     }
 
+    public boolean isAimed()
+    {
+        return swerveData.isAimed;
+    }
+
     public Command waitForAtAim()
     {
         return new WaitUntilCommand(() -> {return swerveData.isAimed;});
@@ -792,6 +797,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      {
          return new InstantCommand(() -> 
         {
+            if (m_localization == null) {
+                DriverStation.reportWarning("MT1 pose reset atlandi: localization hazir degil.", false);
+                return;
+            }
             m_localization.resetWithMT1();
         });
      }
