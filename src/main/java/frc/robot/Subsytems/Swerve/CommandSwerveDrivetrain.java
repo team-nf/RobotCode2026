@@ -816,7 +816,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         else
         {
             Pose2d startPose = PoseConstants.START_POSE_RED_MIDDLE;
-            pose = new Pose2d(startPose.getX()+0.75, startPose.getY(), new Rotation2d(180));
+            pose = new Pose2d(startPose.getX()+0.75, startPose.getY(), Rotation2d.fromDegrees(180));
         }
         return goToPose(pose);
      }
