@@ -413,6 +413,12 @@ public class TheMachine {
           CommandScheduler.getInstance().schedule(theMachineGetReadyActionPas);
         }
         break;
+      case NONE:
+        CommandScheduler.getInstance().schedule(shooterSubsystem.zeroRequest());
+        CommandScheduler.getInstance().schedule(feederSubsystem.zeroRequest());
+        CommandScheduler.getInstance().schedule(hopperSubsystem.zeroRequest());
+        CommandScheduler.getInstance().schedule(intakeSubsystem.closeRequest());
+        break;
       default:
         break;
     }
