@@ -160,9 +160,6 @@ public class RobotContainer {
           .onTrue(m_theMachine.idleRequest());
 
     m_driverController.start()
-        .onTrue(m_swerveDrivetrain.resetToStartPoseCmd());
-
-    m_driverController.start()
         .onTrue(m_swerveDrivetrain.resetPoseWithMT1Command());
 
     m_driverController.back()
