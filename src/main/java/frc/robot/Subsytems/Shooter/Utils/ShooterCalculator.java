@@ -112,11 +112,13 @@ public class ShooterCalculator {
          //   hoodAngle = SmartDashboard.getNumber("ManualHoodAngle", hoodAngle);
         //}
 
-        hoodAngle = Math.max(18, Math.min(hoodAngle,30)); // Clamp between min and max hood angles
+        double offsetDeg = ShooterConstants.HOOD_ANGLE_OFFSET.in(Degrees);
+        double maxDeg = offsetDeg + ShooterConstants.MAX_HOOD_ANGLE.in(Degrees);
+        hoodAngle = Math.max(offsetDeg, Math.min(hoodAngle, maxDeg)); // Clamp between min and max hood angles
 
         //System.out.println("Calculated Hood Angle: " + hoodAngle + "Distance: " + distance);
         //return Degrees.of(hoodAngle);
-        return (hoodAngle-18)/360;
+        return (hoodAngle - offsetDeg) / 360;
     }
 
         public double calculateRestFlywheelSpeedFromCurrentPose()

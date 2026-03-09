@@ -138,6 +138,7 @@ public class ShooterConstants {
     public static final Angle MIN_HOOD_ANGLE = Degrees.of(0);
     public static final Angle MAX_HOOD_ANGLE = Degrees.of(20);
     public static final Angle PASS_HOOD_ANGLE = Degrees.of(10);
+    public static final Angle HOOD_ANGLE_OFFSET = Degrees.of(18);
 
 
     public static final Angle MIN_HOOD_MOTOR_ANGLE = MIN_HOOD_ANGLE.times(HOOD_GEAR_REDUCTION);

@@ -71,7 +71,7 @@ public class ShooterSim {
                     new Transform3d(new Translation3d(robotPoseSupplier.get().getX(), robotPoseSupplier.get().getY(), 0), 
                     new Rotation3d(robotPoseSupplier.get().getRotation()));
 
-            double launchAngle = Math.PI / 2 - Math.toRadians((controlData.hoodAngle)*360+18);
+            double launchAngle = Math.PI / 2 - Math.toRadians((controlData.hoodAngle)*360+ShooterConstants.HOOD_ANGLE_OFFSET.in(Degrees));
             double fuelVelocity = controlData.flywheelVelocityL * 2 * Math.PI * ShooterConstants.FLYWHEEL_RADIUS.in(Meters) * ShooterConstants.SHOOTER_VELOCITY_SIM_TRANSFER_COEFFICIENT;
 
             Pose3d leftFuelShootPose = new Pose3d(
