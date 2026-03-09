@@ -134,7 +134,7 @@ public class ShooterSimHardware extends ShooterRealHardware {
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
-        builder.addStringProperty("HoodSim", () -> Radians.of(hoodArmSim.getAngleRads()).per(Degrees) + " " + ShooterConstants.HOOD_INERTIA.per(KilogramMetersPerSecond), null);
+        builder.addStringProperty("HoodSim", () -> Radians.of(hoodArmSim.getAngleRads()).in(Degrees) + " deg, MOI: " + ShooterConstants.HOOD_INERTIA.in(KilogramSquareMeters) + " kg*m^2", null);
     }
 
 }

@@ -62,7 +62,7 @@ public class HopperSimHardware extends HopperRealHardware {
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
-        builder.addStringProperty("HopperSim", () -> hopperSim.getAngularPosition().per(Degrees) + " " + HopperConstants.HOPPER_MOMENT_OF_INERTIA.per(KilogramMetersPerSecond), null);
+        builder.addStringProperty("HopperSim", () -> hopperSim.getAngularPosition().in(Degrees) + " deg, MOI: " + HopperConstants.HOPPER_MOMENT_OF_INERTIA.in(KilogramSquareMeters) + " kg*m^2", null);
     }
 
 }

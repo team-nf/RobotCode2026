@@ -96,7 +96,7 @@ public class IntakeSimHardware extends IntakeRealHardware {
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
-        builder.addStringProperty("IntakeSim", () -> intakeSim.getAngularPosition().per(Degrees) + " " + IntakeConstants.INTAKE_MOMENT_OF_INERTIA.per(KilogramMetersPerSecond), null);
+        builder.addStringProperty("IntakeSim", () -> intakeSim.getAngularPosition().in(Degrees) + " deg, MOI: " + IntakeConstants.INTAKE_MOMENT_OF_INERTIA.in(KilogramSquareMeters) + " kg*m^2", null);
         builder.addStringProperty("IntakeArmSim", () -> Radians.of(intakeArmSim.getAngleRads()).per(Degrees) + " " + IntakeConstants.INTAKE_ARM_INERTIA, null);
     }
 
