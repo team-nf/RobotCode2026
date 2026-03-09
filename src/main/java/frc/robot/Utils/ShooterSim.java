@@ -15,7 +15,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.Subsytems.Shooter.Utils.ShooterControlData;
+import frc.robot.Subsystems.Shooter.Utils.ShooterControlData;
 
 /** Add your docs here. */
 public class ShooterSim {

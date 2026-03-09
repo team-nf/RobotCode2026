@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.Dimensions;
 import frc.robot.Constants.PoseConstants;
-import frc.robot.Subsytems.Swerve.CommandSwerveDrivetrain;
+import frc.robot.Subsystems.Swerve.CommandSwerveDrivetrain;
 
 public class SwerveFieldContactSim {
     public double simLoopTimeSec = 0.001; 
