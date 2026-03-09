@@ -189,7 +189,7 @@ public class ShooterCalculator {
             y += 20*(x-5);
         }
 
-        return y/0.81;
+        return y/ShooterConstants.SHOOTER_VELOCITY_TRANSFER_COEFFICIENT;
     }
 
 

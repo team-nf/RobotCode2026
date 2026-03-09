@@ -34,7 +34,7 @@ public class ShooterConstants {
     public static final int HOOD_MOTOR_ID = 55;
 
     // Shooter Math Constants
-    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.85; // in meters (2 inches)
+    public static final double SHOOTER_VELOCITY_TRANSFER_COEFFICIENT = 0.81;
     public static final double SHOOTER_VELOCITY_SIM_TRANSFER_COEFFICIENT = 0.62; // in meters (2 inches)
 
     // Configs
