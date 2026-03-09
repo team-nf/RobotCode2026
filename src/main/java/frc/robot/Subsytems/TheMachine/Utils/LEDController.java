@@ -24,7 +24,7 @@ public class LEDController {
         leds.setData(buffer);
     }
     public void setOne(double percentage, int r, int g, int b) {
-        int i = (int)Math.round(percentage*buffer.getLength());
+        int i = Math.min((int)Math.round(percentage*buffer.getLength()), buffer.getLength() - 1);
         buffer.setRGB(i,r,g,b);
         leds.setData(buffer);
     }
