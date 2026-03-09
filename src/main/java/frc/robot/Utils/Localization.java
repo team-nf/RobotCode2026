@@ -86,7 +86,7 @@ public class Localization {
 
     if(!doRejectUpdate)
     {
-        if(!doRejectLeft && SmartDashboard.getBoolean("Conf/LL-Left_Enabled", false))
+        if(!doRejectLeft && SmartDashboard.getBoolean("Conf/LL-Left_Enabled", true))
         {
             drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.6,.6,9999999));
 
@@ -96,7 +96,7 @@ public class Localization {
             );
         }
 
-        if(!doRejectRight && SmartDashboard.getBoolean("Conf/LL-Right_Enabled", false))
+        if(!doRejectRight && SmartDashboard.getBoolean("Conf/LL-Right_Enabled", true))
         {
             drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(.6,.6,9999999));
             drivetrain.addVisionMeasurement(
