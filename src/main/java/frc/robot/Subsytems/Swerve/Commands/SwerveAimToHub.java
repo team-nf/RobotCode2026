@@ -46,8 +46,14 @@ public class SwerveAimToHub extends Command {
 
     aimingPID = swerveDrivetrain.getAimingPID();
     addRequirements(swerveDrivetrain);
+  }
 
-    if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    aimingPID.reset();
+
+    if(DriverStation.getAlliance().map(a -> a == DriverStation.Alliance.Blue).orElse(true))
     {
       hubAimPose = PoseConstants.BLUE_HUB_AIM_POSE;
     }
@@ -55,16 +61,6 @@ public class SwerveAimToHub extends Command {
     {
       hubAimPose = PoseConstants.RED_HUB_AIM_POSE;
     }
-
-    //hubAimPose = new Pose2d(4.61, 4.1, new Rotation2d());
-
-    
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    aimingPID.reset();
 
     prevErrors = new double[15];
     for (int i = 0; i < prevErrors.length; i++) {

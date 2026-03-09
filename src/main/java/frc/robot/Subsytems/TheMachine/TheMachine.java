@@ -420,7 +420,7 @@ public class TheMachine {
 
   public void updateLeds()
   {
-    if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+    if(DriverStation.getAlliance().map(a -> a == DriverStation.Alliance.Blue).orElse(true))
     {
       leftLed.setMultiple2(0,0.5, 0, 0, 255);
     }

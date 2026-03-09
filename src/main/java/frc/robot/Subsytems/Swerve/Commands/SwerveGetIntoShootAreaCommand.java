@@ -39,7 +39,7 @@ public class SwerveGetIntoShootAreaCommand extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
-    isBlueAlliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue;
+    isBlueAlliance = DriverStation.getAlliance().map(a -> a == DriverStation.Alliance.Blue).orElse(true);
 
     //isBlueAlliance = true;
 

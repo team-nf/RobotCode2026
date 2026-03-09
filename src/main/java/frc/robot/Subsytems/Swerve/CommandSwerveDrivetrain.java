@@ -275,7 +275,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             SmartDashboard.putData("Field", swerveData.field);
         }*/
 
-        if (DriverStation.getAlliance().get() == Alliance.Red) {
+        boolean isRed = DriverStation.getAlliance().map(a -> a == Alliance.Red).orElse(false);
+        if (isRed) {
             swerveData.distanceToHub = (PoseConstants.RED_HUB_AIM_POSE.getTranslation().getDistance(getPose().getTranslation()));
             swerveData.xDistanceToHub = (Math.abs(PoseConstants.RED_HUB_AIM_POSE.getTranslation().getX() - getPose().getTranslation().getX()));
         } else {
@@ -570,12 +571,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         final PathPlannerPath pathToFollow;
 
-        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+        if (DriverStation.getAlliance().map(a -> a == Alliance.Red).orElse(false)){
             pathToFollow = path.flipPath();
         } else {
             pathToFollow = path;
         }
-        
+
         return AutoBuilder.followPath(pathToFollow).deadlineFor(new RunCommand(() -> {
           updateSwerveErrors(pathToFollow.getPathPoses().get(pathToFollow.getPathPoses().size() - 1));
           setSwerveState(SwerveState.PATH_FOLLOWING);
@@ -586,7 +587,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         final PathPlannerPath pathToFollow;
 
-        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+        if (DriverStation.getAlliance().map(a -> a == Alliance.Red).orElse(false)){
             pathToFollow = path.flipPath();
         }
         else{
@@ -605,7 +606,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         final PathPlannerPath pathToFollow;
 
-        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+        if (DriverStation.getAlliance().map(a -> a == Alliance.Red).orElse(false)){
             pathToFollow = path.flipPath();
         }
         else{
@@ -633,7 +634,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     
         SmartDashboard.putData("Conf/StartPoseChooser", startPoseChooser);
 
-        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+        if(DriverStation.getAlliance().map(a -> a == Alliance.Red).orElse(false)){
             initialStartPose2d = PoseConstants.START_POSE_RED_LEFT;
             resetPose(initialStartPose2d);
         }
@@ -696,7 +697,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     {
         Pose2d targetPose = new Pose2d(-1,-1,new Rotation2d());
 
-        if(DriverStation.getAlliance().get() == Alliance.Red)
+        if(DriverStation.getAlliance().map(a -> a == Alliance.Red).orElse(false))
         {
             targetPose = PoseConstants.START_POSE_RED_RIGHT;
         }
@@ -708,18 +709,18 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public InstantCommand setStartPoseLeftCommand()
     {
         return new InstantCommand(() -> {
-            if(DriverStation.getAlliance().get() == Alliance.Red)
+            if(DriverStation.getAlliance().map(a -> a == Alliance.Red).orElse(false))
             {
                 resetPose(PoseConstants.START_POSE_RED_LEFT);
             }
             else resetPose(PoseConstants.START_POSE_BLUE_LEFT);
         });
     }
-    
+
     public InstantCommand setStartPoseMiddleCommand()
     {
         return new InstantCommand(() -> {
-            if(DriverStation.getAlliance().get() == Alliance.Red)
+            if(DriverStation.getAlliance().map(a -> a == Alliance.Red).orElse(false))
             {
                 resetPose(PoseConstants.START_POSE_RED_MIDDLE);
             }
@@ -730,7 +731,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public InstantCommand setStartPoseRightCommand()
     {
         return new InstantCommand(() -> {
-            if(DriverStation.getAlliance().get() == Alliance.Red)
+            if(DriverStation.getAlliance().map(a -> a == Alliance.Red).orElse(false))
             {
                 resetPose(PoseConstants.START_POSE_RED_RIGHT);
             }
@@ -760,7 +761,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         {
             String selectedStartPose = startPoseChooser.getSelected();
             Pose2d selectedPose = new Pose2d();
-            if (DriverStation.getAlliance().get() == Alliance.Red) {
+            if (DriverStation.getAlliance().map(a -> a == Alliance.Red).orElse(false)) {
                 switch (selectedStartPose) {
                     case "LEFT":
                         selectedPose = PoseConstants.START_POSE_RED_LEFT;
@@ -815,7 +816,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         Pose2d pose = null;
 
-        if(DriverStation.getAlliance().get()==Alliance.Blue)
+        if(DriverStation.getAlliance().map(a -> a == Alliance.Blue).orElse(true))
         {
             Pose2d startPose = PoseConstants.START_POSE_BLUE_MIDDLE;
             pose = new Pose2d(startPose.getX()-0.75, startPose.getY(), new Rotation2d(0));

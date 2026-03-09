@@ -51,22 +51,11 @@ public class SwerveTeleopCommand extends Command {
   @Override
   public void execute() {
 
-    if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
-    {
     swerveDrivetrain.setControl(
         drive.withVelocityX(-driverController.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
             .withVelocityY(-driverController.getLeftX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(-driverController.getRightX() * MaxAngularRate)// Drive counterclockwise with negative X (left)
         );
-    }
-    else
-    {
-      swerveDrivetrain.setControl(
-        drive.withVelocityX(-driverController.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-            .withVelocityY(-driverController.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-driverController.getRightX() * MaxAngularRate)// Drive counterclockwise with negative X (left)
-        );
-    }
     swerveDrivetrain.updateSwerveData();
   }
 

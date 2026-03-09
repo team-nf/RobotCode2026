@@ -72,7 +72,7 @@ public class SwerveAimToPass extends Command {
 
     double goalAngle;
 
-    if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+    if(DriverStation.getAlliance().map(a -> a == DriverStation.Alliance.Blue).orElse(true))
     {
       goalAngle = Math.toRadians(180);
     }
