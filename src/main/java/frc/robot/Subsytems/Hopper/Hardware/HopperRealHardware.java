@@ -79,7 +79,7 @@ public class HopperRealHardware implements HopperHardware {
 
     @Override
     public double getHopperVelocity() {
-        return Math.min(hopperMotor.getVelocity().getValueAsDouble(), hopperMotor2.getVelocity().getValueAsDouble());
+        return hopperMotor.getVelocity().getValueAsDouble();
     }
 
     @Override
