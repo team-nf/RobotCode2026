@@ -282,6 +282,7 @@ public class SwerveFieldContactSim {
     }
 
     public void reset() {
+        if (m_swerveDrivetrain == null) return;
         currentSimPose = m_swerveDrivetrain.getInitialStartPose();
         prevSimPose = m_swerveDrivetrain.getInitialStartPose();
         m_swerveDrivetrain.resetPose(currentSimPose);
