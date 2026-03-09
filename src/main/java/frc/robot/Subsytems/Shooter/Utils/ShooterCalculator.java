@@ -8,8 +8,6 @@ import static edu.wpi.first.units.Units.*;
 
 import java.util.function.Supplier;
 
-import org.opencv.core.Mat;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -24,7 +22,6 @@ import frc.robot.Constants.PoseConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TelemetryConstants;
 import frc.robot.Subsytems.Swerve.Utils.SwerveControlData;
-import pabeles.concurrency.IntOperatorTask.Min;
 
 /** Add your docs here. */
 public class ShooterCalculator {

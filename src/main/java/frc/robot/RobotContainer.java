@@ -50,8 +50,6 @@ import frc.robot.Utils.SwerveFieldContactSim;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.util.jar.Attributes.Name;
-
 public class RobotContainer {
 
   private CommandSwerveDrivetrain m_swerveDrivetrain;

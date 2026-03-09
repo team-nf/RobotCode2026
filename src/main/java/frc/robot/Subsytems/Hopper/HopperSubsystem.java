@@ -21,8 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.util.function.IntFunction;
-
 public class HopperSubsystem extends SubsystemBase {
 
   public final HopperHardware hopperHardware;
