@@ -13,6 +13,6 @@ public class TheMachineGetReadyActionPas {
         theMachine.feederReverseRequest(),
         theMachine.hopperZeroRequest(),
         theMachine.intakeDeployRequest()
-    ).until(() -> (theMachine.getState() != TheMachineControlState.GET_READY));
+    ).until(() -> (theMachine.getState() != TheMachineControlState.GET_READY_PAS));
   }
 }
