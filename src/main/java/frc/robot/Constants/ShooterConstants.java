@@ -106,7 +106,7 @@ public class ShooterConstants {
 
 
     public static final MotorOutputConfigs HOOD_MOTOR_OUTPUT_CONFIGS = new MotorOutputConfigs().withInverted(InvertedValue.CounterClockwise_Positive)
-        .withNeutralMode(NeutralModeValue.Coast);
+        .withNeutralMode(NeutralModeValue.Brake);
 
     public static final TalonFXConfiguration HOOD_CONFIG = new TalonFXConfiguration()
             .withSlot0(HOOD_PID_CONFIGS)
