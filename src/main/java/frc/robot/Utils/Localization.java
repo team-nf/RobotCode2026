@@ -149,9 +149,9 @@ public class Localization {
         {
             doRejectRight = true;
         }
-        if(limelightMeasurementLeft.avgTagDist > 3.5)
+        if(limelightMeasurementRight.avgTagDist > 3.5)
             {
-                doRejectLeft = true;
+                doRejectRight = true;
             }
     }
     else doRejectRight = true;
