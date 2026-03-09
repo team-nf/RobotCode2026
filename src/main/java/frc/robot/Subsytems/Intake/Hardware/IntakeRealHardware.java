@@ -164,7 +164,7 @@ public class IntakeRealHardware implements IntakeHardware {
         //intakeReference = intakeMotor.getClosedLoopReference().getValue();
         //intakeError = intakeMotor.getClosedLoopError().getValue();
 
-        intakeArmPosition = intakeArmMotor.getRotorPosition().getValue().div(IntakeConstants.INTAKE_ARM_GEAR_REDUCTION).in(Rotations);
+        intakeArmPosition = intakeArmMotor.getPosition().getValue().div(IntakeConstants.INTAKE_ARM_GEAR_REDUCTION).in(Rotations);
         //intakeArmMotorPosition = intakeArmMotor.getRotorPosition().getValue();
         //intakeArmMotorVoltage = intakeArmMotor.getMotorVoltage().getValue();
         //intakeArmMotorCurrent = intakeArmMotor.getStatorCurrent().getValue();
