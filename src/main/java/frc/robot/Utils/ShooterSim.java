@@ -51,7 +51,7 @@ public class ShooterSim {
     }
 
     private double fuelPerSecondLimit = 6.0; // Default limit
-    private double lastShootTime = 0;
+    private double lastShootTime = -1;
     private int fuelShotCount = 0;
 
     public void setFuelPerSecondLimit(double limit) {
