@@ -780,7 +780,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 
             }
 
-            if(selectedPose != initialStartPose2d)
+            if(!selectedPose.equals(initialStartPose2d))
             {
                 initialStartPose2d = selectedPose;
                 resetPose(initialStartPose2d);
