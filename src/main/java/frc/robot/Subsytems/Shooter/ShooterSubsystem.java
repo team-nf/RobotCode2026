@@ -46,8 +46,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public final Command shooterShootAction;
   public final Command shooterTestAction;
 
-  private boolean isHoodZeroed = false;
-
   public ShooterSubsystem(ShooterCalculator shooterCalculator) 
   {
     if (Utils.isSimulation()) {

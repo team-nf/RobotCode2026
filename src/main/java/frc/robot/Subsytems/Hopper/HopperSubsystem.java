@@ -62,8 +62,6 @@ public class HopperSubsystem extends SubsystemBase {
     hopperHardware.hopperStop();
   }
 
-  private int i = 0;
-
   public void feed() {
     hopperData.hopperGoalVelocity = HopperConstants.HOPPER_FEEDING_VELOCITY.in(RotationsPerSecond);
     hopperHardware.setHopperSpeed(hopperData.hopperGoalVelocity);

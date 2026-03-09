@@ -112,9 +112,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   }
 
-      private int i = 0;
-
-
   public void intake() {
     intakeData.intakeGoalArmAngle = IntakeConstants.INTAKE_ARM_DEPLOYED_ANGLE.in(Rotations);
     intakeHardware.setIntakeArmPosition(intakeData.intakeGoalArmAngle);
