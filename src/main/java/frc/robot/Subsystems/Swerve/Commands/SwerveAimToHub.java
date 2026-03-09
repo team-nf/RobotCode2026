@@ -52,6 +52,7 @@ public class SwerveAimToHub extends Command {
   @Override
   public void initialize() {
     aimingPID.reset();
+    averageError = 1.0;
 
     if(DriverStation.getAlliance().map(a -> a == DriverStation.Alliance.Blue).orElse(true))
     {
@@ -111,7 +112,6 @@ public class SwerveAimToHub extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return averageError < DriveConstants.AIMING_TOLERANCE_RADIANS;
     return false;
   }
 }
