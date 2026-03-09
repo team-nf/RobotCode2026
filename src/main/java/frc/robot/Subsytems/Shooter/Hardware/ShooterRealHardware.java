@@ -66,7 +66,7 @@ public class ShooterRealHardware implements ShooterHardware {
     private double hoodError = 0.0;
 
     private double testFlywheelGoal= 35;
-    private double testHoodGoal = 20/360;
+    private double testHoodGoal = 20.0/360.0;
 
     public ShooterRealHardware() {
         firstShootMotor = new TalonFX(ShooterConstants.FIRST_SHOOTER_MOTOR_ID);
@@ -197,10 +197,8 @@ public class ShooterRealHardware implements ShooterHardware {
     public void setHoodAngle(double hoodAngle) {
         // Set hood position in rotations
 
-        if(hoodAngle > ShooterConstants.MAX_HOOD_ANGLE.in(Rotations))
-        {
-            hoodAngle = ShooterConstants.MAX_HOOD_ANGLE.in(Rotations);
-        }
+        hoodAngle = Math.max(ShooterConstants.MIN_HOOD_ANGLE.in(Rotations),
+            Math.min(hoodAngle, ShooterConstants.MAX_HOOD_ANGLE.in(Rotations)));
 
         hoodMotor.setControl(
             hoodPositionControl.withPosition(hoodAngle*(ShooterConstants.HOOD_GEAR_REDUCTION))
