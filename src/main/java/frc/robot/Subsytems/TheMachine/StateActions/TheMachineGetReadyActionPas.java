@@ -9,7 +9,7 @@ public class TheMachineGetReadyActionPas {
 
   public static Command get(TheMachine theMachine) {
     return new ParallelCommandGroup(
-        theMachine.testRequest(),
+        theMachine.shooterTestRequest(),
         theMachine.feederReverseRequest(),
         theMachine.hopperZeroRequest(),
         theMachine.intakeDeployRequest()
