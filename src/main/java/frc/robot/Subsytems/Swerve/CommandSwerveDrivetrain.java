@@ -667,30 +667,22 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public Command pathFindToTrench1()
     {
-        PathPlannerPath path = null;
-
         try {
-            path = PathPlannerPath.fromPathFile("TrenchIntake1");
+            return pathfindToPath(PathPlannerPath.fromPathFile("TrenchIntake1"));
         } catch (FileVersionException | IOException | ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            DriverStation.reportError("Path yuklenemedi: TrenchIntake1", e.getStackTrace());
+            return new InstantCommand();
         }
-
-        return pathfindToPath(path);
     }
 
     public Command pathFindToTrench2_2()
     {
-        PathPlannerPath path = null;
-
         try {
-            path = PathPlannerPath.fromPathFile("TrenchIntake2_2");
+            return pathfindToPath(PathPlannerPath.fromPathFile("TrenchIntake2_2"));
         } catch (FileVersionException | IOException | ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            DriverStation.reportError("Path yuklenemedi: TrenchIntake2_2", e.getStackTrace());
+            return new InstantCommand();
         }
-
-        return pathfindToPath(path);
     }
 
     public Command pathFindToStartPose1()
@@ -831,60 +823,41 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
      public Command followTrench2_1()
      {
-        PathPlannerPath path = null;
-
         try {
-            path = PathPlannerPath.fromPathFile("TrenchIntake2_1");
+            return followPath(PathPlannerPath.fromPathFile("TrenchIntake2_1"));
         } catch (FileVersionException | IOException | ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            DriverStation.reportError("Path yuklenemedi: TrenchIntake2_1", e.getStackTrace());
+            return new InstantCommand();
         }
-
-        return followPath(path);
      }
 
-     
      public Command followTrench2_2()
      {
-        PathPlannerPath path = null;
-
         try {
-            path = PathPlannerPath.fromPathFile("TrenchIntake2_2");
+            return pathfindThenFollowPath(PathPlannerPath.fromPathFile("TrenchIntake2_2"));
         } catch (FileVersionException | IOException | ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            DriverStation.reportError("Path yuklenemedi: TrenchIntake2_2", e.getStackTrace());
+            return new InstantCommand();
         }
-
-        return pathfindThenFollowPath(path);
      }
 
-     
      public Command followTrench3_1()
      {
-        PathPlannerPath path = null;
-
         try {
-            path = PathPlannerPath.fromPathFile("TrenchIntake3_1");
+            return followPath(PathPlannerPath.fromPathFile("TrenchIntake3_1"));
         } catch (FileVersionException | IOException | ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            DriverStation.reportError("Path yuklenemedi: TrenchIntake3_1", e.getStackTrace());
+            return new InstantCommand();
         }
-
-        return followPath(path);
      }
 
-     
      public Command followTrench3_2()
      {
-        PathPlannerPath path = null;
-
         try {
-            path = PathPlannerPath.fromPathFile("TrenchIntake3_2");
+            return pathfindThenFollowPath(PathPlannerPath.fromPathFile("TrenchIntake3_2"));
         } catch (FileVersionException | IOException | ParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            DriverStation.reportError("Path yuklenemedi: TrenchIntake3_2", e.getStackTrace());
+            return new InstantCommand();
         }
-
-        return pathfindThenFollowPath(path);
      }
 }
